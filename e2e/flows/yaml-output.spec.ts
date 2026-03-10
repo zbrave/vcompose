@@ -1,0 +1,29 @@
+import { test, expect } from '@playwright/test';
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await page.waitForSelector('.react-flow');
+});
+
+test('shows empty YAML with version and services when no nodes', async ({ page }) => {
+  const yaml = page.locator('pre');
+  await expect(yaml).toContainText('version: "3.8"');
+  await expect(yaml).toContainText('services:');
+});
+
+test('shows warning badge when no services', async ({ page }) => {
+  // ⚠️ badge should be visible (no services warning)
+  await expect(page.locator('text=⚠️')).toBeVisible();
+});
+
+test('copy button copies YAML to clipboard', async ({ page, context }) => {
+  // Grant clipboard permissions
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+
+  await page.locator('text=Copy').click();
+
+  const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
+  expect(clipboardText).toContain('version');
+});
