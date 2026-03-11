@@ -47,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cd \"$CLAUDE_PROJECT_DIR\" && git diff --quiet && git diff --cached --quiet || (git add -A && git commit -m \"auto: session checkpoint [skip ci]\" && git push 2>/dev/null || true)"
+            "command": "bash .claude/scripts/auto-commit.sh"
           }
         ]
       }
