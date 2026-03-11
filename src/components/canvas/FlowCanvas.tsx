@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import {
   ReactFlow,
   Background,
@@ -14,6 +14,7 @@ import {
 import '@xyflow/react/dist/style.css';
 import { useStore } from '../../store';
 import { ServiceNodeComponent } from './ServiceNodeComponent';
+import { UndoRedoToolbar } from './UndoRedoToolbar';
 import type { PresetImageKey } from '../../store/types';
 
 const defaultEdgeOptions: DefaultEdgeOptions = {
@@ -116,7 +117,27 @@ export function FlowCanvas() {
     [addNode],
   );
 
+  // Keyboard shortcuts for undo/redo
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key === 'z') {
+        e.preventDefault();
+        useStore.temporal.getState().undo();
+      } else if (
+        ((e.ctrlKey || e.metaKey) && e.key === 'y') ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'z')
+      ) {
+        e.preventDefault();
+        useStore.temporal.getState().redo();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
   return (
+    <div className="relative h-full w-full">
+    <UndoRedoToolbar />
     <ReactFlow
       nodes={rfNodes}
       edges={rfEdges}
@@ -137,5 +158,6 @@ export function FlowCanvas() {
       <Background color="#374151" gap={16} />
       <Controls className="!bg-gray-800 !border-gray-700 [&>button]:!bg-gray-800 [&>button]:!border-gray-700 [&>button]:!text-gray-300" />
     </ReactFlow>
+    </div>
   );
 }

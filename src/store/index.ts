@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { temporal } from 'zundo';
 import type {
   AppStore,
   DependencyEdge,
@@ -14,6 +15,7 @@ import { PRESET_DEFAULTS } from './types';
 
 export const useStore = create<AppStore>()(
   persist(
+    temporal(
     (set) => ({
       // State
       nodes: [],
@@ -151,6 +153,15 @@ export const useStore = create<AppStore>()(
         });
       },
     }),
+    {
+      partialize: (state) => ({
+        nodes: state.nodes,
+        edges: state.edges,
+        networks: state.networks,
+        namedVolumes: state.namedVolumes,
+      }),
+    },
+    ),
     {
       name: 'vdc-store',
       version: 1,

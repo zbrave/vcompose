@@ -3,7 +3,7 @@
 > Her Claude Code oturumunun sonunda güncelle.
 > Status: `⬜ Todo` · `🔄 In Progress` · `✅ Done` · `🚫 Blocked`
 
-Last updated: 2026-03-11
+Last updated: 2026-03-12
 
 ---
 
@@ -34,13 +34,13 @@ Last updated: 2026-03-11
 | YAML Import (Phase 2) | ✅ Done | yaml-parser.ts, ImportModal, 17 unit + 3 E2E test |
 | Network Management UI (Phase 3) | ✅ Done | NetworkPanel, ConfigPanel checkboxes, updateNetwork, 3 E2E test |
 | Docker Hub Search (Phase 4) | ✅ Done | ImageSearchInput, dockerhub.ts, useDockerHubSearch hook, 4 unit test |
-| Undo/Redo UI (Phase 5) | ⬜ Todo | |
+| Undo/Redo UI (Phase 5) | ✅ Done | zundo temporal middleware, UndoRedoToolbar, Ctrl+Z/Y shortcuts |
 
 ---
 
 ## Mevcut Oturum Odağı
 
-Phase 4 (Docker Hub Search) tamamlandi. 43 unit + 14 E2E test geçiyor.
+Phase 5 (Undo/Redo UI) tamamlandi. 49 unit + 14 E2E test geçiyor. Tüm post-MVP phase'ler tamamlandi.
 
 ---
 
@@ -105,3 +105,15 @@ Phase 4 (Docker Hub Search) tamamlandi. 43 unit + 14 E2E test geçiyor.
 - 4 yeni unit test (dockerhub), vite.config.ts TS fix
 - GitHub private repo olusturuldu ve push edildi
 - **Toplam: 43 unit + 14 E2E test, tumü geçiyor**
+
+### Oturum 7 (2026-03-12)
+- Docker Hub Search: CORS fix — hybrid local+remote arama (40 popular image listesi fallback)
+- 10 unit test (dockerhub, searchLocal + searchRemote + searchImages)
+- Phase 5: Undo/Redo UI implementasyonu
+- `zundo` paketi eklendi, `temporal` middleware store'a entegre edildi
+- Middleware sirasi: `persist(temporal(...))` — store-rules uyumlu
+- `UndoRedoToolbar`: canvas sol üst, reactive pastStates/futureStates
+- Keyboard shortcuts: Ctrl+Z undo, Ctrl+Y / Ctrl+Shift+Z redo
+- `docs/specs/undo-redo.md` spec yazildi
+- **Toplam: 49 unit + 14 E2E test, tumü geçiyor**
+- **TÜM POST-MVP PHASE'LER TAMAMLANDI** ✅
