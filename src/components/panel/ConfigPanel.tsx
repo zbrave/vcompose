@@ -1,5 +1,6 @@
 import { useStore } from '../../store';
 import type { PortMapping, VolumeMapping, HealthcheckConfig } from '../../store/types';
+import { ImageSearchInput } from './ImageSearchInput';
 
 export function ConfigPanel() {
   const selectedNodeId = useStore((s) => s.selectedNodeId);
@@ -85,11 +86,11 @@ export function ConfigPanel() {
       {/* Image */}
       <div className="mb-3">
         <label className={labelCls}>Image</label>
-        <input
+        <ImageSearchInput
           className={inputCls}
           value={d.image}
           disabled={isPreset}
-          onChange={(e) => update({ image: e.target.value })}
+          onChange={(v) => update({ image: v })}
         />
       </div>
 
