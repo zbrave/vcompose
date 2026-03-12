@@ -31,10 +31,14 @@ export function FlowCanvas() {
   const removeNode = useStore((s) => s.removeNode);
   const removeEdge = useStore((s) => s.removeEdge);
   const selectNode = useStore((s) => s.selectNode);
+  const selectedNodeId = useStore((s) => s.selectedNodeId);
   const { screenToFlowPosition } = useReactFlow();
 
-  // Cast to React Flow types (our ServiceNode has stricter data typing)
-  const rfNodes = nodes as unknown as Node[];
+  // Cast to React Flow types, inject selected state
+  const rfNodes = useMemo(
+    () => nodes.map((n) => ({ ...n, selected: n.id === selectedNodeId })) as unknown as Node[],
+    [nodes, selectedNodeId],
+  );
   const rfEdges = edges as unknown as Edge[];
 
   const nodeTypes: NodeTypes = useMemo(
