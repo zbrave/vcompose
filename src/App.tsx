@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ReactFlowProvider } from '@xyflow/react';
 import { useStore } from './store';
 import { validate } from './lib/validator';
+import { LandingPage } from './components/LandingPage';
 import { HeaderBar } from './components/HeaderBar';
 import { NodePalette } from './components/sidebar/NodePalette';
 import { NetworkPanel } from './components/sidebar/NetworkPanel';
@@ -15,11 +16,35 @@ function App() {
   const selectedNodeId = useStore((s) => s.selectedNodeId);
   const setValidationIssues = useStore((s) => s.setValidationIssues);
 
+  // Show landing page unless user has clicked "Start Building" or has existing work
+  const [showLanding, setShowLanding] = useState(() => {
+    // If user has nodes from a previous session, skip landing
+    const stored = localStorage.getItem('vdc-store');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed?.state?.nodes?.length > 0) return false;
+      } catch {
+        // ignore
+      }
+    }
+    return !sessionStorage.getItem('vdc-entered');
+  });
+
+  const handleEnter = () => {
+    sessionStorage.setItem('vdc-entered', '1');
+    setShowLanding(false);
+  };
+
   // Validation as derived state
   useEffect(() => {
     const issues = validate({ nodes, edges });
     setValidationIssues(issues);
   }, [nodes, edges, setValidationIssues]);
+
+  if (showLanding) {
+    return <LandingPage onEnter={handleEnter} />;
+  }
 
   return (
     <ReactFlowProvider>
