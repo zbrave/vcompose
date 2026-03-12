@@ -3,6 +3,7 @@ import {
   ReactFlow,
   Background,
   Controls,
+  useReactFlow,
   type Connection,
   type NodeChange,
   type EdgeChange,
@@ -30,6 +31,7 @@ export function FlowCanvas() {
   const removeNode = useStore((s) => s.removeNode);
   const removeEdge = useStore((s) => s.removeEdge);
   const selectNode = useStore((s) => s.selectNode);
+  const { screenToFlowPosition } = useReactFlow();
 
   // Cast to React Flow types (our ServiceNode has stricter data typing)
   const rfNodes = nodes as unknown as Node[];
@@ -104,17 +106,10 @@ export function FlowCanvas() {
       const preset = e.dataTransfer.getData('application/vdc-preset') as PresetImageKey;
       if (!preset) return;
 
-      const bounds = (e.target as HTMLElement).closest('.react-flow')?.getBoundingClientRect();
-      if (!bounds) return;
-
-      const position = {
-        x: e.clientX - bounds.left,
-        y: e.clientY - bounds.top,
-      };
-
+      const position = screenToFlowPosition({ x: e.clientX, y: e.clientY });
       addNode(preset, position);
     },
-    [addNode],
+    [addNode, screenToFlowPosition],
   );
 
   // Keyboard shortcuts for undo/redo
