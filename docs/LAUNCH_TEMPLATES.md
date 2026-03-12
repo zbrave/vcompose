@@ -131,4 +131,4 @@ Open source: [GitHub link]
 
 ### awesome-selfhosted
 - **Category:** Software Development / IDE
-- **Entry:** `[VCompose](https://vcompose.cc) - Visual builder for docker-compose.yml with drag-and-drop interface. No backend required. ([Source Code](https://github.com/...)) MIT Docker`
+- **Entry:** `[VCompose](https://vcompose.cc) - Visual builder for docker-compose.yml with drag-and-drop interface. No backend required. ([Source Code](https://github.com/zbrave/vcompose)) MIT Docker`

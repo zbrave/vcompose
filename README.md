@@ -28,7 +28,7 @@ Visit [**vcompose.cc**](https://vcompose.cc) — no installation needed.
 ### Run locally
 
 ```bash
-git clone https://github.com/visual-docker-compose/vcompose.git
+git clone https://github.com/zbrave/vcompose.git
 cd vcompose
 npm install
 npm run dev

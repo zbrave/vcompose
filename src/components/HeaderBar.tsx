@@ -22,7 +22,7 @@ export function HeaderBar() {
       </div>
       <div className="flex items-center gap-3">
         <a
-          href="https://github.com/visual-docker-compose/vcompose"
+          href="https://github.com/zbrave/vcompose"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 rounded-md border border-gray-700 px-2.5 py-1 text-xs text-gray-400 transition-colors hover:border-gray-500 hover:text-gray-200"
