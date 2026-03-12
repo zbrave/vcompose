@@ -6,13 +6,14 @@ type ServiceNodeProps = NodeProps & { data: ServiceNodeData };
 
 export function ServiceNodeComponent({ id, data, selected }: ServiceNodeProps) {
   const validationIssues = useStore((s) => s.validationIssues);
+  const removeNode = useStore((s) => s.removeNode);
   const nodeIssues = validationIssues.filter((i) => i.nodeId === id);
   const hasError = nodeIssues.some((i) => i.severity === 'error');
   const hasWarning = nodeIssues.some((i) => i.severity === 'warning');
 
   return (
     <div
-      className={`min-w-[160px] rounded-lg border bg-gray-800 px-4 py-3 shadow-lg transition-colors ${
+      className={`relative min-w-[160px] rounded-lg border bg-gray-800 px-4 py-3 shadow-lg transition-colors ${
         selected
           ? 'border-blue-500 ring-2 ring-blue-500/30'
           : hasError
@@ -23,6 +24,18 @@ export function ServiceNodeComponent({ id, data, selected }: ServiceNodeProps) {
       }`}
     >
       <Handle type="target" position={Position.Top} className="!bg-blue-400" />
+
+      {selected && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            removeNode(id);
+          }}
+          className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white shadow hover:bg-red-400"
+        >
+          ✕
+        </button>
+      )}
 
       <div className="flex items-center gap-2">
         {hasError && <span className="h-2 w-2 rounded-full bg-red-500" />}
