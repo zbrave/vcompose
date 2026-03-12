@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { ReactFlowProvider } from '@xyflow/react';
 import { useStore } from './store';
 import { validate } from './lib/validator';
+import { HeaderBar } from './components/HeaderBar';
 import { NodePalette } from './components/sidebar/NodePalette';
 import { NetworkPanel } from './components/sidebar/NetworkPanel';
 import { FlowCanvas } from './components/canvas/FlowCanvas';
@@ -22,7 +23,9 @@ function App() {
 
   return (
     <ReactFlowProvider>
-      <div className="flex h-screen w-screen">
+      <div className="flex h-screen w-screen flex-col">
+        <HeaderBar />
+        <div className="flex flex-1 overflow-hidden">
         {/* Sidebar - Node Palette */}
         <aside className="w-60 border-r border-gray-800 bg-gray-900 p-4">
           <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">
@@ -50,6 +53,7 @@ function App() {
           )}
           <YamlOutput />
         </aside>
+        </div>
       </div>
     </ReactFlowProvider>
   );

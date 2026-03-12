@@ -17,6 +17,7 @@ import { generateId } from '../../lib/generate-id';
 import { useStore } from '../../store';
 import { ServiceNodeComponent } from './ServiceNodeComponent';
 import { UndoRedoToolbar } from './UndoRedoToolbar';
+import { EmptyCanvasOverlay } from './EmptyCanvasOverlay';
 import type { PresetImageKey } from '../../store/types';
 
 const defaultEdgeOptions: DefaultEdgeOptions = {
@@ -138,6 +139,7 @@ export function FlowCanvas() {
 
   return (
     <div className="relative h-full w-full">
+    {nodes.length === 0 && <EmptyCanvasOverlay />}
     <UndoRedoToolbar />
     <ReactFlow
       nodes={rfNodes}
