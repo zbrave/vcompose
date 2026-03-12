@@ -1,9 +1,10 @@
+import { generateId } from '../generate-id';
 import { describe, expect, it } from 'vitest';
 import { buildYaml } from '../yaml-builder';
 import type { ServiceNode, DependencyEdge, NetworkConfig, NamedVolume } from '../../store/types';
 
 function makeNode(overrides: { id?: string; data: Partial<ServiceNode['data']> & { serviceName: string } }): ServiceNode {
-  const { id = crypto.randomUUID(), data } = overrides;
+  const { id = generateId(), data } = overrides;
   return {
     id,
     type: 'serviceNode',

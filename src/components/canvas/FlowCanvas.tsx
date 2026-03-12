@@ -13,6 +13,7 @@ import {
   type DefaultEdgeOptions,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { generateId } from '../../lib/generate-id';
 import { useStore } from '../../store';
 import { ServiceNodeComponent } from './ServiceNodeComponent';
 import { UndoRedoToolbar } from './UndoRedoToolbar';
@@ -86,7 +87,7 @@ export function FlowCanvas() {
       if (exists) return;
 
       addEdge({
-        id: crypto.randomUUID(),
+        id: generateId(),
         source: params.source,
         target: params.target,
         type: 'dependencyEdge',

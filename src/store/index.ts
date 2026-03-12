@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { temporal } from 'zundo';
+import { generateId } from '../lib/generate-id';
 import type {
   AppStore,
   DependencyEdge,
@@ -28,7 +29,7 @@ export const useStore = create<AppStore>()(
       // Node actions
       addNode: (preset: PresetImageKey, position: { x: number; y: number }) => {
         const defaults = PRESET_DEFAULTS[preset];
-        const id = crypto.randomUUID();
+        const id = generateId();
         const node = {
           id,
           type: 'serviceNode' as const,

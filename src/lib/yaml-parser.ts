@@ -1,4 +1,5 @@
 import { parse } from 'yaml';
+import { generateId } from './generate-id';
 import type {
   DependencyEdge,
   NamedVolume,
@@ -137,7 +138,7 @@ export function parseYaml(yamlString: string): ParseResult {
   for (let i = 0; i < serviceNames.length; i++) {
     const name = serviceNames[i];
     const svc = services[name];
-    const id = crypto.randomUUID();
+    const id = generateId();
     nameToId.set(name, id);
 
     const col = i % 3;
@@ -179,7 +180,7 @@ export function parseYaml(yamlString: string): ParseResult {
       const sourceId = nameToId.get(dep);
       if (sourceId) {
         edges.push({
-          id: crypto.randomUUID(),
+          id: generateId(),
           source: sourceId,
           target: targetId,
           type: 'dependencyEdge',
