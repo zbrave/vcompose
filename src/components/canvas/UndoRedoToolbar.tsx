@@ -15,6 +15,18 @@ export function UndoRedoToolbar() {
   const { undo, redo } = useStore.temporal.getState();
   const canUndo = useTemporalStore((s) => s.pastStates.length > 0);
   const canRedo = useTemporalStore((s) => s.futureStates.length > 0);
+  const hasContent = useStore((s) => s.nodes.length > 0 || s.edges.length > 0);
+
+  const clearAll = () => {
+    useStore.setState({
+      nodes: [],
+      edges: [],
+      networks: [],
+      namedVolumes: [],
+      selectedNodeId: null,
+      validationIssues: [],
+    });
+  };
 
   const btnCls =
     'rounded bg-gray-800 p-1.5 text-gray-400 transition-colors hover:bg-gray-700 hover:text-gray-200 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-gray-800 disabled:hover:text-gray-400';
@@ -43,6 +55,22 @@ export function UndoRedoToolbar() {
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M21 7v6h-6" />
           <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6.69 3L21 13" />
+        </svg>
+      </button>
+      <div className="mx-0.5 w-px bg-gray-700" />
+      <button
+        onClick={clearAll}
+        disabled={!hasContent}
+        className={btnCls}
+        title="Clear All"
+        data-testid="clear-all-btn"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M3 6h18" />
+          <path d="M8 6V4h8v2" />
+          <path d="M5 6v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6" />
+          <path d="M10 11v6" />
+          <path d="M14 11v6" />
         </svg>
       </button>
     </div>
