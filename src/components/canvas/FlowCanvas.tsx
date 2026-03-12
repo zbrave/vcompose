@@ -106,7 +106,8 @@ export function FlowCanvas() {
       const preset = e.dataTransfer.getData('application/vdc-preset') as PresetImageKey;
       if (!preset) return;
 
-      const position = screenToFlowPosition({ x: e.clientX, y: e.clientY });
+      const flowPos = screenToFlowPosition({ x: e.clientX, y: e.clientY });
+      const position = { x: flowPos.x - 80, y: flowPos.y - 40 };
       addNode(preset, position);
     },
     [addNode, screenToFlowPosition],
