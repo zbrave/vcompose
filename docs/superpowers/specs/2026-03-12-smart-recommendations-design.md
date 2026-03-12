@@ -1,16 +1,18 @@
 # Phase 6: Smart Recommendations — Design Spec
 
-> Servis secildiginde iliskili teknolojileri oneren, rule-based + Docker Hub hibrit sistemi.
+> Servis secildiginde iliskili teknolojileri oneren, rule-based oneri sistemi. Static iliski grafi + static defaults.
 
 ---
 
 ## Ozet
 
-Canvas'ta bir servis secildiginde, ConfigPanel altinda "Onerilen Servisler" bolumu gosterilir. Oneriler static bir iliski grafiginden gelir, image detaylari Docker Hub API'den (Phase 4 altyapisi) cekilir. Kullanici tek tikla onerilen servisi canvas'a ekleyebilir — node + edge + network otomatik olusturulur.
+Canvas'ta bir servis secildiginde, ConfigPanel altinda "Onerilen Servisler" bolumu gosterilir. Oneriler static bir iliski grafiginden gelir, image ve default konfigurasyon bilgileri static `RECOMMENDATION_DEFAULTS`'tan alinir. Kullanici tek tikla onerilen servisi canvas'a ekleyebilir — node + edge + network otomatik olusturulur.
 
 ---
 
 ## 1. Veri Katmani
+
+> **Not:** `src/data/` yeni bir dizindir (PROJECT_SPEC.md section 3.3'te yok). Bu phase ile birlikte eklenir, statik veri dosyalari icin kullanilir.
 
 ### 1.1 Iliski Grafi — `src/data/recommendation-graph.json`
 
@@ -156,6 +158,8 @@ export const RECOMMENDATION_DEFAULTS: Record<string, RecommendationDefault> = {
 
 ### 1.3 Type Tanimlari
 
+Dosya: `src/lib/recommendation-types.ts` (store tiplerine dahil degil, recommendation engine'e ozel)
+
 ```typescript
 export interface RecommendationDefault {
   image: string;
@@ -170,7 +174,22 @@ export interface Recommendation {
   reason: string;        // neden onerildigi
   alreadyExists: boolean; // canvas'ta zaten var mi
 }
+
+export interface RecommendationGraphEntry {
+  recommends: string[];
+  reasons: Record<string, string>;
+}
+
+export type RecommendationGraph = Record<string, RecommendationGraphEntry>;
 ```
+
+> Bu tipler store state'inin parcasi degil, persist edilmez. `docs/TYPES.md`'ye eklenmez.
+
+### 1.4 Preset Atama Kurali
+
+Graph'taki onerilerden node olusturulurken `preset` degeri:
+- Eger key mevcut `PresetImageKey` union'inda varsa (`nginx`, `postgres`, `redis`, `node`) → o preset atanir
+- Degilse (`pgadmin`, `mongo`, `kibana` vb.) → `preset: 'custom'` atanir
 
 ---
 
@@ -229,13 +248,23 @@ function calculateRecommendedPosition(
 
 ## 5. Store Action — `addRecommendedNode`
 
+Bu bir **store action** olarak `AppStore`'a eklenir. Signature:
+
+```typescript
+addRecommendedNode: (
+  key: string,
+  sourceNodeId: string,
+  position: { x: number; y: number }
+) => void;
+```
+
 Tek action ile:
-1. Yeni `ServiceNode` olustur (RECOMMENDATION_DEFAULTS veya PRESET_DEFAULTS'tan)
+1. Yeni `ServiceNode` olustur — key mevcut preset'lerdeyse `PRESET_DEFAULTS`, degilse `RECOMMENDATION_DEFAULTS` kullanilir. Preset degeri Section 1.4'teki kurala gore atanir.
 2. Canvas'a ekle (hesaplanan pozisyonda)
-3. Edge olustur: yeni node → kaynak node (depends_on semantigi)
+3. Edge olustur: `source = sourceNodeId` (bagimliligi saglayan servis, orn: postgres), `target = yeniNodeId` (bagimliligi olan servis, orn: pgadmin). Yani pgadmin postgres'e `depends_on` ile baglanir.
 4. Her iki node'u `default` network'e ekle (mevcut edge logic ile ayni)
 
-Bu action mevcut `addNode` + `addEdge` logic'ini yeniden kullanir, yeni bir store yazmaz.
+Dahili olarak mevcut `addNode` + `addEdge` logic'ini cagirir, yeni store slice olusturmaz.
 
 ---
 
