@@ -60,7 +60,7 @@ describe('getRecommendations', () => {
 
   it('marks existing services as alreadyExists', () => {
     const data = makeNodeData({ preset: 'postgres', image: 'postgres:16-alpine' });
-    const result = getRecommendations(data, [{ preset: 'redis', image: 'redis:7-alpine' }], testGraph);
+    const result = getRecommendations(data, [{ preset: 'redis', image: 'redis:7-alpine', serviceName: 'redis-a1b2' }], testGraph);
     const redis = result.find((r) => r.key === 'redis');
     expect(redis?.alreadyExists).toBe(true);
     const pgadmin = result.find((r) => r.key === 'pgadmin');

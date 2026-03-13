@@ -38,7 +38,7 @@ function imageBaseName(image: string): string {
 
 export function getRecommendations(
   selectedNodeData: ServiceNodeData,
-  existingNodes: Array<{ preset: string; image: string }>,
+  existingNodes: Array<{ preset: string; image: string; serviceName: string }>,
   graph: RecommendationGraph,
 ): Recommendation[] {
   const graphKey = resolveGraphKey(selectedNodeData, graph);
@@ -47,11 +47,14 @@ export function getRecommendations(
   const entry = graph[graphKey];
   if (!entry || entry.recommends.length === 0) return [];
 
-  // Build a set of existing keys: preset names + image base names
+  // Build a set of existing keys: preset names + image base names + service name prefixes
   const existingKeys = new Set<string>();
   for (const n of existingNodes) {
     if (n.preset !== 'custom') existingKeys.add(n.preset.toLowerCase());
     if (n.image) existingKeys.add(imageBaseName(n.image));
+    // Service names are formatted as "key-uuid4chars", extract the key part
+    const namePrefix = n.serviceName.replace(/-[a-f0-9]{4,}$/, '');
+    if (namePrefix) existingKeys.add(namePrefix.toLowerCase());
   }
 
   return entry.recommends.slice(0, MAX_RECOMMENDATIONS).map((key) => ({

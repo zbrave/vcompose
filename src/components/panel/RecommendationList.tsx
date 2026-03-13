@@ -12,7 +12,7 @@ export function RecommendationList() {
   const node = nodes.find((n) => n.id === selectedNodeId);
   if (!node) return null;
 
-  const existingNodes = nodes.map((n) => ({ preset: n.data.preset, image: n.data.image }));
+  const existingNodes = nodes.map((n) => ({ preset: n.data.preset, image: n.data.image, serviceName: n.data.serviceName }));
   const recommendations = getRecommendations(
     node.data,
     existingNodes,
@@ -43,6 +43,7 @@ export function RecommendationList() {
               <span className="text-xs text-gray-500">{rec.reason}</span>
             </div>
             <button
+              data-testid={`rec-add-${rec.key}`}
               disabled={rec.alreadyExists}
               onClick={() => handleAdd(rec.key, idx)}
               className={`ml-2 shrink-0 rounded px-2 py-1 text-xs transition-colors ${
