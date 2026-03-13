@@ -1,6 +1,7 @@
 import { useStore } from '../../store';
 import type { PortMapping, VolumeMapping, HealthcheckConfig } from '../../store/types';
 import { ImageSearchInput } from './ImageSearchInput';
+import { RecommendationList } from './RecommendationList';
 
 export function ConfigPanel() {
   const selectedNodeId = useStore((s) => s.selectedNodeId);
@@ -197,6 +198,9 @@ export function ConfigPanel() {
           </div>
         )}
       </div>
+
+      {/* Recommendations */}
+      <RecommendationList />
     </div>
   );
 }

@@ -158,6 +158,9 @@ export interface AppStore {
 
   // Import
   importCompose: (result: ParseResult) => void;
+
+  // Recommendations
+  addRecommendedNode: (key: string, sourceNodeId: string, position: { x: number; y: number }) => void;
 }
 ```
 

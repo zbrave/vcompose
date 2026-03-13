@@ -13,6 +13,7 @@ import type {
   ValidationIssue,
 } from './types';
 import { PRESET_DEFAULTS } from './types';
+import { RECOMMENDATION_DEFAULTS } from '../data/recommendation-defaults';
 
 export const useStore = create<AppStore>()(
   persist(
@@ -140,6 +141,62 @@ export const useStore = create<AppStore>()(
       // Validation
       setValidationIssues: (issues: ValidationIssue[]) => {
         set({ validationIssues: issues });
+      },
+
+      // Recommendations
+      addRecommendedNode: (key: string, sourceNodeId: string, position: { x: number; y: number }) => {
+        const presetKeys = ['nginx', 'postgres', 'redis', 'node', 'custom'] as const;
+        const isPreset = (presetKeys as readonly string[]).includes(key);
+        const preset: PresetImageKey = isPreset ? (key as PresetImageKey) : 'custom';
+        const defaults = isPreset ? PRESET_DEFAULTS[key as PresetImageKey] : RECOMMENDATION_DEFAULTS[key];
+
+        const id = generateId();
+        const node = {
+          id,
+          type: 'serviceNode' as const,
+          position,
+          data: {
+            serviceName: `${key}-${id.slice(0, 4)}`,
+            image: defaults?.image ?? key,
+            preset,
+            ports: defaults?.ports ? [...defaults.ports] : [],
+            volumes: defaults?.volumes ? [...defaults.volumes] : [],
+            environment: defaults?.environment ? { ...defaults.environment } : {},
+            networks: [] as string[],
+          } satisfies ServiceNodeData,
+        };
+
+        set((state) => {
+          const newNodes = [...state.nodes, node];
+
+          // Auto-create default network if needed
+          let newNetworks = state.networks;
+          if (!state.networks.some((n) => n.name === 'default')) {
+            newNetworks = [...state.networks, { name: 'default', driver: 'bridge' }];
+          }
+
+          // Add both source and new node to default network
+          const updatedNodes = newNodes.map((n) => {
+            if ((n.id === sourceNodeId || n.id === id) && !n.data.networks.includes('default')) {
+              return { ...n, data: { ...n.data, networks: [...n.data.networks, 'default'] } };
+            }
+            return n;
+          });
+
+          const edgeId = generateId();
+          const newEdge: DependencyEdge = {
+            id: edgeId,
+            source: sourceNodeId,
+            target: id,
+            type: 'dependencyEdge',
+          };
+
+          return {
+            nodes: updatedNodes,
+            edges: [...state.edges, newEdge],
+            networks: newNetworks,
+          };
+        });
       },
 
       // Import
