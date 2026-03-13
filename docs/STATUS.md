@@ -3,7 +3,7 @@
 > Her Claude Code oturumunun sonunda güncelle.
 > Status: `⬜ Todo` · `🔄 In Progress` · `✅ Done` · `🚫 Blocked`
 
-Last updated: 2026-03-12
+Last updated: 2026-03-13
 
 ---
 
@@ -35,12 +35,13 @@ Last updated: 2026-03-12
 | Network Management UI (Phase 3) | ✅ Done | NetworkPanel, ConfigPanel checkboxes, updateNetwork, 3 E2E test |
 | Docker Hub Search (Phase 4) | ✅ Done | ImageSearchInput, dockerhub.ts, useDockerHubSearch hook, 4 unit test |
 | Undo/Redo UI (Phase 5) | ✅ Done | zundo temporal middleware, UndoRedoToolbar, Ctrl+Z/Y shortcuts |
+| Smart Recommendations (Phase 6) | ✅ Done | recommendation-engine, position-calculator, RecommendationList, addRecommendedNode |
 
 ---
 
 ## Mevcut Oturum Odağı
 
-Phase 5 (Undo/Redo UI) tamamlandi. 49 unit + 14 E2E test geçiyor. Tüm post-MVP phase'ler tamamlandi.
+Phase 6 (Smart Recommendations) tamamlandi. 61 unit + 17 E2E test geçiyor.
 
 ---
 
@@ -117,3 +118,15 @@ Phase 5 (Undo/Redo UI) tamamlandi. 49 unit + 14 E2E test geçiyor. Tüm post-MVP
 - `docs/specs/undo-redo.md` spec yazildi
 - **Toplam: 49 unit + 14 E2E test, tumü geçiyor**
 - **TÜM POST-MVP PHASE'LER TAMAMLANDI** ✅
+
+### Oturum 8 (2026-03-13)
+- Phase 6: Smart Recommendations implementasyonu
+- `docs/superpowers/specs/2026-03-12-smart-recommendations-design.md` spec yazildi
+- `src/lib/recommendation-engine.ts`: pure function, static graph'tan oneriler uretir
+- `src/lib/position-calculator.ts`: cakismasiz node pozisyonu hesaplar
+- `src/data/recommendation-graph.json`: 8 kaynak servis, ~15 oneri
+- `src/data/recommendation-defaults.ts`: non-preset image default konfigurasyonlari
+- `src/components/panel/RecommendationList.tsx`: ConfigPanel altinda oneri listesi
+- `addRecommendedNode` store action: tek tikla node + edge + network olusturur
+- 12 yeni unit test (recommendation-engine + position-calculator), 3 yeni E2E test
+- **Toplam: 61 unit + 17 E2E test**
