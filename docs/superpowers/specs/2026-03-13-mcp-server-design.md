@@ -208,7 +208,8 @@ packages/
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "yaml": "^2.0.0"
+    "yaml": "^2.0.0",
+    "zod": "^3.25.0"
   }
 }
 ```
@@ -267,24 +268,28 @@ Bu yaklasimla:
 `packages/mcp-server/src/index.ts`:
 
 ```typescript
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { z } from 'zod';
 
-const server = new Server({
+const server = new McpServer({
   name: 'docker-compose-mcp',
   version: '1.0.0',
-}, {
-  capabilities: { tools: {} },
 });
 
-// Register 4 tools
-server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: [generateComposeTool, validateComposeTool, parseComposeTool, getRecommendationsTool],
-}));
-
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  // Route to appropriate handler
+// Register 4 tools with zod input schemas
+server.registerTool('generate-compose', {
+  title: 'Generate Docker Compose',
+  description: '...',
+  inputSchema: z.object({
+    services: z.array(z.string()),
+    version: z.string().optional(),
+  }),
+}, async ({ services, version }) => {
+  // handler
 });
+
+// ... validate-compose, parse-compose, get-recommendations
 
 const transport = new StdioServerTransport();
 await server.connect(transport);
