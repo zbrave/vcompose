@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "declaration": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@vdc/lib/*": ["../../src/lib/*"],
+      "@vdc/store/*": ["../../src/store/*"],
+      "@vdc/data/*": ["../../src/data/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}

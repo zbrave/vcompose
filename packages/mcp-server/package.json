@@ -1,0 +1,26 @@
+{
+  "name": "docker-compose-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "MCP server for docker-compose.yml generation and analysis",
+  "bin": {
+    "docker-compose-mcp": "./bin/mcp-server.js"
+  },
+  "main": "dist/index.js",
+  "files": ["dist", "bin"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "dev": "node bin/mcp-server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "yaml": "^2.7.1",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "vitest": "^3.2.0",
+    "typescript": "^5.8.0"
+  }
+}
