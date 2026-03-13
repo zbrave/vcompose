@@ -3,7 +3,7 @@ import { defineConfig } from 'tsup';
 export default defineConfig({
   entry: ['src/index.ts'],
   format: ['esm'],
-  dts: true,
+  dts: false,
   clean: true,
   external: ['@modelcontextprotocol/sdk', 'yaml', 'zod'],
   alias: {
