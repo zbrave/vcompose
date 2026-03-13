@@ -72,7 +72,7 @@ Mevcut bir docker-compose.yml'i analiz eder, hatalari/uyarilari raporlar.
 **Output:** `{ valid: boolean, issues: ValidationIssue[], services: string[] }`
 
 **Mantik:**
-1. `parseCompose(yaml)` ile parse et
+1. `parseYaml(yaml)` ile parse et
 2. Parse basarisizsa → `{ valid: false, issues: parseErrors, services: [] }`
 3. Parse basariliysa → `validate({ nodes, edges })` calistir
 4. Sonucu dondur, `services` listesinde mevcut servis adlarini ekle
@@ -116,7 +116,7 @@ YAML'i yapisal bilgiye cevirir.
 ```
 
 **Mantik:**
-1. `parseCompose(yaml)` cagir
+1. `parseYaml(yaml)` cagir
 2. ParseResult'i human-readable formata cevir (ServiceNode → basit obje)
 3. Edge'lerden `dependsOn` listesi olustur
 
@@ -196,6 +196,7 @@ packages/
 {
   "name": "docker-compose-mcp",
   "version": "1.0.0",
+  "type": "module",
   "description": "MCP server for docker-compose.yml generation and analysis",
   "bin": {
     "docker-compose-mcp": "./bin/mcp-server.js"
@@ -214,18 +215,50 @@ packages/
 
 ### 2.3 Shared Code Stratejisi
 
-MCP server, mevcut pure function'lari relative import ile kullanir:
+MCP server, mevcut pure function'lari TypeScript path alias ile import eder. Build sirasinda `tsup` veya `esbuild` ile tek bir bundle'a derlenir — publish edilen pakette relative import sorunu olmaz.
 
+**Gelistirme sirasinda (source):**
 ```typescript
 // packages/mcp-server/src/tools/generate-compose.ts
-import { buildYaml } from '../../../src/lib/yaml-builder';
-import { validate } from '../../../src/lib/validator';
-import { PRESET_DEFAULTS } from '../../../src/store/types';
-import { RECOMMENDATION_DEFAULTS } from '../../../src/data/recommendation-defaults';
-import graph from '../../../src/data/recommendation-graph.json';
+import { buildYaml } from '@vdc/shared/yaml-builder';
+import { validate } from '@vdc/shared/validator';
+import { PRESET_DEFAULTS } from '@vdc/shared/types';
 ```
 
-tsconfig.json'da `paths` veya `references` ile bu import'lar cozulur.
+**tsconfig.json path alias:**
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@vdc/shared/*": ["../../src/lib/*", "../../src/store/*", "../../src/data/*"]
+    }
+  }
+}
+```
+
+**Build pipeline:**
+- `tsup` kullanilir (esbuild tabanli bundler)
+- Tum shared import'lar build sirasinda bundle'a inline edilir
+- Cikan `dist/index.js` tek dosya, harici dependency yok (yaml ve @modelcontextprotocol/sdk haric)
+- npm publish'te sadece `dist/` ve `bin/` dahil edilir
+
+**package.json scripts:**
+```json
+{
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0"
+  }
+}
+```
+
+Bu yaklasimla:
+- Gelistirmede: path alias ile temiz import
+- Build'de: tsup tum shared kodu bundle'a alir
+- Publish'te: tek dosya, bagimlilik sorunu yok
 
 ---
 
