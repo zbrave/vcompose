@@ -1,0 +1,64 @@
+{
+  "postgres": {
+    "recommends": ["pgadmin", "redis", "node", "adminer"],
+    "reasons": {
+      "pgadmin": "Database yonetim arayuzu",
+      "redis": "Cache katmani",
+      "node": "Backend uygulama sunucusu",
+      "adminer": "Hafif database yonetim araci"
+    }
+  },
+  "nginx": {
+    "recommends": ["node", "postgres", "certbot"],
+    "reasons": {
+      "node": "Reverse proxy arkasinda uygulama sunucusu",
+      "postgres": "Veritabani katmani",
+      "certbot": "SSL sertifika otomasyonu"
+    }
+  },
+  "redis": {
+    "recommends": ["node", "postgres", "redis-commander"],
+    "reasons": {
+      "node": "Cache kullanan uygulama sunucusu",
+      "postgres": "Kalici veri katmani",
+      "redis-commander": "Redis yonetim arayuzu"
+    }
+  },
+  "node": {
+    "recommends": ["postgres", "redis", "nginx", "mongo"],
+    "reasons": {
+      "postgres": "Iliskisel veritabani",
+      "redis": "Cache ve session store",
+      "nginx": "Reverse proxy / load balancer",
+      "mongo": "NoSQL veritabani"
+    }
+  },
+  "custom": {
+    "recommends": [],
+    "reasons": {}
+  },
+  "mongo": {
+    "recommends": ["mongo-express", "node", "redis"],
+    "reasons": {
+      "mongo-express": "MongoDB yonetim arayuzu",
+      "node": "Backend uygulama sunucusu",
+      "redis": "Cache katmani"
+    }
+  },
+  "rabbitmq": {
+    "recommends": ["node", "postgres", "redis"],
+    "reasons": {
+      "node": "Message consumer uygulama",
+      "postgres": "Kalici veri katmani",
+      "redis": "Cache katmani"
+    }
+  },
+  "elasticsearch": {
+    "recommends": ["kibana", "logstash", "node"],
+    "reasons": {
+      "kibana": "Elasticsearch gorsellesstirme arayuzu",
+      "logstash": "Log toplama ve issleme",
+      "node": "Arama entegrasyonlu uygulama"
+    }
+  }
+}
