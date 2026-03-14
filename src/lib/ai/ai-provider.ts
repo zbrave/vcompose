@@ -35,9 +35,9 @@ function createProviderModel(config: AIConfig) {
     case 'glm': {
       const glm = createOpenAI({
         apiKey: config.apiKey,
-        baseURL: config.baseUrl ?? 'https://open.bigmodel.cn/api/paas/v4/',
+        baseURL: config.baseUrl ?? 'https://api.z.ai/api/paas/v4/',
       });
-      return glm(config.model);
+      return glm.chat(config.model);
     }
     default:
       throw new Error(`Unknown provider: ${config.provider}`);
