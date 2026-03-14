@@ -23,7 +23,6 @@ function createProviderModel(config: AIConfig) {
       const openai = createOpenAI({
         apiKey: config.apiKey,
         ...(config.baseUrl && { baseURL: config.baseUrl }),
-        compatibility: 'strict',
       });
       return openai(config.model);
     }
@@ -37,7 +36,6 @@ function createProviderModel(config: AIConfig) {
       const glm = createOpenAI({
         apiKey: config.apiKey,
         baseURL: config.baseUrl ?? 'https://open.bigmodel.cn/api/paas/v4/',
-        compatibility: 'compatible',
       });
       return glm(config.model);
     }

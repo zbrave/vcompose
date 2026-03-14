@@ -4,8 +4,7 @@ import { useStore } from './store';
 import { validate } from './lib/validator';
 import { LandingPage } from './components/LandingPage';
 import { HeaderBar } from './components/HeaderBar';
-import { NodePalette } from './components/sidebar/NodePalette';
-import { NetworkPanel } from './components/sidebar/NetworkPanel';
+import { SidebarTabs } from './components/sidebar/SidebarTabs';
 import { FlowCanvas } from './components/canvas/FlowCanvas';
 import { ConfigPanel } from './components/panel/ConfigPanel';
 import { YamlOutput } from './components/output/YamlOutput';
@@ -51,15 +50,9 @@ function App() {
       <div className="flex h-screen w-screen flex-col">
         <HeaderBar />
         <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar - Node Palette */}
+        {/* Sidebar - Node Palette + AI */}
         <aside className="w-60 border-r border-gray-800 bg-gray-900 p-4">
-          <h2 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-400">
-            Services
-          </h2>
-          <NodePalette />
-          <div className="mt-6 border-t border-gray-800 pt-4">
-            <NetworkPanel />
-          </div>
+          <SidebarTabs />
         </aside>
 
         {/* Canvas */}
