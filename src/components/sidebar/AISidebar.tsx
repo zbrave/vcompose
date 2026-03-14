@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useAIStore } from '../../store/ai-store';
 import { useStore } from '../../store';
 import { generateCompose, optimizeCompose } from '../../lib/ai/ai-provider';
@@ -14,25 +14,20 @@ const PROVIDERS: { key: AIProviderKey; label: string }[] = [
   { key: 'glm', label: 'GLM (z.ai)' },
 ];
 
+const SKIP_GENERATE_CONFIRM_KEY = 'vdc-skip-generate-confirm';
+
 export function AISidebar() {
   const { config, isLoading, error, setProvider, setApiKey, setModel, setBaseUrl, setLoading, setError } = useAIStore();
   const { nodes, edges, networks, namedVolumes, importCompose } = useStore();
   const [prompt, setPrompt] = useState('');
   const [showKey, setShowKey] = useState(false);
   const [customModel, setCustomModel] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [dontAskAgain, setDontAskAgain] = useState(false);
 
   const canOptimize = nodes.length > 0;
 
-  async function handleGenerate() {
-    if (!config.apiKey) {
-      setError('Please enter an API key');
-      return;
-    }
-    if (!prompt.trim()) {
-      setError('Please enter a prompt');
-      return;
-    }
-
+  const doGenerate = useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -50,6 +45,25 @@ export function AISidebar() {
     }
 
     setLoading(false);
+  }, [prompt, config, setLoading, setError, importCompose]);
+
+  async function handleGenerate() {
+    if (!config.apiKey) {
+      setError('Please enter an API key');
+      return;
+    }
+    if (!prompt.trim()) {
+      setError('Please enter a prompt');
+      return;
+    }
+
+    // If canvas has services, confirm before replacing
+    if (nodes.length > 0 && localStorage.getItem(SKIP_GENERATE_CONFIRM_KEY) !== 'true') {
+      setShowConfirm(true);
+      return;
+    }
+
+    await doGenerate();
   }
 
   async function handleOptimize() {
@@ -162,15 +176,15 @@ export function AISidebar() {
         )}
       </div>
 
-      {/* Base URL (for GLM or custom model) */}
-      {(config.provider === 'glm' || customModel) && (
+      {/* Base URL (only for custom model override) */}
+      {customModel && (
         <div>
           <label className="mb-1 block text-xs text-gray-400">Base URL</label>
           <input
             type="text"
             value={config.baseUrl ?? ''}
             onChange={(e) => setBaseUrl(e.target.value)}
-            placeholder="https://api.z.ai/api/coding/paas/v4/"
+            placeholder="Custom API base URL"
             className="w-full rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white placeholder-gray-500"
             disabled={isLoading}
           />
@@ -221,6 +235,44 @@ export function AISidebar() {
       {error && (
         <div className="rounded border border-red-800 bg-red-900/30 px-3 py-2 text-xs text-red-400">
           {error}
+        </div>
+      )}
+
+      {/* Generate confirmation dialog */}
+      {showConfirm && (
+        <div className="rounded border border-yellow-700 bg-yellow-900/30 p-3">
+          <p className="mb-3 text-xs text-yellow-300">
+            This will replace the current canvas with a new setup. Are you sure?
+          </p>
+          <label className="mb-3 flex items-center gap-2 text-xs text-gray-400">
+            <input
+              type="checkbox"
+              checked={dontAskAgain}
+              onChange={(e) => setDontAskAgain(e.target.checked)}
+              className="rounded border-gray-600"
+            />
+            Don't ask again
+          </label>
+          <div className="flex gap-2">
+            <button
+              onClick={async () => {
+                if (dontAskAgain) {
+                  localStorage.setItem(SKIP_GENERATE_CONFIRM_KEY, 'true');
+                }
+                setShowConfirm(false);
+                await doGenerate();
+              }}
+              className="flex-1 rounded bg-purple-600 px-2 py-1.5 text-xs font-medium text-white hover:bg-purple-700"
+            >
+              Yes, replace
+            </button>
+            <button
+              onClick={() => setShowConfirm(false)}
+              className="flex-1 rounded border border-gray-700 px-2 py-1.5 text-xs text-gray-400 hover:text-white"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -54,11 +54,23 @@ export function FlowCanvas() {
         if (change.type === 'remove') {
           removeNode(change.id);
         } else if (change.type === 'position' && change.position) {
-          useStore.setState((state) => ({
-            nodes: state.nodes.map((n) =>
-              n.id === change.id ? { ...n, position: change.position! } : n,
-            ),
-          }));
+          if (change.dragging) {
+            // Pause temporal during drag to avoid per-pixel undo entries
+            useStore.temporal.getState().pause();
+            useStore.setState((state) => ({
+              nodes: state.nodes.map((n) =>
+                n.id === change.id ? { ...n, position: change.position! } : n,
+              ),
+            }));
+          } else {
+            // Drag ended — resume temporal and commit final position
+            useStore.temporal.getState().resume();
+            useStore.setState((state) => ({
+              nodes: state.nodes.map((n) =>
+                n.id === change.id ? { ...n, position: change.position! } : n,
+              ),
+            }));
+          }
         } else if (change.type === 'select') {
           if (change.selected) {
             selectNode(change.id);
