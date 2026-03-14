@@ -5,6 +5,7 @@ import { handleGenerateCompose } from './tools/generate-compose.js';
 import { handleValidateCompose } from './tools/validate-compose.js';
 import { handleParseCompose } from './tools/parse-compose.js';
 import { handleGetRecommendations } from './tools/get-recommendations.js';
+import { handleAIGenerateCompose } from './tools/ai-generate-compose.js';
 
 const server = new McpServer({
   name: 'docker-compose-mcp',
@@ -77,6 +78,36 @@ server.registerTool(
   async ({ service, existing }) => {
     const result = await handleGetRecommendations({ service, existing });
     return { content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+// Tool 5: ai-generate-compose
+server.registerTool(
+  'ai-generate-compose',
+  {
+    title: 'AI Generate Docker Compose',
+    description: 'Use AI (LLM) to generate or optimize a docker-compose.yml. Requires user API key for the chosen provider.',
+    inputSchema: {
+      prompt: z.string().describe('Natural language description'),
+      provider: z.enum(['anthropic', 'openai', 'gemini', 'glm']).describe('LLM provider'),
+      apiKey: z.string().describe('API key for the provider'),
+      model: z.string().optional().describe('Model name (uses provider default if omitted)'),
+      baseUrl: z.string().optional().describe('Custom base URL (required for GLM)'),
+      mode: z.enum(['generate', 'optimize']).optional().describe('generate (default) or optimize existing YAML'),
+      yaml: z.string().optional().describe('Existing YAML to optimize (required for optimize mode)'),
+    },
+  },
+  async ({ prompt, provider, apiKey, model, baseUrl, mode, yaml }) => {
+    const result = await handleAIGenerateCompose({ prompt, provider, apiKey, model, baseUrl, mode, yaml });
+    if (result.error) {
+      return {
+        content: [{ type: 'text' as const, text: result.error }],
+        isError: true,
+      };
+    }
+    return {
+      content: [{ type: 'text' as const, text: JSON.stringify(result, null, 2) }],
+    };
   },
 );
 
