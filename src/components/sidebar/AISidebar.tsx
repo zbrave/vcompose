@@ -170,7 +170,7 @@ export function AISidebar() {
             type="text"
             value={config.baseUrl ?? ''}
             onChange={(e) => setBaseUrl(e.target.value)}
-            placeholder="https://api.z.ai/api/paas/v4/"
+            placeholder="https://api.z.ai/api/coding/paas/v4/"
             className="w-full rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white placeholder-gray-500"
             disabled={isLoading}
           />

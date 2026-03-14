@@ -35,7 +35,7 @@ function createProviderModel(config: AIConfig) {
     case 'glm': {
       const glm = createOpenAI({
         apiKey: config.apiKey,
-        baseURL: config.baseUrl ?? 'https://api.z.ai/api/paas/v4/',
+        baseURL: config.baseUrl ?? 'https://api.z.ai/api/coding/paas/v4/',
       });
       return glm.chat(config.model);
     }
