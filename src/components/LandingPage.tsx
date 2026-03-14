@@ -152,6 +152,37 @@ const FEATURES = [
     title: 'Validation',
     desc: 'Real-time warnings for missing images, port conflicts, and misconfigured services.',
   },
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z" />
+      </svg>
+    ),
+    title: 'AI Generation',
+    desc: 'Describe your stack in plain English — AI generates the entire docker-compose.yml. Supports OpenAI, Anthropic, Gemini, and GLM.',
+  },
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="4 17 10 11 4 5" />
+        <line x1="12" y1="19" x2="20" y2="19" />
+      </svg>
+    ),
+    title: 'IDE Integration',
+    desc: 'Use VCompose directly from Claude, Cursor, or any MCP-compatible AI coding tool.',
+  },
+  {
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
+        <path d="M12 6v6l4 2" />
+        <circle cx="12" cy="2" r="2" fill="currentColor" />
+        <path d="M9 18c0-1.5 1.5-3 3-3s3 1.5 3 3" />
+      </svg>
+    ),
+    title: 'Smart Recommendations',
+    desc: 'Add postgres and get pgadmin suggested automatically. One click to add companion services.',
+  },
 ];
 
 interface LandingPageProps {

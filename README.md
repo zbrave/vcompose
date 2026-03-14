@@ -18,6 +18,9 @@
 - **Copy & download** — One-click copy to clipboard or download as `.yml`
 - **Undo / Redo** — Full undo/redo support with keyboard shortcuts (Ctrl+Z / Ctrl+Y)
 - **Persistent** — Your work is saved in localStorage automatically
+- **AI generation** — Describe your setup in natural language and let AI generate the compose file (supports OpenAI, Anthropic, Gemini, GLM)
+- **IDE integration** — Use as an MCP server with Claude, Cursor, or any MCP-compatible AI tool
+- **Smart recommendations** — Get companion service suggestions (e.g., pgadmin for postgres) with one-click add
 
 ## Quick Start
 
@@ -46,6 +49,7 @@ Open `http://localhost:5173`.
 | State | Zustand |
 | Styling | Tailwind CSS |
 | YAML | `yaml` npm package |
+| AI | Vercel AI SDK | 4 LLM providers |
 | Testing | Vitest + Playwright |
 
 ## How It Works
