@@ -218,6 +218,8 @@ export const useStore = create<AppStore>()(
         networks: state.networks,
         namedVolumes: state.namedVolumes,
       }),
+      equality: (pastState, currentState) =>
+        JSON.stringify(pastState) === JSON.stringify(currentState),
     },
     ),
     {

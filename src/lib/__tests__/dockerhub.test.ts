@@ -77,36 +77,14 @@ describe('searchRemote', () => {
 });
 
 describe('searchImages', () => {
-  it('returns remote results when available', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(mockResponse),
-    }));
-
-    const results = await searchImages('nginx');
-    expect(results).toHaveLength(2);
-    expect(results[0].description).toBe('Official build of Nginx.');
-  });
-
-  it('falls back to local results on CORS/network error', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('CORS')));
+  it('returns local results (remote disabled due to CORS)', async () => {
     const results = await searchImages('nginx');
     expect(results.length).toBeGreaterThan(0);
     expect(results[0].name).toBe('nginx');
   });
 
-  it('passes abort signal to fetch', async () => {
-    const fetchMock = vi.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve({ results: [] }),
-    });
-    vi.stubGlobal('fetch', fetchMock);
-
-    const controller = new AbortController();
-    await searchImages('test', controller.signal);
-    expect(fetchMock).toHaveBeenCalledWith(
-      expect.stringContaining('query=test'),
-      { signal: controller.signal },
-    );
+  it('returns empty for no match', async () => {
+    const results = await searchImages('zzzznonexistent');
+    expect(results).toEqual([]);
   });
 });

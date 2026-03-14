@@ -86,10 +86,9 @@ export async function searchRemote(
 
 export async function searchImages(
   query: string,
-  signal?: AbortSignal,
+  _signal?: AbortSignal,
 ): Promise<DockerHubResult[]> {
-  const local = searchLocal(query);
-  const remote = await searchRemote(query, signal);
-  if (remote.length > 0) return remote;
-  return local;
+  // Remote Docker Hub API doesn't support CORS from browsers.
+  // Use local catalog which covers the most popular images.
+  return searchLocal(query);
 }
