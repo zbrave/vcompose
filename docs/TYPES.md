@@ -122,6 +122,39 @@ export interface ParseResult {
 
 ---
 
+## AI Types
+
+```typescript
+export type AIProviderKey = 'anthropic' | 'openai' | 'gemini' | 'glm';
+
+export interface AIConfig {
+  provider: AIProviderKey;
+  apiKey: string;
+  model: string;
+  baseUrl?: string;
+}
+
+export interface AIGenerateResult {
+  success: boolean;
+  yaml: string;
+  error?: string;
+}
+
+export interface AIStore {
+  config: AIConfig;
+  isLoading: boolean;
+  error: string | null;
+  setProvider: (provider: AIProviderKey) => void;
+  setApiKey: (key: string) => void;
+  setModel: (model: string) => void;
+  setBaseUrl: (url: string) => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+}
+```
+
+---
+
 ## Zustand Store
 
 ```typescript

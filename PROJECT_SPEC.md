@@ -45,6 +45,7 @@ Fully client-side, browser-based visual builder for `docker-compose.yml` files. 
 | Lint | ESLint + @typescript-eslint | eslint-plugin-react-hooks dahil |
 | Format | Prettier | Tailwind plugin dahil |
 | Deploy | Docker multi-stage + Nginx | Coolify-ready |
+| AI SDK | Vercel AI SDK (`ai`) | 4 provider: Anthropic, OpenAI, Gemini, GLM |
 
 ---
 
@@ -171,6 +172,7 @@ Ana tipler: `ServiceNode`, `DependencyEdge`, `NetworkConfig`, `NamedVolume`, `Va
 | 2 | Phase 3 | Network Management UI | `docs/specs/network-management.md` |
 | 3 | Phase 4 | Docker Hub Search | `docs/specs/dockerhub-search.md` |
 | 4 | Phase 5 | Undo/Redo UI | `docs/specs/undo-redo.md` |
+| 5 | Phase 8 | AI-Powered Generation | `docs/superpowers/specs/2026-03-14-ai-generation-design.md` |
 
 ---
 

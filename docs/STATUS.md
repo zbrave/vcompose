@@ -3,7 +3,7 @@
 > Her Claude Code oturumunun sonunda güncelle.
 > Status: `⬜ Todo` · `🔄 In Progress` · `✅ Done` · `🚫 Blocked`
 
-Last updated: 2026-03-13
+Last updated: 2026-03-14
 
 ---
 
@@ -37,12 +37,13 @@ Last updated: 2026-03-13
 | Undo/Redo UI (Phase 5) | ✅ Done | zundo temporal middleware, UndoRedoToolbar, Ctrl+Z/Y shortcuts |
 | Smart Recommendations (Phase 6) | ✅ Done | recommendation-engine, position-calculator, RecommendationList, addRecommendedNode |
 | MCP Server (Phase 7) | ✅ Done | 4 tools: generate-compose, validate-compose, parse-compose, get-recommendations. stdio transport, tsup bundle |
+| AI-Powered Generation (Phase 8) | ✅ Done | Vercel AI SDK, 4 providers (Anthropic/OpenAI/Gemini/GLM), sidebar AI tab, MCP ai-generate-compose tool |
 
 ---
 
 ## Mevcut Oturum Odağı
 
-Phase 7 (MCP Server) tamamlandi. 61 unit + 11 MCP unit + 17 E2E test geçiyor.
+Phase 8 (AI-Powered Generation) tamamlandi. 71 unit + 14 MCP unit + 17 E2E test geçiyor.
 
 ---
 
@@ -142,3 +143,17 @@ Phase 7 (MCP Server) tamamlandi. 61 unit + 11 MCP unit + 17 E2E test geçiyor.
 - 11 yeni MCP unit test (7 generate + 4 validate)
 - vite.config.ts: packages/** exclude eklendi
 - **Toplam: 61 unit + 11 MCP unit + 17 E2E test**
+
+### Oturum 10 (2026-03-14)
+- Phase 8: AI-Powered Generation implementasyonu
+- `docs/superpowers/specs/2026-03-14-ai-generation-design.md` spec yazildi
+- `src/lib/ai/ai-types.ts`: AIProviderKey, AIConfig, AIGenerateResult, DEFAULT_MODELS
+- `src/lib/ai/yaml-extractor.ts`: LLM response'dan YAML extraction
+- `src/lib/ai/prompt-templates.ts`: generate/optimize system prompt sablonlari
+- `src/lib/ai/ai-provider.ts`: Vercel AI SDK ile 4 provider destegi (Anthropic, OpenAI, Gemini, GLM)
+- `src/store/ai-store.ts`: ayri Zustand store, persist middleware, localStorage
+- `src/components/sidebar/SidebarTabs.tsx`: Services | AI tab degistirme
+- `src/components/sidebar/AISidebar.tsx`: provider/key/model/prompt UI, generate/optimize butonlari
+- `packages/mcp-server/src/tools/ai-generate-compose.ts`: MCP tool handler
+- 10 yeni unit test (5 yaml-extractor + 5 ai-provider), 3 yeni MCP unit test
+- **Toplam: 71 unit + 14 MCP unit + 17 E2E test**
