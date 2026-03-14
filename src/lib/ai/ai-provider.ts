@@ -44,7 +44,7 @@ function createProviderModel(config: AIConfig) {
   }
 }
 
-function isCorsError(error: unknown): boolean {
+function isNetworkError(error: unknown): boolean {
   return error instanceof TypeError && String(error.message).toLowerCase().includes('fetch');
 }
 
@@ -72,11 +72,11 @@ async function callLLM(
       clearTimeout(timeout);
     }
   } catch (error: unknown) {
-    if (isCorsError(error)) {
+    if (isNetworkError(error)) {
       return {
         success: false,
         yaml: '',
-        error: 'This provider may not work directly from the browser. Try using it via the MCP server instead.',
+        error: 'Network error — request failed. Please check your connection and try again.',
       };
     }
     if (error instanceof Error && error.name === 'AbortError') {
