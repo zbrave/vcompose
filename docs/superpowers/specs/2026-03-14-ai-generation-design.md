@@ -14,7 +14,7 @@ Visual Docker Compose Builder'a AI-powered generation eklenir. Kullanicilar doga
 
 | Provider | SDK Paketi | Default Model | Not |
 |---|---|---|---|
-| Anthropic | `@ai-sdk/anthropic` | `claude-sonnet-4-6-20250627` | Browser'da CORS sorunu olabilir, `dangerouslyAllowBrowser: true` |
+| Anthropic | `@ai-sdk/anthropic` | `claude-sonnet-4-5` | Browser'da CORS sorunu olabilir, `dangerouslyAllowBrowser: true` |
 | OpenAI | `@ai-sdk/openai` | `gpt-4.1` | Browser'dan calismasi beklenir |
 | Gemini | `@ai-sdk/google` | `gemini-2.5-flash` | Browser'dan calismasi beklenir |
 | GLM (z.ai) | `@ai-sdk/openai` | `glm-4-plus` | OpenAI-compatible endpoint, custom baseUrl zorunlu |
@@ -42,7 +42,7 @@ const DEFAULT_AI_CONFIG: AIConfig = {
 
 // Provider basan default modeller:
 const DEFAULT_MODELS: Record<AIProviderKey, string> = {
-  anthropic: 'claude-sonnet-4-6-20250627',
+  anthropic: 'claude-sonnet-4-5',
   openai: 'gpt-4.1',
   gemini: 'gemini-2.5-flash',
   glm: 'glm-4-plus',
