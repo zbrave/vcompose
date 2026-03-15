@@ -1,0 +1,123 @@
+<h2>Sidebar Konsepti: Hangi yapı daha iyi?</h2>
+<p class="subtitle">Mevcut basit preset listesi yerine nasıl bir sidebar yapısı olmalı?</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Tab-Based: Stacks | Marketplace | AI</h3>
+      <p>3 ana tab. <strong>Stacks</strong> = hazır kombinasyonlar (Home Assistant stack, LEMP stack vb.), <strong>Marketplace</strong> = Docker Hub aramalı tek servisler, <strong>AI</strong> = mevcut AI generation. Her tab kendi scroll alanı.</p>
+      <div class="mockup" style="margin-top:12px">
+        <div class="mockup-header">Sidebar Preview</div>
+        <div class="mockup-body" style="padding:0">
+          <div style="display:flex;border-bottom:1px solid #444;font-size:13px">
+            <div style="flex:1;padding:8px 4px;text-align:center;border-bottom:2px solid #3b82f6;color:#3b82f6">Stacks</div>
+            <div style="flex:1;padding:8px 4px;text-align:center;color:#888">Marketplace</div>
+            <div style="flex:1;padding:8px 4px;text-align:center;color:#888">AI</div>
+          </div>
+          <div style="padding:12px;font-size:12px">
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:10px;margin-bottom:8px">
+              <div style="font-weight:600;color:#e2e8f0">🏠 Smart Home</div>
+              <div style="color:#94a3b8;font-size:11px;margin-top:2px">HA + MQTT + Zigbee2MQTT + Grafana</div>
+              <div style="color:#64748b;font-size:10px;margin-top:4px">5 servis &middot; Tek tıkla kur</div>
+            </div>
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:10px;margin-bottom:8px">
+              <div style="font-weight:600;color:#e2e8f0">🌐 LEMP Stack</div>
+              <div style="color:#94a3b8;font-size:11px;margin-top:2px">Nginx + PHP-FPM + MySQL + Redis</div>
+              <div style="color:#64748b;font-size:10px;margin-top:4px">4 servis &middot; Tek tıkla kur</div>
+            </div>
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:10px">
+              <div style="font-weight:600;color:#e2e8f0">📊 Monitoring</div>
+              <div style="color:#94a3b8;font-size:11px;margin-top:2px">Prometheus + Grafana + Loki + cAdvisor</div>
+              <div style="color:#64748b;font-size:10px;margin-top:4px">4 servis &middot; Tek tıkla kur</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Unified: Arama + Kategoriler</h3>
+      <p>Tek bir arama çubuğu + filtrelenebilir kategoriler. Stacks ve tekil servisler aynı listede, "Stack" badge ile ayrışır. AI butonu üstte sabit. Daha az tab, daha fazla keşif.</p>
+      <div class="mockup" style="margin-top:12px">
+        <div class="mockup-header">Sidebar Preview</div>
+        <div class="mockup-body" style="padding:0">
+          <div style="padding:10px 12px;border-bottom:1px solid #444">
+            <div style="background:#1e293b;border:1px solid #475569;border-radius:6px;padding:8px 10px;font-size:12px;color:#94a3b8;display:flex;align-items:center;gap:6px">
+              <span>🔍</span> Search services or stacks...
+            </div>
+          </div>
+          <div style="padding:8px 12px;display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid #333">
+            <span style="background:#3b82f6;color:white;padding:2px 8px;border-radius:10px;font-size:10px">All</span>
+            <span style="background:#1e293b;color:#94a3b8;padding:2px 8px;border-radius:10px;font-size:10px">Stacks</span>
+            <span style="background:#1e293b;color:#94a3b8;padding:2px 8px;border-radius:10px;font-size:10px">Database</span>
+            <span style="background:#1e293b;color:#94a3b8;padding:2px 8px;border-radius:10px;font-size:10px">Web</span>
+            <span style="background:#1e293b;color:#94a3b8;padding:2px 8px;border-radius:10px;font-size:10px">Cache</span>
+          </div>
+          <div style="padding:12px;font-size:12px">
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
+              <div style="background:#8b5cf6;color:white;font-size:9px;padding:2px 6px;border-radius:4px;white-space:nowrap">STACK</div>
+              <div>
+                <div style="font-weight:600;color:#e2e8f0">🏠 Smart Home</div>
+                <div style="color:#64748b;font-size:10px">5 servis</div>
+              </div>
+            </div>
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px">
+              <div style="width:28px;height:28px;background:#334155;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px">🐘</div>
+              <div>
+                <div style="font-weight:600;color:#e2e8f0">PostgreSQL</div>
+                <div style="color:#64748b;font-size:10px">1B+ pulls &middot; Database</div>
+              </div>
+            </div>
+            <div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:10px;display:flex;align-items:center;gap:10px">
+              <div style="width:28px;height:28px;background:#334155;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px">🔴</div>
+              <div>
+                <div style="font-weight:600;color:#e2e8f0">Redis</div>
+                <div style="color:#64748b;font-size:10px">1B+ pulls &middot; Cache</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Hybrid: Collapsible Sections</h3>
+      <p>Tab yok. Accordion/collapsible sections: <strong>Quick Add</strong> (mevcut 5 preset), <strong>Stacks</strong> (combined presetler), <strong>Docker Hub</strong> (arama), <strong>AI Generate</strong>. Her section açılıp kapanır. Tek sayfa, tüm erişim.</p>
+      <div class="mockup" style="margin-top:12px">
+        <div class="mockup-header">Sidebar Preview</div>
+        <div class="mockup-body" style="padding:0">
+          <div style="padding:10px 12px;border-bottom:1px solid #444;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+            <span style="font-weight:600;color:#e2e8f0;font-size:13px">⚡ Quick Add</span>
+            <span style="color:#64748b;font-size:11px">▼</span>
+          </div>
+          <div style="padding:8px 12px;display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid #333">
+            <div style="background:#1e293b;border:1px solid #475569;border-radius:6px;padding:6px 10px;font-size:11px;color:#e2e8f0;cursor:grab">nginx</div>
+            <div style="background:#1e293b;border:1px solid #475569;border-radius:6px;padding:6px 10px;font-size:11px;color:#e2e8f0;cursor:grab">postgres</div>
+            <div style="background:#1e293b;border:1px solid #475569;border-radius:6px;padding:6px 10px;font-size:11px;color:#e2e8f0;cursor:grab">redis</div>
+            <div style="background:#1e293b;border:1px solid #475569;border-radius:6px;padding:6px 10px;font-size:11px;color:#e2e8f0;cursor:grab">node</div>
+            <div style="background:#1e293b;border:1px solid #475569;border-radius:6px;padding:6px 10px;font-size:11px;color:#e2e8f0;cursor:grab">custom</div>
+          </div>
+          <div style="padding:10px 12px;border-bottom:1px solid #444;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:#0f172a">
+            <span style="font-weight:600;color:#e2e8f0;font-size:13px">📦 Stacks</span>
+            <span style="color:#64748b;font-size:11px">▶</span>
+          </div>
+          <div style="padding:10px 12px;border-bottom:1px solid #444;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+            <span style="font-weight:600;color:#e2e8f0;font-size:13px">🐳 Docker Hub</span>
+            <span style="color:#64748b;font-size:11px">▶</span>
+          </div>
+          <div style="padding:10px 12px;border-bottom:1px solid #444;display:flex;justify-content:space-between;align-items:center;cursor:pointer">
+            <span style="font-weight:600;color:#e2e8f0;font-size:13px">🤖 AI Generate</span>
+            <span style="color:#64748b;font-size:11px">▶</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
