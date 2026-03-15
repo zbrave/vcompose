@@ -292,8 +292,6 @@ export const useStore = create<AppStore>()(
         const layout = calculateStackLayout(stack, {
           startX: dropPosition.x,
           startY: dropPosition.y,
-          nodeWidth: 180,
-          nodeHeight: 80,
           gapX: 220,
           gapY: 150,
         });

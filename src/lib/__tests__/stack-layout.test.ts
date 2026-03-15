@@ -19,8 +19,6 @@ const mockStack: StackDefinition = {
 const defaultConfig = {
   startX: 100,
   startY: 100,
-  nodeWidth: 180,
-  nodeHeight: 80,
   gapX: 220,
   gapY: 150,
 };

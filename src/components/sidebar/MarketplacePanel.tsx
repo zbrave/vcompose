@@ -58,7 +58,10 @@ export function MarketplacePanel() {
     if (result.registryMatch) {
       e.dataTransfer.setData('application/vdc-service', result.registryMatch.key);
     } else {
-      e.dataTransfer.setData('application/vdc-hub-image', JSON.stringify({ slug: result.slug, image: result.name }));
+      e.dataTransfer.setData('application/vdc-hub-image', JSON.stringify({
+        name: result.name, slug: result.slug, description: result.description,
+        starCount: result.starCount, pullCount: result.pullCount, isOfficial: result.isOfficial,
+      }));
     }
     e.dataTransfer.effectAllowed = 'move';
   }, []);

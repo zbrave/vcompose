@@ -42,7 +42,7 @@ export async function searchDockerHub(
   signal?: AbortSignal,
 ): Promise<DockerHubSearchResult[]> {
   try {
-    const url = `${PROXY_URL}/v2/search/repositories/?query=${encodeURIComponent(query)}&page_size=10`;
+    const url = `${PROXY_URL}/search?q=${encodeURIComponent(query)}&page_size=10`;
     const timeoutSignal = AbortSignal.timeout(5000);
     const combinedSignal = signal
       ? AbortSignal.any([signal, timeoutSignal])

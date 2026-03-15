@@ -39,6 +39,7 @@ export function useDockerHubSearch(query: string) {
 
     return () => {
       clearTimeout(timer);
+      abortRef.current?.abort();
     };
   }, [query]);
 

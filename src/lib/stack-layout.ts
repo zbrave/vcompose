@@ -3,8 +3,6 @@ import type { StackDefinition } from '../data/types';
 export interface LayoutConfig {
   startX: number;
   startY: number;
-  nodeWidth: number;
-  nodeHeight: number;
   gapX: number;
   gapY: number;
 }
