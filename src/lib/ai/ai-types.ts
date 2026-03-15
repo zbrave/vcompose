@@ -16,7 +16,7 @@ export interface AIGenerateResult {
 export const DEFAULT_MODELS: Record<AIProviderKey, string> = {
   anthropic: 'claude-sonnet-4-5',
   openai: 'gpt-4.1',
-  gemini: 'gemini-2.5-flash',
+  gemini: 'gemini-flash-latest',
   glm: 'glm-4.7',
 };
 
