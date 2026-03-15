@@ -1,4 +1,5 @@
 // Canonical type definitions — kept in sync with docs/TYPES.md
+import type { DockerHubSearchResult } from '../data/types';
 
 export interface PortMapping {
   host: string;
@@ -108,6 +109,11 @@ export interface AppStore {
 
   // Recommendations
   addRecommendedNode: (key: string, sourceNodeId: string, position: { x: number; y: number }) => void;
+
+  // Stack & Marketplace actions
+  addStack: (stackKey: string, dropPosition: { x: number; y: number }) => void;
+  addServiceFromRegistry: (serviceKey: string, position: { x: number; y: number }) => void;
+  addServiceFromHub: (hubResult: DockerHubSearchResult, position: { x: number; y: number }) => void;
 }
 
 export const PRESET_DEFAULTS: Record<PresetImageKey, Partial<ServiceNodeData>> = {
