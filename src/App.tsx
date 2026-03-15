@@ -50,27 +50,27 @@ function App() {
       <div className="flex h-screen w-screen flex-col">
         <HeaderBar />
         <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar - Node Palette + AI */}
-        <aside className="w-72 border-r border-gray-800 bg-gray-900 p-4">
-          <SidebarTabs />
-        </aside>
+          {/* Sidebar - Node Palette + AI */}
+          <aside className="w-80 border-r border-gray-800 bg-gray-900 p-4">
+            <SidebarTabs />
+          </aside>
 
-        {/* Canvas */}
-        <main className="flex-1">
-          <FlowCanvas />
-        </main>
+          {/* Canvas */}
+          <main className="flex-1">
+            <FlowCanvas />
+          </main>
 
-        {/* Right Panel - Config + YAML Output */}
-        <aside className="flex w-80 flex-col border-l border-gray-800 bg-gray-900">
-          {selectedNodeId ? (
-            <ConfigPanel />
-          ) : (
-            <div className="flex flex-1 items-center justify-center text-sm text-gray-600">
-              Select a service to configure
-            </div>
-          )}
-          <YamlOutput />
-        </aside>
+          {/* Right Panel - Config + YAML Output */}
+          <aside className="flex w-80 flex-col border-l border-gray-800 bg-gray-900">
+            {selectedNodeId ? (
+              <ConfigPanel />
+            ) : (
+              <div className="flex flex-1 items-center justify-center text-sm text-gray-600">
+                Select a service to configure
+              </div>
+            )}
+            <YamlOutput />
+          </aside>
         </div>
       </div>
     </ReactFlowProvider>
