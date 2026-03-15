@@ -7,7 +7,7 @@ export function SidebarTabs() {
   const [activeTab, setActiveTab] = useState<'services' | 'ai'>('services');
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col overflow-x-hidden">
       <div className="mb-4 flex border-b border-gray-700">
         <button
           className={`flex-1 px-3 py-2 text-sm font-medium transition-colors ${

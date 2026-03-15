@@ -97,7 +97,7 @@ export function AISidebar() {
   }
 
   return (
-    <div className="flex flex-col gap-4 overflow-y-auto">
+    <div className="flex flex-col gap-4 overflow-x-hidden overflow-y-auto">
       <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
         AI Generation
       </h2>
