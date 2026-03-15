@@ -37,12 +37,6 @@ export interface ServiceDefinition {
   healthcheck?: HealthcheckConfig;
   dockerHubSlug?: string;   // 'library/redis' — Hub API'den pull count vb. için
 }
-```
-
-**Preset Mapping:** Her `ServiceDefinition` bir `preset` alanı taşır. 5 orijinal preset
-(`nginx`, `postgres`, `redis`, `node`, `custom`) kendi key'lerine eşlenir. Diğer tüm servisler
-`preset: 'custom'` değerini alır. Bu, `ServiceNodeData.preset` gereksinimini karşılar ve
-mevcut YAML builder / validator uyumluluğunu korur.
 
 export type ServiceCategory =
   | 'database' | 'cache' | 'web-server' | 'runtime'
@@ -50,6 +44,16 @@ export type ServiceCategory =
   | 'security' | 'media' | 'iot' | 'ai' | 'devops'
   | 'productivity' | 'other';
 ```
+
+**Preset Mapping:** Her `ServiceDefinition` bir `preset` alanı taşır. 5 orijinal preset
+(`nginx`, `postgres`, `redis`, `node`, `custom`) kendi key'lerine eşlenir. Diğer tüm servisler
+`preset: 'custom'` değerini alır. Bu, `ServiceNodeData.preset` gereksinimini karşılar ve
+mevcut YAML builder / validator uyumluluğunu korur.
+
+**Tüm data-layer type'ları `src/data/types.ts`'de tanımlanır** — `ServiceDefinition`, `ServiceCategory`,
+`StackDefinition`, `StackServiceRef`, `StackEdgeRef`, `DockerHubSearchResult`, `CategoryDef`.
+`src/lib/` ve `src/store/` bu type'ları `src/data/types.ts`'den import eder.
+`src/data/` dizini PROJECT_SPEC.md Section 3.3'e eklenir.
 
 Mevcut `PRESET_DEFAULTS` ve `RECOMMENDATION_DEFAULTS` bu registry'ye migrate edilir.
 
@@ -71,6 +75,7 @@ export interface StackDefinition {
 export interface StackServiceRef {
   serviceKey: string;       // service-registry'den key
   overrides?: Partial<Pick<ServiceDefinition, 'ports' | 'volumes' | 'environment' | 'healthcheck' | 'image'>>;
+  // Not: image override preset atamasını etkilemez — preset her zaman ServiceDefinition.preset'ten okunur
   gridPosition: { col: number; row: number }; // layout engine için
 }
 
@@ -180,9 +185,10 @@ Arama stratejisi:
 3. **Merge** — Local tanımlı servisler üstte (zengin defaults), Hub sonuçları altta (temel bilgi)
 
 ```typescript
+// DockerHubSearchResult → src/data/types.ts'de tanımlı (bkz. Section 2.1)
 export interface DockerHubSearchResult {
   name: string;           // 'library/redis'
-  slug: string;           // 'redis'
+  slug: string;           // 'redis' (registryMatch varsa key, yoksa image adından türetilir)
   description: string;
   starCount: number;
   pullCount: number;
@@ -310,6 +316,25 @@ addStack: (stackKey: string, dropPosition: { x: number; y: number }) => void;
 addServiceFromRegistry: (serviceKey: string, position: { x: number; y: number }) => void;
 
 // Docker Hub'dan tekil servis ekleme (temel + varsa registry match)
+addServiceFromHub: (hubResult: DockerHubSearchResult, position: { x: number; y: number }) => void;
+```
+
+**`addServiceFromHub` detayı (Hub-only, registryMatch yok):**
+- `preset: 'custom'`
+- `image: hubResult.name` (örn. `library/redis` → `redis`)
+- `serviceName: ${slug}-${id.slice(0, 4)}`
+- Boş `ports`, `volumes`, `environment` — kullanıcı ConfigPanel'den doldurur
+- `registryMatch` varsa: registry'deki zengin defaults uygulanır (ports, env, healthcheck vb.)
+
+**`DockerHubSearchResult.slug` fallback:** `dockerHubSlug` tanımlı ise kullanılır,
+yoksa `key` değeri slug olarak kullanılır.
+
+Bu 3 action `docs/TYPES.md` AppStore bölümüne ve `src/store/types.ts`'e eklenir:
+
+```typescript
+// AppStore'a eklenecek action'lar
+addStack: (stackKey: string, dropPosition: { x: number; y: number }) => void;
+addServiceFromRegistry: (serviceKey: string, position: { x: number; y: number }) => void;
 addServiceFromHub: (hubResult: DockerHubSearchResult, position: { x: number; y: number }) => void;
 ```
 
@@ -446,7 +471,28 @@ Yeni data-layer type'ları `src/data/types.ts` dosyasında tanımlanır (store t
 
 ---
 
-## 10. Araştırma Kaynakları
+## 10. Non-Goals
+
+- Kullanıcı tarafından custom stack oluşturma (gelecekte eklenebilir)
+- Community stack import/export
+- Docker Hub image tag listesi çekme (sadece search)
+
+## 11. PROJECT_SPEC.md Güncellemeleri
+
+Phase 9 aşağıdaki satır ile Section 8 (Post-MVP) tablosuna eklenir:
+
+```
+| 6 | Phase 9 | Enhanced Sidebar (Stacks + Marketplace) | `docs/superpowers/specs/2026-03-15-enhanced-sidebar-design.md` |
+```
+
+Section 3.3 dosya yapısına `src/data/` dizini eklenir:
+
+```
+src/
+  data/           # Static data: service registry, stack catalog, categories
+```
+
+## 12. Araştırma Kaynakları
 
 - [Docker Awesome Compose](https://github.com/docker/awesome-compose) — 290+ örnek
 - [Haxxnet/Compose-Examples](https://github.com/Haxxnet/Compose-Examples) — 30+ kategori
