@@ -34,6 +34,9 @@ export function FlowCanvas() {
   const removeEdge = useStore((s) => s.removeEdge);
   const selectNode = useStore((s) => s.selectNode);
   const selectedNodeId = useStore((s) => s.selectedNodeId);
+  const addStack = useStore((s) => s.addStack);
+  const addServiceFromRegistry = useStore((s) => s.addServiceFromRegistry);
+  const addServiceFromHub = useStore((s) => s.addServiceFromHub);
   const { screenToFlowPosition } = useReactFlow();
 
   // Cast to React Flow types, inject selected state
@@ -121,14 +124,40 @@ export function FlowCanvas() {
   const onDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
-      const preset = e.dataTransfer.getData('application/vdc-preset') as PresetImageKey;
-      if (!preset) return;
-
       const flowPos = screenToFlowPosition({ x: e.clientX, y: e.clientY });
       const position = { x: flowPos.x - 80, y: flowPos.y - 40 };
-      addNode(preset, position);
+
+      // Legacy preset (backward compat)
+      const preset = e.dataTransfer.getData('application/vdc-preset');
+      if (preset) {
+        addNode(preset as PresetImageKey, position);
+        return;
+      }
+
+      // Stack
+      const stackKey = e.dataTransfer.getData('application/vdc-stack');
+      if (stackKey) {
+        addStack(stackKey, position);
+        return;
+      }
+
+      // Registry service
+      const serviceKey = e.dataTransfer.getData('application/vdc-service');
+      if (serviceKey) {
+        addServiceFromRegistry(serviceKey, position);
+        return;
+      }
+
+      // Docker Hub image
+      const hubData = e.dataTransfer.getData('application/vdc-hub-image');
+      if (hubData) {
+        try {
+          const hubResult = JSON.parse(hubData);
+          addServiceFromHub(hubResult, position);
+        } catch { /* ignore invalid data */ }
+      }
     },
-    [addNode, screenToFlowPosition],
+    [addNode, addStack, addServiceFromRegistry, addServiceFromHub, screenToFlowPosition],
   );
 
   // Keyboard shortcuts for undo/redo
