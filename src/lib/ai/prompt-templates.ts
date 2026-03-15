@@ -8,9 +8,10 @@ export const GENERATE_SYSTEM_PROMPT = `You are a senior DevOps engineer and Dock
 - Use 2-space indentation
 
 ### Images
-- Always use specific, current stable image tags (e.g. postgres:17-alpine, redis:7-alpine, node:22-alpine)
+- Always use specific, current stable image tags (e.g. postgres:17-alpine, redis:7-alpine, node:22-slim)
 - Never use :latest — pin to the newest stable minor or major version
-- Prefer -alpine variants when available for smaller image size
+- Prefer -alpine for databases, caches, and infrastructure services (postgres, redis, nginx, etc.)
+- Use -slim images for application runtimes (node, python, ruby, etc.) to avoid native dependency build issues with alpine
 
 ### Networking & Dependencies
 - Define depends_on with service_healthy condition when a healthcheck exists on the dependency
@@ -18,10 +19,12 @@ export const GENERATE_SYSTEM_PROMPT = `You are a senior DevOps engineer and Dock
 - Use a dedicated bridge network instead of relying on the default network
 
 ### Environment & Security
-- Add all required environment variables for each service to function out of the box
+- Prefer env_file: - .env over inline environment variables for secrets and credentials
+- For non-secret config (ports, feature flags), inline environment is acceptable
 - Use placeholder values that are clearly marked (e.g. changeme, your_password_here)
 - Never hardcode real secrets — use clear placeholders
 - Set restart: unless-stopped on all services
+- Use non-root users where the image supports it (e.g. user: "1000:1000", user: node, user: postgres)
 
 ### Healthchecks
 - Add healthchecks for databases and critical services:
@@ -59,7 +62,7 @@ export const OPTIMIZE_SYSTEM_PROMPT = `You are a senior DevOps engineer reviewin
 - Preserve the user's service names and overall structure unless a rename is specifically requested
 
 ### What to improve
-- Upgrade image tags to the latest stable versions (prefer -alpine variants)
+- Upgrade image tags to the latest stable versions (alpine for infra, slim for app runtimes)
 - Add missing healthchecks for databases and critical infrastructure services
 - Upgrade depends_on to use condition: service_healthy where healthchecks exist
 - Add restart: unless-stopped if missing
@@ -69,6 +72,14 @@ export const OPTIMIZE_SYSTEM_PROMPT = `You are a senior DevOps engineer reviewin
 - Fix port conflicts (duplicate host ports)
 - Add logging driver config (json-file with max-size/max-file) if missing
 - Add resource limits for large stacks (4+ services)
+- Replace deprecated Compose directives (links, volumes_from, etc.) with modern equivalents (networks, named volumes)
+- Migrate inline secrets to env_file: - .env where appropriate
+- Add non-root user directives where the image supports it
+
+### YAML Safety
+- Properly quote healthcheck commands that contain special characters or shell pipes
+- Use the array form ["CMD", ...] for healthcheck test commands to avoid shell escaping issues
+- Ensure all string values with colons, special chars, or leading/trailing spaces are quoted
 
 ### What to preserve
 - Do not remove services, volumes, networks, or environment variables the user explicitly defined
