@@ -36,7 +36,7 @@ Fully client-side, browser-based visual builder for `docker-compose.yml` files. 
 |---|---|---|
 | Framework | React (Vite) | TypeScript strict mode |
 | Styling | Tailwind CSS | Dark mode default |
-| UI Components | 21st.dev MCP | Önce fetch et, sıfırdan yapma |
+| UI Components | 21st.dev Magic MCP | Önce fetch et, sıfırdan yapma |
 | Canvas | React Flow v11+ | Custom node ve edge'ler |
 | State | Zustand | Tek store, Context API yok |
 | YAML | `yaml` npm paketi | Generation + import için |
@@ -90,7 +90,7 @@ docs/
 - Bu yapı dışına çıkmadan önce spec güncelle.
 - Business logic React component içine girmesin — `lib/` veya store.
 - `store/types.ts` ve `docs/TYPES.md` her zaman senkron olmalı.
-- Yeni UI component yapmadan önce 21st.dev MCP'yi kontrol et.
+- Yeni UI component yapmadan önce 21st.dev Magic MCP'yi kontrol et.
 
 ### 3.4 Scope Disiplini
 
@@ -215,6 +215,6 @@ Coolify: Dockerfile modu, port 80. Environment variable gerekmez.
 
 | MCP | Kullanım |
 |---|---|
-| 21st.dev MCP | Button, panel, input, modal, tab — önce buraya bak |
+| 21st.dev Magic MCP | Button, panel, input, modal, tab — önce buraya bak |
 | Search/Fetch MCP | React Flow docs; Docker Hub (Phase 4) |
 | Docker MCP | Opsiyonel — geliştirme sırasında YAML validasyonu |

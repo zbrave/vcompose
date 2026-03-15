@@ -68,4 +68,4 @@ Preset seçildikten sonra panel açıldığında alanlar `docs/TYPES.md`'deki `P
 - Her değişiklik anında store'a yansır (controlled inputs).
 - "Save" butonu yoktur — auto-save.
 - Panel içinde scroll desteklenir (uzun formlar için).
-- 21st.dev MCP'den: input, label, toggle, icon-button component'ları kullanılır.
+- 21st.dev Magic MCP'den: input, label, toggle, icon-button component'ları kullanılır.

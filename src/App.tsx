@@ -51,7 +51,7 @@ function App() {
         <HeaderBar />
         <div className="flex flex-1 overflow-hidden">
         {/* Sidebar - Node Palette + AI */}
-        <aside className="w-60 border-r border-gray-800 bg-gray-900 p-4">
+        <aside className="w-72 border-r border-gray-800 bg-gray-900 p-4">
           <SidebarTabs />
         </aside>
 

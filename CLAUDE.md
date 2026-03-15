@@ -41,7 +41,7 @@
 - No new dependency without checking PROJECT_SPEC.md section 2
 - No feature outside MVP scope (section 5) or Post-MVP (section 8)
 - `store/types.ts` and `docs/TYPES.md` must always be in sync
-- Check 21st.dev MCP before building custom UI components
+- Check 21st.dev Magic MCP before building custom UI components
 - Spec-driven: write/update spec before coding new features
 
 ## Imports

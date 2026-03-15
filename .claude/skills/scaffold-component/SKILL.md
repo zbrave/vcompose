@@ -8,7 +8,7 @@ allowed-tools: Read, Write, Bash(npx prettier *)
 
 Create a new React component named `$ARGUMENTS`:
 
-1. Check 21st.dev MCP for an existing component matching this name
+1. Check 21st.dev Magic MCP for an existing component matching this name
 2. If found, use it. If not, create from scratch
 3. Create file at `src/components/<category>/$ARGUMENTS.tsx`
 4. Use TypeScript with proper Props interface
