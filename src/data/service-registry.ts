@@ -1,4 +1,9 @@
+import type { PresetImageKey } from '../store/types';
 import type { ServiceDefinition } from './types';
+
+export function getPresetFromRegistry(preset: PresetImageKey): ServiceDefinition | undefined {
+  return SERVICE_REGISTRY.find(s => s.key === preset);
+}
 
 export const SERVICE_REGISTRY: ServiceDefinition[] = [
   // ─── Original Presets ───────────────────────────────────────────────────────
@@ -51,7 +56,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     key: 'custom',
     name: 'Custom',
     description: 'Custom Docker image',
-    image: 'alpine:latest',
+    image: '',
     preset: 'custom',
     category: 'other',
     ports: [],

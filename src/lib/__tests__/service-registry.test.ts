@@ -11,7 +11,10 @@ describe('service-registry', () => {
     for (const svc of SERVICE_REGISTRY) {
       expect(svc.key).toBeTruthy();
       expect(svc.name).toBeTruthy();
-      expect(svc.image).toBeTruthy();
+      // custom preset has empty image by design (user fills in)
+      if (svc.key !== 'custom') {
+        expect(svc.image).toBeTruthy();
+      }
       expect(svc.category).toBeTruthy();
       expect(svc.preset).toBeTruthy();
       expect(Array.isArray(svc.ports)).toBe(true);
