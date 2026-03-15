@@ -56,7 +56,7 @@ describe('generateCompose', () => {
 
     const result = await generateCompose('test', baseConfig);
     expect(result.success).toBe(false);
-    expect(result.error).toContain('browser');
+    expect(result.error).toContain('Network error');
   });
 
   it('handles timeout errors', async () => {
