@@ -209,14 +209,14 @@ export function AISidebar() {
         >
           {isLoading ? 'Generating...' : 'Generate'}
         </button>
+        {canOptimize && (
         <button
           onClick={handleOptimize}
-          disabled={isLoading || !canOptimize}
-          className="flex-1 rounded bg-blue-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
-          title={!canOptimize ? 'Add services to canvas first' : ''}
+          disabled={isLoading}
         >
           {isLoading ? 'Optimizing...' : 'Optimize'}
         </button>
+        )}
       </div>
 
       {/* Loading spinner */}
