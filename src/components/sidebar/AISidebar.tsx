@@ -5,7 +5,7 @@ import { generateCompose, optimizeCompose } from '../../lib/ai/ai-provider';
 import { parseYaml } from '../../lib/yaml-parser';
 import { buildYaml } from '../../lib/yaml-builder';
 import type { AIProviderKey } from '../../lib/ai/ai-types';
-import { DEFAULT_MODELS } from '../../lib/ai/ai-types';
+import { PROVIDER_MODELS } from '../../lib/ai/ai-types';
 
 const PROVIDERS: { key: AIProviderKey; label: string }[] = [
   { key: 'openai', label: 'OpenAI' },
@@ -107,7 +107,7 @@ export function AISidebar() {
         <label className="mb-1 block text-xs text-gray-400">Provider</label>
         <select
           value={config.provider}
-          onChange={(e) => setProvider(e.target.value as AIProviderKey)}
+          onChange={(e) => { setProvider(e.target.value as AIProviderKey); setCustomModel(false); }}
           className="w-full rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white"
           disabled={isLoading}
         >
@@ -142,37 +142,33 @@ export function AISidebar() {
       {/* Model */}
       <div>
         <label className="mb-1 block text-xs text-gray-400">Model</label>
-        {customModel ? (
-          <div className="flex gap-1">
-            <input
-              type="text"
-              value={config.model}
-              onChange={(e) => setModel(e.target.value)}
-              placeholder="model-name"
-              className="min-w-0 flex-1 rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white placeholder-gray-500"
-              disabled={isLoading}
-            />
-            <button
-              onClick={() => { setCustomModel(false); setModel(DEFAULT_MODELS[config.provider]); }}
-              className="shrink-0 rounded border border-gray-700 px-2 py-1.5 text-xs text-gray-400 hover:text-white"
-              type="button"
-            >
-              Default
-            </button>
-          </div>
-        ) : (
-          <div className="flex gap-1">
-            <span className="flex-1 rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white">
-              {DEFAULT_MODELS[config.provider]}
-            </span>
-            <button
-              onClick={() => setCustomModel(true)}
-              className="shrink-0 rounded border border-gray-700 px-2 py-1.5 text-xs text-gray-400 hover:text-white"
-              type="button"
-            >
-              Custom
-            </button>
-          </div>
+        <select
+          value={customModel ? '__custom__' : config.model}
+          onChange={(e) => {
+            if (e.target.value === '__custom__') {
+              setCustomModel(true);
+            } else {
+              setCustomModel(false);
+              setModel(e.target.value);
+            }
+          }}
+          className="w-full rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white"
+          disabled={isLoading}
+        >
+          {PROVIDER_MODELS[config.provider].map((m) => (
+            <option key={m.id} value={m.id}>{m.label}</option>
+          ))}
+          <option value="__custom__">Custom...</option>
+        </select>
+        {customModel && (
+          <input
+            type="text"
+            value={config.model}
+            onChange={(e) => setModel(e.target.value)}
+            placeholder="model-id"
+            className="mt-1 w-full rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white placeholder-gray-500"
+            disabled={isLoading}
+          />
         )}
       </div>
 
