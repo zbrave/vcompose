@@ -15,10 +15,10 @@ export interface AIGenerateResult {
 
 export const PROVIDER_MODELS: Record<AIProviderKey, { id: string; label: string }[]> = {
   openai: [
-    { id: 'gpt-5.2', label: 'GPT-5.2' },
-    { id: 'gpt-5.2-pro', label: 'GPT-5.2 Pro' },
+    { id: 'gpt-5.4', label: 'GPT-5.4' },
+    { id: 'gpt-5.4-pro', label: 'GPT-5.4 Pro' },
     { id: 'gpt-5-mini', label: 'GPT-5 Mini' },
-    { id: 'gpt-4o', label: 'GPT-4o' },
+    { id: 'gpt-5-nano', label: 'GPT-5 Nano' },
   ],
   anthropic: [
     { id: 'claude-opus-4-6', label: 'Claude Opus 4.6' },
