@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { searchImages, type DockerHubResult } from '../lib/dockerhub';
+import { searchDockerHub } from '../lib/dockerhub';
+import type { DockerHubSearchResult } from '../data/types';
 
 export function useDockerHubSearch(query: string) {
-  const [results, setResults] = useState<DockerHubResult[]>([]);
+  const [results, setResults] = useState<DockerHubSearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     if (query.length < 2) {
       setResults([]);
+      setError(false);
       return;
     }
 
@@ -18,10 +21,19 @@ export function useDockerHubSearch(query: string) {
       abortRef.current = controller;
 
       setIsLoading(true);
-      const res = await searchImages(query, controller.signal);
-      if (!controller.signal.aborted) {
-        setResults(res);
-        setIsLoading(false);
+      setError(false);
+      try {
+        const res = await searchDockerHub(query, controller.signal);
+        if (!controller.signal.aborted) {
+          setResults(res);
+          setIsLoading(false);
+        }
+      } catch {
+        if (!controller.signal.aborted) {
+          setResults([]);
+          setError(true);
+          setIsLoading(false);
+        }
       }
     }, 300);
 
@@ -30,5 +42,5 @@ export function useDockerHubSearch(query: string) {
     };
   }, [query]);
 
-  return { results, isLoading };
+  return { results, isLoading, error };
 }
