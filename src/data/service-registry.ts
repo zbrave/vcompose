@@ -410,7 +410,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     category: 'monitoring',
     ports: [{ host: '8080', container: '8080' }],
     volumes: [
-      { source: '//', target: '/rootfs' },
+      { source: '/', target: '/rootfs' },
       { source: '/var/run', target: '/var/run' },
       { source: '/sys', target: '/sys' },
       { source: '/var/lib/docker', target: '/var/lib/docker' },

@@ -18,8 +18,8 @@ export default {
       return jsonResponse({ error: 'Missing query parameter' }, 400);
     }
 
-    const page = url.searchParams.get('page') || '1';
-    const pageSize = url.searchParams.get('page_size') || '25';
+    const page = Math.max(1, Math.min(100, parseInt(url.searchParams.get('page') || '1', 10) || 1));
+    const pageSize = Math.max(1, Math.min(100, parseInt(url.searchParams.get('page_size') || '25', 10) || 25));
 
     try {
       const hubUrl = `https://hub.docker.com/v2/search/repositories/?query=${encodeURIComponent(q)}&page=${page}&page_size=${pageSize}`;

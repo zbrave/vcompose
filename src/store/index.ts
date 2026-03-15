@@ -18,7 +18,28 @@ import { PRESET_DEFAULTS } from './types';
 import { SERVICE_REGISTRY } from '../data/service-registry';
 import { STACK_CATALOG } from '../data/stack-catalog';
 import { calculateStackLayout } from '../lib/stack-layout';
-import type { DockerHubSearchResult } from '../data/types';
+import type { DockerHubSearchResult, ServiceDefinition } from '../data/types';
+
+function buildServiceNode(
+  serviceDef: ServiceDefinition,
+  position: { x: number; y: number },
+) {
+  const id = generateId();
+  return {
+    id,
+    type: 'serviceNode' as const,
+    position,
+    data: {
+      serviceName: `${serviceDef.key}-${id.slice(0, 4)}`,
+      image: serviceDef.image,
+      preset: serviceDef.preset,
+      ports: serviceDef.ports ? [...serviceDef.ports] : [],
+      volumes: serviceDef.volumes ? [...serviceDef.volumes] : [],
+      environment: serviceDef.environment ? { ...serviceDef.environment } : {},
+      networks: [] as string[],
+    } satisfies ServiceNodeData,
+  };
+}
 
 export const useStore = create<AppStore>()(
   persist(
@@ -225,44 +246,13 @@ export const useStore = create<AppStore>()(
       addServiceFromRegistry: (serviceKey: string, position: { x: number; y: number }) => {
         const serviceDef = SERVICE_REGISTRY.find((s) => s.key === serviceKey);
         if (!serviceDef) return;
-
-        const id = generateId();
-        const node = {
-          id,
-          type: 'serviceNode' as const,
-          position,
-          data: {
-            serviceName: `${serviceKey}-${id.slice(0, 4)}`,
-            image: serviceDef.image,
-            preset: serviceDef.preset,
-            ports: serviceDef.ports ? [...serviceDef.ports] : [],
-            volumes: serviceDef.volumes ? [...serviceDef.volumes] : [],
-            environment: serviceDef.environment ? { ...serviceDef.environment } : {},
-            networks: [] as string[],
-          } satisfies ServiceNodeData,
-        };
+        const node = buildServiceNode(serviceDef, position);
         set((state) => ({ nodes: [...state.nodes, node] }));
       },
 
       addServiceFromHub: (hubResult: DockerHubSearchResult, position: { x: number; y: number }) => {
         if (hubResult.registryMatch) {
-          // Delegate to registry-based creation
-          const serviceDef = hubResult.registryMatch;
-          const id = generateId();
-          const node = {
-            id,
-            type: 'serviceNode' as const,
-            position,
-            data: {
-              serviceName: `${serviceDef.key}-${id.slice(0, 4)}`,
-              image: serviceDef.image,
-              preset: serviceDef.preset,
-              ports: serviceDef.ports ? [...serviceDef.ports] : [],
-              volumes: serviceDef.volumes ? [...serviceDef.volumes] : [],
-              environment: serviceDef.environment ? { ...serviceDef.environment } : {},
-              networks: [] as string[],
-            } satisfies ServiceNodeData,
-          };
+          const node = buildServiceNode(hubResult.registryMatch, position);
           set((state) => ({ nodes: [...state.nodes, node] }));
         } else {
           // Create minimal custom node from Docker Hub result

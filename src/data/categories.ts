@@ -14,7 +14,7 @@ export const CATEGORIES: CategoryDef[] = [
   { key: 'media', label: 'Media', icon: '🎬' },
   { key: 'iot', label: 'IoT', icon: '📡' },
   { key: 'ai', label: 'AI', icon: '🤖' },
-  { key: 'devops', label: 'DevOps', icon: '🔧' },
+  { key: 'devops', label: 'DevOps', icon: '🚀' },
   { key: 'productivity', label: 'Productivity', icon: '📝' },
   { key: 'other', label: 'Other', icon: '📦' },
 ];

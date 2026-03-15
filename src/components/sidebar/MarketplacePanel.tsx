@@ -32,14 +32,20 @@ export function MarketplacePanel() {
 
   // Merge: local first, then hub results not in local
   const displayResults = useMemo(() => {
-    const localSlugs = new Set(localResults.map(s => s.key));
+    const localSlugs = new Set<string>();
+    for (const s of localResults) {
+      localSlugs.add(s.key);
+      if (s.dockerHubSlug) {
+        localSlugs.add(s.dockerHubSlug.replace(/^library\//, ''));
+      }
+    }
     const localAsHub: DockerHubSearchResult[] = localResults.map(s => ({
       name: s.image,
       slug: s.dockerHubSlug || s.key,
       description: s.description,
       starCount: 0,
       pullCount: 0,
-      isOfficial: true,
+      isOfficial: s.dockerHubSlug?.startsWith('library/') ?? false,
       registryMatch: s,
     }));
     const remoteOnly = hubResults.filter(r => !localSlugs.has(r.slug));
