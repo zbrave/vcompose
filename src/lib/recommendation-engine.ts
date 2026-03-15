@@ -1,7 +1,7 @@
 import type { ServiceNodeData, PresetImageKey } from '../store/types';
 import { PRESET_DEFAULTS } from '../store/types';
 import type { Recommendation, RecommendationGraph } from './recommendation-types';
-import { RECOMMENDATION_DEFAULTS } from '../data/recommendation-defaults';
+import { SERVICE_REGISTRY } from '../data/service-registry';
 
 const PRESET_KEYS: Set<string> = new Set(['nginx', 'postgres', 'redis', 'node', 'custom']);
 const MAX_RECOMMENDATIONS = 5;
@@ -25,7 +25,8 @@ function resolveImage(key: string): string {
   if (PRESET_KEYS.has(key) && PRESET_DEFAULTS[key as PresetImageKey]?.image) {
     return PRESET_DEFAULTS[key as PresetImageKey].image ?? '';
   }
-  return RECOMMENDATION_DEFAULTS[key]?.image ?? key;
+  const registryEntry = SERVICE_REGISTRY.find(s => s.key === key);
+  return registryEntry?.image ?? key;
 }
 
 /**
