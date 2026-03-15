@@ -38,12 +38,30 @@ Last updated: 2026-03-14
 | Smart Recommendations (Phase 6) | ✅ Done | recommendation-engine, position-calculator, RecommendationList, addRecommendedNode |
 | MCP Server (Phase 7) | ✅ Done | 4 tools: generate-compose, validate-compose, parse-compose, get-recommendations. stdio transport, tsup bundle |
 | AI-Powered Generation (Phase 8) | ✅ Done | Vercel AI SDK, 4 providers (Anthropic/OpenAI/Gemini/GLM), sidebar AI tab, MCP ai-generate-compose tool |
+| Enhanced Sidebar (Phase 9) | ✅ Done | 111 services, 16 stacks, 15 categories, Marketplace + Stacks tabs, Cloudflare Worker proxy |
+
+---
+
+## Phase 9: Enhanced Sidebar (Stacks + Marketplace)
+- [x] Data layer types (ServiceDefinition, StackDefinition, etc.)
+- [x] Service registry (111 services)
+- [x] Stack catalog (16 stacks)
+- [x] Category definitions
+- [x] Stack layout engine
+- [x] Docker Hub search refactor
+- [x] Store actions (addStack, addServiceFromRegistry, addServiceFromHub)
+- [x] Recommendation engine migration
+- [x] UI components (ServiceCard, StackCard, CategoryChips, StacksPanel, MarketplacePanel)
+- [x] SidebarTabs refactor (3 tabs)
+- [x] FlowCanvas drop handler (4 MIME types)
+- [x] Cloudflare Worker proxy
+- [x] E2E tests
 
 ---
 
 ## Mevcut Oturum Odağı
 
-Phase 8 (AI-Powered Generation) tamamlandi. 71 unit + 14 MCP unit + 17 E2E test geçiyor.
+Phase 9 (Enhanced Sidebar) tamamlandi. 71 unit + 14 MCP unit + 17 E2E test geçiyor.
 
 ---
 

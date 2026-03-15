@@ -66,6 +66,7 @@ Fully client-side, browser-based visual builder for `docker-compose.yml` files. 
 
 ```
 src/
+  data/           # Static data: service registry, stack catalog, categories
   components/
     canvas/       # React Flow canvas, custom node/edge bileşenleri
     sidebar/      # Node palette
@@ -173,6 +174,7 @@ Ana tipler: `ServiceNode`, `DependencyEdge`, `NetworkConfig`, `NamedVolume`, `Va
 | 3 | Phase 4 | Docker Hub Search | `docs/specs/dockerhub-search.md` |
 | 4 | Phase 5 | Undo/Redo UI | `docs/specs/undo-redo.md` |
 | 5 | Phase 8 | AI-Powered Generation | `docs/superpowers/specs/2026-03-14-ai-generation-design.md` |
+| 6 | Phase 9 | Enhanced Sidebar (Stacks + Marketplace) | `docs/superpowers/specs/2026-03-15-enhanced-sidebar-design.md` |
 
 ---
 
