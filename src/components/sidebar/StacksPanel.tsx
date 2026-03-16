@@ -2,7 +2,6 @@
 import { useState, useCallback } from 'react';
 import { STACK_CATALOG } from '../../data/stack-catalog';
 import { StackCard } from './StackCard';
-import { NetworkPanel } from './NetworkPanel';
 import { useStore } from '../../store';
 
 export function StacksPanel() {
@@ -29,14 +28,14 @@ export function StacksPanel() {
   }, []);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-surface">
       <div className="p-3">
         <input
           type="text"
           placeholder="Search stacks..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+          className="w-full bg-elevated border border-subtle rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:border-accent focus:outline-none"
         />
       </div>
       <div className="flex-1 overflow-y-auto px-3 space-y-2">
@@ -49,11 +48,8 @@ export function StacksPanel() {
           />
         ))}
         {filtered.length === 0 && (
-          <p className="text-xs text-gray-500 text-center py-4">No stacks found</p>
+          <p className="text-xs text-text-muted text-center py-4">No stacks found</p>
         )}
-      </div>
-      <div className="border-t border-gray-700 mt-2">
-        <NetworkPanel />
       </div>
     </div>
   );

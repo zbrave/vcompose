@@ -73,25 +73,25 @@ export function MarketplacePanel() {
   }, []);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-surface">
       <div className="p-3">
         <input
           type="text"
           placeholder="Search Docker Hub..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-gray-200 placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+          className="w-full bg-elevated border border-subtle rounded-lg px-3 py-2 text-sm text-text-primary placeholder-text-muted focus:border-accent focus:outline-none"
         />
       </div>
       <CategoryChips selected={category} onChange={setCategory} />
       <div className="flex-1 overflow-y-auto px-3 space-y-2">
         {hubError && (
-          <div className="bg-blue-900/30 border border-blue-700 rounded-lg px-3 py-2 text-xs text-blue-300">
+          <div className="bg-accent/10 border border-accent/30 rounded-lg px-3 py-2 text-xs text-accent">
             Docker Hub search unavailable — showing local results only
           </div>
         )}
         {isLoading && (
-          <p className="text-xs text-gray-500 text-center py-2">Searching...</p>
+          <p className="text-xs text-text-muted text-center py-2">Searching...</p>
         )}
         {displayResults.map(result => (
           <ServiceCard
@@ -102,7 +102,7 @@ export function MarketplacePanel() {
           />
         ))}
         {!isLoading && displayResults.length === 0 && (
-          <p className="text-xs text-gray-500 text-center py-4">No services found</p>
+          <p className="text-xs text-text-muted text-center py-4">No services found</p>
         )}
       </div>
     </div>

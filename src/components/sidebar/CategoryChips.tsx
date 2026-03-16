@@ -12,10 +12,10 @@ export function CategoryChips({ selected, onChange }: CategoryChipsProps) {
     <div className="flex flex-wrap gap-1.5 px-3 py-2">
       <button
         onClick={() => onChange(null)}
-        className={`text-[10px] px-2 py-0.5 rounded-full transition-colors ${
+        className={`text-[10px] px-2 py-0.5 rounded-full transition-colors border ${
           selected === null
-            ? 'bg-blue-600 text-white'
-            : 'bg-gray-800 text-gray-400 hover:text-gray-200'
+            ? 'bg-accent/20 text-accent border-accent/30'
+            : 'bg-elevated text-text-secondary border-subtle hover:border-accent/20'
         }`}
       >
         All
@@ -24,10 +24,10 @@ export function CategoryChips({ selected, onChange }: CategoryChipsProps) {
         <button
           key={cat.key}
           onClick={() => onChange(selected === cat.key ? null : cat.key)}
-          className={`text-[10px] px-2 py-0.5 rounded-full transition-colors ${
+          className={`text-[10px] px-2 py-0.5 rounded-full transition-colors border ${
             selected === cat.key
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-800 text-gray-400 hover:text-gray-200'
+              ? 'bg-accent/20 text-accent border-accent/30'
+              : 'bg-elevated text-text-secondary border-subtle hover:border-accent/20'
           }`}
         >
           {cat.icon} {cat.label}
