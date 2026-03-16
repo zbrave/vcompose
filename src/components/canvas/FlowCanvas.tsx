@@ -15,7 +15,7 @@ import {
 import '@xyflow/react/dist/style.css';
 import { generateId } from '../../lib/generate-id';
 import { useStore } from '../../store';
-import { ServiceNodeComponent } from './ServiceNodeComponent';
+import { GlassServiceNode } from './GlassServiceNode';
 import { UndoRedoToolbar } from './UndoRedoToolbar';
 import { EmptyCanvasOverlay } from './EmptyCanvasOverlay';
 import type { PresetImageKey } from '../../store/types';
@@ -47,7 +47,7 @@ export function FlowCanvas() {
   const rfEdges = edges as unknown as Edge[];
 
   const nodeTypes: NodeTypes = useMemo(
-    () => ({ serviceNode: ServiceNodeComponent as unknown as NodeTypes['serviceNode'] }),
+    () => ({ serviceNode: GlassServiceNode as unknown as NodeTypes['serviceNode'] }),
     [],
   );
 
