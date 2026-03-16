@@ -14,6 +14,7 @@ import { FlowCanvas } from './components/canvas/FlowCanvas';
 import { FloatingConfigPanel } from './components/panel/FloatingConfigPanel';
 import { YamlOutput } from './components/output/YamlOutput';
 import { ImportModal } from './components/output/ImportModal';
+import { CommandSearch } from './components/CommandSearch';
 
 function App() {
   const nodes = useStore((s) => s.nodes);
@@ -36,6 +37,7 @@ function App() {
 
   const [activePanel, setActivePanel] = useState<string | null>('stacks');
   const [showImport, setShowImport] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   const handleEnter = () => {
     sessionStorage.setItem('vdc-entered', '1');
@@ -48,6 +50,18 @@ function App() {
     setValidationIssues(issues);
   }, [nodes, edges, setValidationIssues]);
 
+  // Global ⌘K / Ctrl+K shortcut
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setShowSearch((v) => !v);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
   if (showLanding) {
     return <LandingPage onEnter={handleEnter} />;
   }
@@ -55,7 +69,7 @@ function App() {
   return (
     <ReactFlowProvider>
       <div className="flex h-screen flex-col bg-base text-text-primary">
-        <HeaderBar />
+        <HeaderBar onSearchClick={() => setShowSearch(true)} />
         <div className="flex flex-1 overflow-hidden">
           <IconRail
             activePanel={activePanel}
@@ -79,6 +93,12 @@ function App() {
         </div>
       </div>
       {showImport && <ImportModal onClose={() => setShowImport(false)} />}
+      <CommandSearch
+        open={showSearch}
+        onClose={() => setShowSearch(false)}
+        onImportClick={() => { setShowSearch(false); setShowImport(true); }}
+        onToggleAI={() => { setShowSearch(false); setActivePanel('ai'); }}
+      />
     </ReactFlowProvider>
   );
 }
