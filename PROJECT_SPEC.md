@@ -46,6 +46,11 @@ Fully client-side, browser-based visual builder for `docker-compose.yml` files. 
 | Format | Prettier | Tailwind plugin dahil |
 | Deploy | Docker multi-stage + Nginx | Coolify-ready |
 | AI SDK | Vercel AI SDK (`ai`) | 4 provider: Anthropic, OpenAI, Gemini, GLM |
+| Animation | Framer Motion | Spring physics, layoutId, AnimatePresence |
+| Icons | lucide-react | SVG icon set for UI chrome |
+| Command Palette | cmdk | ⌘K search for services/stacks/actions |
+| Syntax Highlight | react-syntax-highlighter | PrismLight for YAML output |
+| Draggable Panel | @ark-ui/react | Dialog primitive for floating config panel |
 
 ---
 
