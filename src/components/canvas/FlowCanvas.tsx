@@ -17,7 +17,7 @@ import { generateId } from '../../lib/generate-id';
 import { useStore } from '../../store';
 import { GlassServiceNode } from './GlassServiceNode';
 import { NeonWireEdge } from './NeonWireEdge';
-import { UndoRedoToolbar } from './UndoRedoToolbar';
+
 import { EmptyCanvasOverlay } from './EmptyCanvasOverlay';
 import type { PresetImageKey } from '../../store/types';
 
@@ -182,7 +182,6 @@ export function FlowCanvas() {
   return (
     <div className="relative h-full w-full">
     {nodes.length === 0 && <EmptyCanvasOverlay />}
-    <UndoRedoToolbar />
     <ReactFlow
       nodes={rfNodes}
       edges={rfEdges}
