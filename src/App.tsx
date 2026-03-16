@@ -4,20 +4,24 @@ import { useStore } from './store';
 import { validate } from './lib/validator';
 import { LandingPage } from './components/LandingPage';
 import { HeaderBar } from './components/HeaderBar';
-import { SidebarTabs } from './components/sidebar/SidebarTabs';
+import { IconRail } from './components/sidebar/IconRail';
+import { SidePanel } from './components/sidebar/SidePanel';
+import { StacksPanel } from './components/sidebar/StacksPanel';
+import { MarketplacePanel } from './components/sidebar/MarketplacePanel';
+import { AISidebar } from './components/sidebar/AISidebar';
+import { NetworkPanel } from './components/sidebar/NetworkPanel';
 import { FlowCanvas } from './components/canvas/FlowCanvas';
-import { ConfigPanel } from './components/panel/ConfigPanel';
+import { FloatingConfigPanel } from './components/panel/FloatingConfigPanel';
 import { YamlOutput } from './components/output/YamlOutput';
+import { ImportModal } from './components/output/ImportModal';
 
 function App() {
   const nodes = useStore((s) => s.nodes);
   const edges = useStore((s) => s.edges);
-  const selectedNodeId = useStore((s) => s.selectedNodeId);
   const setValidationIssues = useStore((s) => s.setValidationIssues);
 
   // Show landing page unless user has clicked "Start Building" or has existing work
   const [showLanding, setShowLanding] = useState(() => {
-    // If user has nodes from a previous session, skip landing
     const stored = localStorage.getItem('vdc-store');
     if (stored) {
       try {
@@ -29,6 +33,9 @@ function App() {
     }
     return !sessionStorage.getItem('vdc-entered');
   });
+
+  const [activePanel, setActivePanel] = useState<string | null>('stacks');
+  const [showImport, setShowImport] = useState(false);
 
   const handleEnter = () => {
     sessionStorage.setItem('vdc-entered', '1');
@@ -47,32 +54,31 @@ function App() {
 
   return (
     <ReactFlowProvider>
-      <div className="flex h-screen w-screen flex-col">
+      <div className="flex h-screen flex-col bg-base text-text-primary">
         <HeaderBar />
         <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar - Node Palette + AI */}
-          <aside className="w-80 border-r border-gray-800 bg-gray-900 p-4">
-            <SidebarTabs />
-          </aside>
-
-          {/* Canvas */}
-          <main className="flex-1">
+          <IconRail
+            activePanel={activePanel}
+            onPanelChange={setActivePanel}
+            onImportClick={() => setShowImport(true)}
+          />
+          <SidePanel
+            isOpen={activePanel !== null}
+            onClose={() => setActivePanel(null)}
+          >
+            {activePanel === 'stacks' && <StacksPanel />}
+            {activePanel === 'marketplace' && <MarketplacePanel />}
+            {activePanel === 'ai' && <AISidebar />}
+            {activePanel === 'networks' && <NetworkPanel />}
+          </SidePanel>
+          <div className="relative flex-1">
             <FlowCanvas />
-          </main>
-
-          {/* Right Panel - Config + YAML Output */}
-          <aside className="flex w-80 flex-col border-l border-gray-800 bg-gray-900">
-            {selectedNodeId ? (
-              <ConfigPanel />
-            ) : (
-              <div className="flex flex-1 items-center justify-center text-sm text-gray-600">
-                Select a service to configure
-              </div>
-            )}
-            <YamlOutput />
-          </aside>
+            <FloatingConfigPanel />
+          </div>
+          <YamlOutput />
         </div>
       </div>
+      {showImport && <ImportModal onClose={() => setShowImport(false)} />}
     </ReactFlowProvider>
   );
 }
