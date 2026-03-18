@@ -9,7 +9,7 @@ test.describe('Marketplace Tab', () => {
     });
     await page.reload();
     await page.waitForSelector('.react-flow');
-    await page.click('button:text("Marketplace")');
+    await page.click('[data-testid="rail-marketplace"]');
   });
 
   test('shows category chips', async ({ page }) => {

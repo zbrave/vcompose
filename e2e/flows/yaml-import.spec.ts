@@ -2,7 +2,10 @@ import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
-  await page.evaluate(() => localStorage.clear());
+  await page.evaluate(() => {
+    localStorage.clear();
+    sessionStorage.setItem('vdc-entered', '1');
+  });
   await page.reload();
   await page.waitForSelector('.react-flow');
 });
@@ -18,10 +21,10 @@ test('import valid YAML creates nodes on canvas', async ({ page }) => {
   const yaml = `services:\n  web:\n    image: nginx:alpine\n  db:\n    image: postgres:16`;
 
   await page.locator('textarea').fill(yaml);
-
-  // Accept the confirm dialog
-  page.on('dialog', (dialog) => dialog.accept());
   await page.locator('[data-testid="import-confirm-btn"]').click();
+
+  // Click "Confirm Import" in the styled confirmation dialog
+  await page.locator('button:text("Confirm Import")').click();
 
   // Modal should close
   await expect(page.locator('text=Import docker-compose.yml')).not.toBeVisible();

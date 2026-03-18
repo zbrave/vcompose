@@ -2,11 +2,15 @@ import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
-  await page.evaluate(() => localStorage.clear());
+  await page.evaluate(() => {
+    localStorage.clear();
+    sessionStorage.setItem('vdc-entered', '1');
+  });
   await page.reload();
   await page.waitForSelector('.react-flow');
 
-  // Add a node by dragging
+  // Open marketplace panel and add a node by dragging
+  await page.click('[data-testid="rail-marketplace"]');
   const sidebar = page.locator('text=Nginx');
   const canvas = page.locator('.react-flow');
   await sidebar.dragTo(canvas, { targetPosition: { x: 300, y: 200 } });
