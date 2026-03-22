@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap');
+
+  body {
+    width: 240px;
+    height: 240px;
+    background: #141210;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle gold glow */
+  .glow {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,168,67,0.1) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .content svg {
+    width: 100px;
+    height: 100px;
+  }
+
+  .text {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: #e8dcc8;
+    letter-spacing: -0.5px;
+  }
+</style>
+</head>
+<body>
+  <div class="glow"></div>
+  <div class="content">
+    <svg width="100" height="100" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="14" width="16" height="16" rx="3" stroke="#d4a843" stroke-width="2" fill="rgba(212,168,67,0.12)"/>
+      <circle cx="18" cy="22" r="3" fill="#d4a843"/>
+      <rect x="54" y="14" width="16" height="16" rx="3" stroke="#d4a843" stroke-width="2" fill="rgba(212,168,67,0.12)"/>
+      <circle cx="62" cy="22" r="3" fill="#d4a843"/>
+      <rect x="28" y="48" width="24" height="20" rx="4" stroke="#d4a843" stroke-width="2.5" fill="rgba(212,168,67,0.15)"/>
+      <circle cx="40" cy="58" r="4" fill="#d4a843"/>
+      <path d="M22 30 L36 50" stroke="#d4a843" stroke-width="2" stroke-linecap="round"/>
+      <path d="M58 30 L44 50" stroke="#d4a843" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="29" cy="40" r="1.5" fill="#d4a843" opacity="0.6"/>
+      <circle cx="51" cy="40" r="1.5" fill="#d4a843" opacity="0.6"/>
+    </svg>
+    <span class="text">VCompose</span>
+  </div>
+</body>
+</html>
