@@ -254,6 +254,7 @@ export function LandingPage({ onEnter }: LandingPageProps) {
         }}
       >
         <div className="flex items-center gap-2.5">
+          <img src="/logo.svg" alt="VCompose" width="24" height="24" />
           <span
             className="text-lg"
             style={{
@@ -262,7 +263,7 @@ export function LandingPage({ onEnter }: LandingPageProps) {
               color: '#d4a843',
             }}
           >
-            ◆ VCompose
+            VCompose
           </span>
         </div>
         <a

@@ -1,0 +1,17 @@
+<svg width="512" height="512" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Top-left service node -->
+  <rect x="10" y="14" width="16" height="16" rx="3" stroke="#8b6914" stroke-width="2" fill="rgba(139,105,20,0.08)"/>
+  <circle cx="18" cy="22" r="3" fill="#8b6914"/>
+  <!-- Top-right service node -->
+  <rect x="54" y="14" width="16" height="16" rx="3" stroke="#8b6914" stroke-width="2" fill="rgba(139,105,20,0.08)"/>
+  <circle cx="62" cy="22" r="3" fill="#8b6914"/>
+  <!-- Bottom-center primary node -->
+  <rect x="28" y="48" width="24" height="20" rx="4" stroke="#8b6914" stroke-width="2.5" fill="rgba(139,105,20,0.1)"/>
+  <circle cx="40" cy="58" r="4" fill="#8b6914"/>
+  <!-- V-shaped dependency lines -->
+  <path d="M22 30 L36 50" stroke="#8b6914" stroke-width="2" stroke-linecap="round"/>
+  <path d="M58 30 L44 50" stroke="#8b6914" stroke-width="2" stroke-linecap="round"/>
+  <!-- Flow accent dots -->
+  <circle cx="29" cy="40" r="1.5" fill="#8b6914" opacity="0.6"/>
+  <circle cx="51" cy="40" r="1.5" fill="#8b6914" opacity="0.6"/>
+</svg>
