@@ -560,9 +560,25 @@ export function LandingPage({ onEnter }: LandingPageProps) {
         className="relative z-10 px-6 py-8 md:px-12"
         style={{ borderTop: '1px solid rgba(212,168,67,0.1)' }}
       >
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 sm:flex-row sm:justify-between">
           <span className="text-sm" style={{ color: '#6b6055' }}>
-            Built for developers who ship.
+            © {new Date().getFullYear()}{' '}
+            <a
+              href="https://creinoff.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors duration-200"
+              style={{ color: '#6b6055' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#d4a843';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#6b6055';
+              }}
+            >
+              Creinoff
+            </a>
+            . All rights reserved.
           </span>
           <a
             href="https://github.com/zbrave/vcompose"
