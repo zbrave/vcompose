@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  body {
+    width: 1200px;
+    height: 630px;
+    background: #141210;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Subtle grid pattern */
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(212,168,67,0.06) 1px, transparent 0);
+    background-size: 32px 32px;
+    z-index: 0;
+  }
+
+  /* Ambient glow orbs */
+  .glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 0;
+  }
+  .glow-orb.top-left {
+    width: 400px; height: 400px;
+    top: -150px; left: -100px;
+    background: rgba(212,168,67,0.08);
+  }
+  .glow-orb.bottom-right {
+    width: 500px; height: 500px;
+    bottom: -200px; right: -100px;
+    background: rgba(212,168,67,0.06);
+  }
+  .glow-orb.center {
+    width: 300px; height: 300px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(212,168,67,0.04);
+  }
+
+  /* Main layout */
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 40px 50px;
+    gap: 40px;
+  }
+
+  /* Left side - branding */
+  .left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .logo-row svg {
+    width: 48px;
+    height: 48px;
+  }
+  .logo-text {
+    font-size: 36px;
+    font-weight: 800;
+    color: #e8dcc8;
+    letter-spacing: -0.5px;
+  }
+  .beta-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: #d4a843;
+    background: rgba(212,168,67,0.12);
+    border: 1px solid rgba(212,168,67,0.25);
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    margin-left: 4px;
+    align-self: flex-start;
+    margin-top: 8px;
+  }
+
+  .title {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.3;
+    background: linear-gradient(135deg, #e8dcc8 30%, #d4a843 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    max-width: 480px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: #a89880;
+    line-height: 1.6;
+    max-width: 440px;
+  }
+  .subtitle .highlight {
+    color: #d4a843;
+    font-weight: 500;
+  }
+
+  .pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #e8dcc8;
+    background: rgba(38,34,32,0.8);
+    border: 1px solid rgba(212,168,67,0.15);
+    padding: 6px 14px;
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+  }
+  .pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #d4a843;
+  }
+
+  /* Right side - app preview mockup */
+  .right {
+    width: 520px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .app-mockup {
+    background: rgba(30,27,24,0.9);
+    border: 1px solid rgba(212,168,67,0.15);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow:
+      0 0 60px rgba(212,168,67,0.08),
+      0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  /* Mockup header */
+  .mockup-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(20,18,16,0.9);
+    border-bottom: 1px solid rgba(61,53,48,0.6);
+    gap: 8px;
+  }
+  .window-dots {
+    display: flex; gap: 6px;
+  }
+  .window-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .window-dot.red { background: #ff5f56; }
+  .window-dot.yellow { background: #ffbd2e; }
+  .window-dot.green { background: #27c93f; }
+  .mockup-header-text {
+    font-size: 11px;
+    color: #6b6055;
+    margin-left: 8px;
+    font-weight: 500;
+  }
+
+  /* Mockup body - canvas area */
+  .mockup-body {
+    display: flex;
+    height: 360px;
+    position: relative;
+  }
+
+  /* Icon rail */
+  .mock-icon-rail {
+    width: 36px;
+    background: rgba(30,27,24,0.95);
+    border-right: 1px solid rgba(61,53,48,0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 14px;
+    gap: 14px;
+  }
+  .mock-icon {
+    width: 18px; height: 18px;
+    border-radius: 4px;
+    background: rgba(168,152,128,0.15);
+  }
+  .mock-icon.active {
+    background: rgba(212,168,67,0.2);
+    box-shadow: -2px 0 0 #d4a843;
+  }
+
+  /* Canvas area */
+  .mock-canvas {
+    flex: 1;
+    position: relative;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(212,168,67,0.04) 1px, transparent 0);
+    background-size: 24px 24px;
+    padding: 20px;
+  }
+
+  /* Service nodes on canvas */
+  .service-node {
+    position: absolute;
+    background: rgba(38,34,32,0.85);
+    border: 1px solid rgba(212,168,67,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    backdrop-filter: blur(8px);
+    min-width: 120px;
+  }
+  .service-node.selected {
+    border-color: rgba(212,168,67,0.6);
+    box-shadow: 0 0 20px rgba(212,168,67,0.1);
+  }
+  .service-node .sn-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 4px;
+  }
+  .service-node .sn-icon {
+    font-size: 16px;
+  }
+  .service-node .sn-name {
+    font-size: 12px; font-weight: 600; color: #e8dcc8;
+  }
+  .service-node .sn-image {
+    font-size: 10px; color: #6b6055; font-family: 'Courier New', monospace;
+  }
+  .service-node .sn-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,168,67,0.3), transparent);
+    margin: 6px 0;
+  }
+  .service-node .sn-ports {
+    display: flex; gap: 4px; flex-wrap: wrap;
+  }
+  .port-badge {
+    font-size: 9px; font-weight: 500;
+    color: #d4a843;
+    background: rgba(212,168,67,0.08);
+    border: 1px solid rgba(212,168,67,0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+  }
+
+  /* Connection lines (SVG overlay) */
+  .connections-svg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* YAML output panel */
+  .mock-yaml {
+    width: 170px;
+    background: rgba(20,18,16,0.95);
+    border-left: 1px solid rgba(61,53,48,0.4);
+    padding: 12px;
+    overflow: hidden;
+  }
+  .yaml-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .yaml-title {
+    font-size: 10px; font-weight: 600; color: #a89880; text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .yaml-badge {
+    font-size: 8px; font-weight: 600;
+    color: #4ade80;
+    background: rgba(74,222,128,0.1);
+    border: 1px solid rgba(74,222,128,0.2);
+    padding: 1px 6px;
+    border-radius: 8px;
+  }
+  .yaml-line {
+    font-family: 'Courier New', monospace;
+    font-size: 9.5px;
+    line-height: 1.7;
+    white-space: pre;
+  }
+  .yaml-key { color: #d4a843; }
+  .yaml-str { color: #4ade80; }
+  .yaml-comment { color: #6b6055; }
+  .yaml-num { color: #f59e0b; }
+
+  /* URL footer */
+  .url-footer {
+    position: absolute;
+    bottom: 20px;
+    right: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b6055;
+    letter-spacing: 0.3px;
+    z-index: 2;
+  }
+  .url-footer span {
+    color: #d4a843;
+  }
+</style>
+</head>
+<body>
+  <!-- Background effects -->
+  <div class="grid-overlay"></div>
+  <div class="glow-orb top-left"></div>
+  <div class="glow-orb bottom-right"></div>
+  <div class="glow-orb center"></div>
+
+  <div class="container">
+    <!-- Left: Branding -->
+    <div class="left">
+      <div class="logo-row">
+        <svg width="48" height="48" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="14" width="16" height="16" rx="3" stroke="#d4a843" stroke-width="2" fill="rgba(212,168,67,0.12)"/>
+          <circle cx="18" cy="22" r="3" fill="#d4a843"/>
+          <rect x="54" y="14" width="16" height="16" rx="3" stroke="#d4a843" stroke-width="2" fill="rgba(212,168,67,0.12)"/>
+          <circle cx="62" cy="22" r="3" fill="#d4a843"/>
+          <rect x="28" y="48" width="24" height="20" rx="4" stroke="#d4a843" stroke-width="2.5" fill="rgba(212,168,67,0.15)"/>
+          <circle cx="40" cy="58" r="4" fill="#d4a843"/>
+          <path d="M22 30 L36 50" stroke="#d4a843" stroke-width="2" stroke-linecap="round"/>
+          <path d="M58 30 L44 50" stroke="#d4a843" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="29" cy="40" r="1.5" fill="#d4a843" opacity="0.6"/>
+          <circle cx="51" cy="40" r="1.5" fill="#d4a843" opacity="0.6"/>
+        </svg>
+        <span class="logo-text">VCompose</span>
+        <span class="beta-badge">BETA</span>
+      </div>
+
+      <div class="title">Visual Docker Compose Builder with AI Power</div>
+
+      <div class="subtitle">
+        Build <span class="highlight">docker-compose.yml</span> visually with drag-and-drop.
+        AI generation, stack templates & real-time preview — entirely in your browser.
+      </div>
+
+      <div class="pills">
+        <div class="pill"><span class="dot"></span>Drag & Drop</div>
+        <div class="pill"><span class="dot"></span>AI Generate</div>
+        <div class="pill"><span class="dot"></span>Real-time YAML</div>
+        <div class="pill"><span class="dot"></span>No Backend</div>
+        <div class="pill"><span class="dot"></span>Free & Open Source</div>
+      </div>
+    </div>
+
+    <!-- Right: App Mockup -->
+    <div class="right">
+      <div class="app-mockup">
+        <div class="mockup-header">
+          <div class="window-dots">
+            <div class="window-dot red"></div>
+            <div class="window-dot yellow"></div>
+            <div class="window-dot green"></div>
+          </div>
+          <span class="mockup-header-text">vcompose.cc</span>
+        </div>
+        <div class="mockup-body">
+          <!-- Icon Rail -->
+          <div class="mock-icon-rail">
+            <div class="mock-icon active"></div>
+            <div class="mock-icon"></div>
+            <div class="mock-icon"></div>
+            <div style="flex:1"></div>
+            <div class="mock-icon" style="margin-bottom:14px"></div>
+          </div>
+
+          <!-- Canvas -->
+          <div class="mock-canvas">
+            <!-- Connection lines -->
+            <svg class="connections-svg" viewBox="0 0 314 360">
+              <!-- postgres -> api -->
+              <path d="M100,105 C100,160 180,140 180,195" stroke="#d4a843" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+              <!-- redis -> api -->
+              <path d="M250,105 C250,160 210,140 200,195" stroke="#d4a843" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+              <!-- api -> nginx -->
+              <path d="M190,265 C190,300 150,290 145,315" stroke="#d4a843" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+              <!-- Flow dots -->
+              <circle r="2.5" fill="#d4a843" opacity="0.8">
+                <animateMotion dur="3s" repeatCount="indefinite" path="M100,105 C100,160 180,140 180,195"/>
+              </circle>
+              <circle r="2.5" fill="#d4a843" opacity="0.8">
+                <animateMotion dur="3s" repeatCount="indefinite" path="M250,105 C250,160 210,140 200,195" begin="1s"/>
+              </circle>
+            </svg>
+
+            <!-- Postgres node -->
+            <div class="service-node" style="top:30px; left:30px;">
+              <div class="sn-header">
+                <span class="sn-icon">🐘</span>
+                <span class="sn-name">postgres</span>
+              </div>
+              <div class="sn-image">postgres:16-alpine</div>
+              <div class="sn-divider"></div>
+              <div class="sn-ports">
+                <span class="port-badge">5432:5432</span>
+              </div>
+            </div>
+
+            <!-- Redis node -->
+            <div class="service-node" style="top:30px; right:40px;">
+              <div class="sn-header">
+                <span class="sn-icon">⚡</span>
+                <span class="sn-name">redis</span>
+              </div>
+              <div class="sn-image">redis:7-alpine</div>
+              <div class="sn-divider"></div>
+              <div class="sn-ports">
+                <span class="port-badge">6379:6379</span>
+              </div>
+            </div>
+
+            <!-- API node (selected) -->
+            <div class="service-node selected" style="top:170px; left:90px;">
+              <div class="sn-header">
+                <span class="sn-icon">🟢</span>
+                <span class="sn-name">api</span>
+              </div>
+              <div class="sn-image">node:20-alpine</div>
+              <div class="sn-divider"></div>
+              <div class="sn-ports">
+                <span class="port-badge">3000:3000</span>
+              </div>
+            </div>
+
+            <!-- Nginx node -->
+            <div class="service-node" style="bottom:15px; left:55px;">
+              <div class="sn-header">
+                <span class="sn-icon">🌐</span>
+                <span class="sn-name">nginx</span>
+              </div>
+              <div class="sn-image">nginx:alpine</div>
+              <div class="sn-divider"></div>
+              <div class="sn-ports">
+                <span class="port-badge">80:80</span>
+                <span class="port-badge">443:443</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- YAML Output -->
+          <div class="mock-yaml">
+            <div class="yaml-header">
+              <span class="yaml-title">YAML</span>
+              <span class="yaml-badge">✓ Valid</span>
+            </div>
+            <div class="yaml-line"><span class="yaml-key">version:</span> <span class="yaml-str">'3.8'</span></div>
+            <div class="yaml-line"><span class="yaml-key">services:</span></div>
+            <div class="yaml-line">  <span class="yaml-key">postgres:</span></div>
+            <div class="yaml-line">    <span class="yaml-key">image:</span> <span class="yaml-str">postgres:16</span></div>
+            <div class="yaml-line">    <span class="yaml-key">ports:</span></div>
+            <div class="yaml-line">      - <span class="yaml-str">'5432:5432'</span></div>
+            <div class="yaml-line">  <span class="yaml-key">redis:</span></div>
+            <div class="yaml-line">    <span class="yaml-key">image:</span> <span class="yaml-str">redis:7</span></div>
+            <div class="yaml-line">  <span class="yaml-key">api:</span></div>
+            <div class="yaml-line">    <span class="yaml-key">image:</span> <span class="yaml-str">node:20</span></div>
+            <div class="yaml-line">    <span class="yaml-key">depends_on:</span></div>
+            <div class="yaml-line">      - <span class="yaml-str">postgres</span></div>
+            <div class="yaml-line">      - <span class="yaml-str">redis</span></div>
+            <div class="yaml-line">  <span class="yaml-key">nginx:</span></div>
+            <div class="yaml-line">    <span class="yaml-key">image:</span> <span class="yaml-str">nginx:alpine</span></div>
+            <div class="yaml-line">    <span class="yaml-key">depends_on:</span></div>
+            <div class="yaml-line">      - <span class="yaml-str">api</span></div>
+            <div class="yaml-line"><span class="yaml-key">networks:</span></div>
+            <div class="yaml-line">  <span class="yaml-key">default:</span></div>
+            <div class="yaml-line">    <span class="yaml-key">driver:</span> <span class="yaml-str">bridge</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- URL -->
+  <div class="url-footer"><span>vcompose</span>.cc</div>
+</body>
+</html>
