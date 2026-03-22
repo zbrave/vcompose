@@ -8,10 +8,12 @@ test.beforeEach(async ({ page }) => {
   });
   await page.reload();
   await page.waitForSelector('.react-flow');
+  // Open marketplace panel for service cards
+  await page.click('[data-testid="rail-marketplace"]');
 });
 
 test('shows recommendations when a postgres node is selected', async ({ page }) => {
-  const sidebar = page.locator('text=Postgres');
+  const sidebar = page.locator('text=postgres:16-alpine').first();
   const canvas = page.locator('.react-flow');
 
   await sidebar.dragTo(canvas, { targetPosition: { x: 300, y: 200 } });
@@ -26,7 +28,7 @@ test('shows recommendations when a postgres node is selected', async ({ page }) 
 });
 
 test('adds recommended service and creates edge', async ({ page }) => {
-  const sidebar = page.locator('text=Postgres');
+  const sidebar = page.locator('text=postgres:16-alpine').first();
   const canvas = page.locator('.react-flow');
 
   await sidebar.dragTo(canvas, { targetPosition: { x: 300, y: 200 } });
@@ -58,7 +60,7 @@ test('shows "Added" for already-existing services', async ({ page }) => {
   const canvas = page.locator('.react-flow');
 
   // Add postgres node
-  const postgres = page.locator('text=Postgres');
+  const postgres = page.locator('text=postgres:16-alpine').first();
   await postgres.dragTo(canvas, { targetPosition: { x: 200, y: 200 } });
 
   // Select it and add pgadmin via recommendation

@@ -98,17 +98,17 @@ export function AISidebar() {
 
   return (
     <div className="flex flex-col gap-4 overflow-x-hidden overflow-y-auto">
-      <h2 className="text-sm font-semibold uppercase tracking-wider text-gray-400">
+      <h2 className="text-sm font-semibold uppercase tracking-wider text-text-secondary">
         AI Generation
       </h2>
 
       {/* Provider */}
       <div>
-        <label className="mb-1 block text-xs text-gray-400">Provider</label>
+        <label className="mb-1 block text-xs text-text-secondary">Provider</label>
         <select
           value={config.provider}
           onChange={(e) => { setProvider(e.target.value as AIProviderKey); setCustomModel(false); }}
-          className="w-full rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white"
+          className="w-full rounded border border-subtle bg-elevated px-2 py-1.5 text-sm text-text-primary"
           disabled={isLoading}
         >
           {PROVIDERS.map((p) => (
@@ -119,19 +119,19 @@ export function AISidebar() {
 
       {/* API Key */}
       <div>
-        <label className="mb-1 block text-xs text-gray-400">API Key</label>
+        <label className="mb-1 block text-xs text-text-secondary">API Key</label>
         <div className="flex gap-1">
           <input
             type={showKey ? 'text' : 'password'}
             value={config.apiKey}
             onChange={(e) => setApiKey(e.target.value)}
             placeholder="sk-..."
-            className="min-w-0 flex-1 rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white placeholder-gray-500"
+            className="min-w-0 flex-1 rounded border border-subtle bg-elevated px-2 py-1.5 text-sm text-text-primary placeholder-text-muted"
             disabled={isLoading}
           />
           <button
             onClick={() => setShowKey(!showKey)}
-            className="shrink-0 rounded border border-gray-700 px-2 py-1.5 text-xs text-gray-400 hover:text-white"
+            className="shrink-0 rounded border border-subtle px-2 py-1.5 text-xs text-text-muted hover:text-text-primary"
             type="button"
           >
             {showKey ? 'Hide' : 'Show'}
@@ -141,7 +141,7 @@ export function AISidebar() {
 
       {/* Model */}
       <div>
-        <label className="mb-1 block text-xs text-gray-400">Model</label>
+        <label className="mb-1 block text-xs text-text-secondary">Model</label>
         <select
           value={customModel ? '__custom__' : config.model}
           onChange={(e) => {
@@ -152,7 +152,7 @@ export function AISidebar() {
               setModel(e.target.value);
             }
           }}
-          className="w-full rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white"
+          className="w-full rounded border border-subtle bg-elevated px-2 py-1.5 text-sm text-text-primary"
           disabled={isLoading}
         >
           {PROVIDER_MODELS[config.provider].map((m) => (
@@ -166,7 +166,7 @@ export function AISidebar() {
             value={config.model}
             onChange={(e) => setModel(e.target.value)}
             placeholder="model-id"
-            className="mt-1 w-full rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white placeholder-gray-500"
+            className="mt-1 w-full rounded border border-subtle bg-elevated px-2 py-1.5 text-sm text-text-primary placeholder-text-muted"
             disabled={isLoading}
           />
         )}
@@ -175,13 +175,13 @@ export function AISidebar() {
       {/* Base URL (only for custom model override) */}
       {customModel && (
         <div>
-          <label className="mb-1 block text-xs text-gray-400">Base URL</label>
+          <label className="mb-1 block text-xs text-text-secondary">Base URL</label>
           <input
             type="text"
             value={config.baseUrl ?? ''}
             onChange={(e) => setBaseUrl(e.target.value)}
             placeholder="Custom API base URL"
-            className="w-full rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white placeholder-gray-500"
+            className="w-full rounded border border-subtle bg-elevated px-2 py-1.5 text-sm text-text-primary placeholder-text-muted"
             disabled={isLoading}
           />
         </div>
@@ -189,13 +189,13 @@ export function AISidebar() {
 
       {/* Prompt */}
       <div>
-        <label className="mb-1 block text-xs text-gray-400">Prompt</label>
+        <label className="mb-1 block text-xs text-text-secondary">Prompt</label>
         <textarea
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Describe your docker-compose setup..."
           rows={4}
-          className="w-full resize-y rounded border border-gray-700 bg-gray-800 px-2 py-1.5 text-sm text-white placeholder-gray-500"
+          className="w-full resize-y rounded border border-subtle bg-elevated px-2 py-1.5 text-sm text-text-primary placeholder-text-muted"
           disabled={isLoading}
         />
       </div>
@@ -205,7 +205,7 @@ export function AISidebar() {
         <button
           onClick={handleGenerate}
           disabled={isLoading}
-          className="flex-1 rounded bg-purple-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex-1 rounded bg-accent px-3 py-2 text-sm font-medium text-base transition-colors hover:bg-accent-dim disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isLoading ? 'Generating...' : 'Generate'}
         </button>
@@ -213,7 +213,7 @@ export function AISidebar() {
         <button
           onClick={handleOptimize}
           disabled={isLoading}
-          className="flex-1 rounded bg-blue-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex-1 rounded bg-elevated px-3 py-2 text-sm font-medium text-text-secondary border border-subtle transition-colors hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isLoading ? 'Optimizing...' : 'Optimize'}
         </button>
@@ -223,30 +223,30 @@ export function AISidebar() {
       {/* Loading spinner */}
       {isLoading && (
         <div className="flex items-center justify-center py-2">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-purple-500 border-t-transparent" />
-          <span className="ml-2 text-xs text-gray-400">AI is working...</span>
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+          <span className="ml-2 text-xs text-text-muted">AI is working...</span>
         </div>
       )}
 
       {/* Error */}
       {error && (
-        <div className="rounded border border-red-800 bg-red-900/30 px-3 py-2 text-xs text-red-400">
+        <div className="rounded border border-[var(--error)]/30 bg-[var(--error)]/10 px-3 py-2 text-xs text-[var(--error)]">
           {error}
         </div>
       )}
 
       {/* Generate confirmation dialog */}
       {showConfirm && (
-        <div className="rounded border border-yellow-700 bg-yellow-900/30 p-3">
-          <p className="mb-3 text-xs text-yellow-300">
+        <div className="rounded border border-accent/30 bg-accent/10 p-3">
+          <p className="mb-3 text-xs text-accent">
             This will replace the current canvas with a new setup. Are you sure?
           </p>
-          <label className="mb-3 flex items-center gap-2 text-xs text-gray-400">
+          <label className="mb-3 flex items-center gap-2 text-xs text-text-secondary">
             <input
               type="checkbox"
               checked={dontAskAgain}
               onChange={(e) => setDontAskAgain(e.target.checked)}
-              className="rounded border-gray-600"
+              className="rounded border-subtle"
             />
             Don't ask again
           </label>
@@ -259,13 +259,13 @@ export function AISidebar() {
                 setShowConfirm(false);
                 await doGenerate();
               }}
-              className="flex-1 rounded bg-purple-600 px-2 py-1.5 text-xs font-medium text-white hover:bg-purple-700"
+              className="flex-1 rounded bg-accent px-2 py-1.5 text-xs font-medium text-base hover:bg-accent-dim"
             >
               Yes, replace
             </button>
             <button
               onClick={() => setShowConfirm(false)}
-              className="flex-1 rounded border border-gray-700 px-2 py-1.5 text-xs text-gray-400 hover:text-white"
+              className="flex-1 rounded border border-subtle px-2 py-1.5 text-xs text-text-muted hover:text-text-primary"
             >
               Cancel
             </button>

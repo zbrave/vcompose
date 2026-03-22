@@ -3,7 +3,7 @@
 > Her Claude Code oturumunun sonunda güncelle.
 > Status: `⬜ Todo` · `🔄 In Progress` · `✅ Done` · `🚫 Blocked`
 
-Last updated: 2026-03-15
+Last updated: 2026-03-19
 
 ---
 
@@ -23,7 +23,7 @@ Last updated: 2026-03-15
 | YAML Output Panel | ✅ Done | Real-time, copy, download, validation badge |
 | localStorage Persistence (Zustand persist) | ✅ Done | Store'a entegre, key: vdc-store |
 | Dockerfile (multi-stage) | ✅ Done | Node 20 → Nginx, Coolify-ready |
-| Playwright E2E testleri | ✅ Done | 11 test, 5 dosya, Chromium |
+| Playwright E2E testleri | ✅ Done | 23 test, 9 dosya, Chromium |
 
 ---
 
@@ -34,65 +34,75 @@ Last updated: 2026-03-15
 | YAML Import (Phase 2) | ✅ Done | yaml-parser.ts, ImportModal, 17 unit + 3 E2E test |
 | Network Management UI (Phase 3) | ✅ Done | NetworkPanel, ConfigPanel checkboxes, updateNetwork, 3 E2E test |
 | Docker Hub Search (Phase 4) | ✅ Done | ImageSearchInput, dockerhub.ts, useDockerHubSearch hook, 4 unit test |
-| Undo/Redo UI (Phase 5) | ✅ Done | zundo temporal middleware, UndoRedoToolbar, Ctrl+Z/Y shortcuts |
+| Undo/Redo UI (Phase 5) | ✅ Done | zundo temporal middleware, HeaderBar undo/redo buttons, Ctrl+Z/Y shortcuts |
 | Smart Recommendations (Phase 6) | ✅ Done | recommendation-engine, position-calculator, RecommendationList, addRecommendedNode |
 | MCP Server (Phase 7) | ✅ Done | 4 tools: generate-compose, validate-compose, parse-compose, get-recommendations. stdio transport, tsup bundle |
 | AI-Powered Generation (Phase 8) | ✅ Done | Vercel AI SDK, 4 providers (Anthropic/OpenAI/Gemini/GLM), sidebar AI tab, MCP ai-generate-compose tool |
 | Enhanced Sidebar (Phase 9) | ✅ Done | 111 services, 16 stacks, 15 categories, Marketplace + Stacks tabs, Cloudflare Worker proxy |
+| UI Redesign (Phase 10) | ✅ Done | Anthracite/gold theme, glassmorphism nodes, neon edges, icon rail, floating config, command palette |
 
 ---
 
-## Phase 9: Enhanced Sidebar (Stacks + Marketplace)
-- [x] Data layer types (ServiceDefinition, StackDefinition, etc.)
-- [x] Service registry (111 services)
-- [x] Stack catalog (16 stacks)
-- [x] Category definitions
-- [x] Stack layout engine
-- [x] Docker Hub search refactor
-- [x] Store actions (addStack, addServiceFromRegistry, addServiceFromHub)
-- [x] Recommendation engine migration
-- [x] UI components (ServiceCard, StackCard, CategoryChips, StacksPanel, MarketplacePanel)
-- [x] SidebarTabs refactor (3 tabs)
-- [x] FlowCanvas drop handler (4 MIME types)
-- [x] Cloudflare Worker proxy
-- [x] E2E tests
+## Phase 10: UI Redesign
+
+- [x] Design spec (`docs/superpowers/specs/2026-03-16-ui-redesign-design.md`)
+- [x] Implementation plan (`docs/superpowers/plans/2026-03-16-ui-redesign.md`)
+- [x] Dependencies: framer-motion, lucide-react, @ark-ui/react, react-syntax-highlighter, cmdk
+- [x] CSS custom properties theme system (`src/styles/theme.css` + Tailwind extend)
+- [x] yaml-download utility (TDD, 3 tests)
+- [x] GlassServiceNode: glassmorphism, 3D tilt hover, amber glow, preset icons
+- [x] NeonWireEdge: SVG glow filter, flow particles, hover label
+- [x] EmptyCanvasOverlay: lucide icons, fade-in animation
+- [x] HeaderBar: logo, undo/redo, clear all confirmation, ⌘K trigger
+- [x] IconRail: VS Code-style 48px icon bar, active indicator, tooltips
+- [x] SidePanel: 280px spring collapse/expand animation
+- [x] App.tsx: new layout (IconRail + SidePanel + FlowCanvas + YamlOutput)
+- [x] Gold theme for all sidebar panels (Stacks, Marketplace, AI, Networks)
+- [x] FloatingConfigPanel: draggable, glassmorphism, portal, all fields
+- [x] YamlOutput: react-syntax-highlighter, lucide icons, compact 260px
+- [x] CommandSearch: cmdk palette, services/stacks/actions search
+- [x] ImportModal: gold theme, styled inline confirmation
+- [x] LandingPage: Framer Motion animations, gold gradient orbs, feature cards
+- [x] Cleanup: deleted replaced files (SidebarTabs, UndoRedoToolbar, ServiceNodeComponent, ConfigPanel)
+- [x] E2E test migration: all 9 test files updated for new component structure
+- [x] **99 unit + 14 MCP unit + 23 E2E test, all passing**
 
 ---
 
-## Mevcut Oturum Odağı
+## Mevcut Oturum Odagi
 
-Phase 9 (Enhanced Sidebar) tamamlandi. 96 unit + 14 MCP unit + 17 E2E test geçiyor. Tum code review bulguları duzeltildi.
+Phase 10 (UI Redesign) tamamlandi. 99 unit + 14 MCP unit + 23 E2E test geciyor.
 
 ---
 
-## Açık Kararlar
+## Acik Kararlar
 
 - React Flow v11+ vs @xyflow/react v12 — package.json'da @xyflow/react v12 eklendi
 
 ---
 
-## Geçmiş Oturumlar
+## Gecmis Oturumlar
 
 ### Oturum 1 (2026-03-10)
-- Proje spesifikasyonları incelendi, eksiklikler tespit edildi
+- Proje spesifikasyonlari incelendi, eksiklikler tespit edildi
 - localStorage persistence, ESLint+Prettier, Playwright E2E spec'leri eklendi
-- Claude Code altyapısı kuruldu (CLAUDE.md, rules, settings, hooks, skills, agents, launch.json)
-- Vite + React + TS + Tailwind scaffold oluşturuldu
-- Zustand store (persist dahil), yaml-builder, validator implementasyonu yapıldı
+- Claude Code altyapisi kuruldu (CLAUDE.md, rules, settings, hooks, skills, agents, launch.json)
+- Vite + React + TS + Tailwind scaffold olusturuldu
+- Zustand store (persist dahil), yaml-builder, validator implementasyonu yapildi
 
 ### Oturum 2 (2026-03-10)
-- yaml-builder + validator Vitest testleri yazıldı (22 test, hepsi geçiyor)
+- yaml-builder + validator Vitest testleri yazildi (22 test, hepsi geciyor)
 - Node Palette: 5 preset, HTML5 drag & drop
 - FlowCanvas: @xyflow/react v12, custom ServiceNode, snap-to-grid, edge logic
 - ConfigPanel: 6 alan (service_name, image, ports, volumes, env, healthcheck toggle)
-- YamlOutput: real-time YAML, copy/download, validation badge (✅/⚠️/❌)
-- Tüm MVP UI bileşenleri entegre edildi
+- YamlOutput: real-time YAML, copy/download, validation badge
+- Tum MVP UI bilesenleri entegre edildi
 
 ### Oturum 3 (2026-03-10)
-- Dockerfile + nginx.conf oluşturuldu (multi-stage, Coolify-ready)
-- Playwright kuruldu, 4 test dosyası yazıldı (8 test, hepsi geçiyor)
+- Dockerfile + nginx.conf olusturuldu (multi-stage, Coolify-ready)
+- Playwright kuruldu, 4 test dosyasi yazildi (8 test, hepsi geciyor)
 - add-node, configure-node, yaml-output, persistence testleri
-- **MVP TAMAMLANDI** ✅
+- **MVP TAMAMLANDI**
 
 ### Oturum 4 (2026-03-10)
 - Phase 2: YAML Import implementasyonu
@@ -133,11 +143,10 @@ Phase 9 (Enhanced Sidebar) tamamlandi. 96 unit + 14 MCP unit + 17 E2E test geçi
 - Phase 5: Undo/Redo UI implementasyonu
 - `zundo` paketi eklendi, `temporal` middleware store'a entegre edildi
 - Middleware sirasi: `persist(temporal(...))` — store-rules uyumlu
-- `UndoRedoToolbar`: canvas sol üst, reactive pastStates/futureStates
+- `UndoRedoToolbar`: canvas sol ust, reactive pastStates/futureStates
 - Keyboard shortcuts: Ctrl+Z undo, Ctrl+Y / Ctrl+Shift+Z redo
 - `docs/specs/undo-redo.md` spec yazildi
 - **Toplam: 49 unit + 14 E2E test, tumü geçiyor**
-- **TÜM POST-MVP PHASE'LER TAMAMLANDI** ✅
 
 ### Oturum 8 (2026-03-13)
 - Phase 6: Smart Recommendations implementasyonu
@@ -194,3 +203,18 @@ Phase 9 (Enhanced Sidebar) tamamlandi. 96 unit + 14 MCP unit + 17 E2E test geçi
 - 25 yeni unit test (6 registry + 7 stack-catalog + 5 stack-layout + 7→11 dockerhub + 6 store-actions)
 - 7 yeni E2E test (3 stacks + 4 marketplace)
 - **Toplam: 96 unit + 14 MCP unit + 17 E2E test**
+
+### Oturum 12 (2026-03-16 — 2026-03-19)
+- Phase 10: UI Redesign implementasyonu
+- `docs/superpowers/specs/2026-03-16-ui-redesign-design.md` design spec yazildi
+- `docs/superpowers/plans/2026-03-16-ui-redesign.md` implementation plan yazildi
+- Component Shell Swap strategy: UI layer replaced, store/lib/hooks untouched
+- Theme system: CSS custom properties + Tailwind extend (anthracite/charcoal + amber/gold)
+- New components: GlassServiceNode, NeonWireEdge, IconRail, SidePanel, FloatingConfigPanel, CommandSearch
+- Rewritten: HeaderBar, YamlOutput, LandingPage, EmptyCanvasOverlay, App.tsx layout
+- Gold theme applied to all sidebar panels (Stacks, Marketplace, AI, Networks)
+- ImportModal: styled inline confirmation replaced window.confirm
+- Deleted replaced components: SidebarTabs, UndoRedoToolbar, ServiceNodeComponent, ConfigPanel
+- E2E tests migrated: 9 files updated for new selectors and layout structure
+- 3 yeni unit test (yaml-download)
+- **Toplam: 99 unit + 14 MCP unit + 23 E2E test, tumü geçiyor**

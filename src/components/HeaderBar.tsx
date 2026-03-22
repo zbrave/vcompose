@@ -1,37 +1,132 @@
-export function HeaderBar() {
+import { useState } from 'react';
+import { Undo2, Redo2, Trash2, Settings } from 'lucide-react';
+import { useStore } from '../store';
+import { useStoreWithEqualityFn } from 'zustand/traditional';
+import type { TemporalState } from 'zundo';
+import type { AppStore } from '../store/types';
+
+type TemporalAppStore = Pick<AppStore, 'nodes' | 'edges' | 'networks' | 'namedVolumes'>;
+
+function useTemporalStore<T>(selector: (state: TemporalState<TemporalAppStore>) => T): T {
+  return useStoreWithEqualityFn(useStore.temporal, selector);
+}
+
+interface HeaderBarProps {
+  onSearchClick?: () => void;
+}
+
+const iconBtnCls =
+  'rounded-md p-1.5 text-text-muted hover:text-text-primary hover:bg-elevated transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-text-muted';
+
+export function HeaderBar({ onSearchClick }: HeaderBarProps) {
+  const [showClearConfirm, setShowClearConfirm] = useState(false);
+
+  const { undo, redo } = useStore.temporal.getState();
+  const canUndo = useTemporalStore((s) => s.pastStates.length > 0);
+  const canRedo = useTemporalStore((s) => s.futureStates.length > 0);
+  const hasContent = useStore((s) => s.nodes.length > 0 || s.edges.length > 0);
+
+  const handleClearAll = () => {
+    useStore.setState({
+      nodes: [],
+      edges: [],
+      networks: [],
+      namedVolumes: [],
+      selectedNodeId: null,
+      validationIssues: [],
+    });
+    setShowClearConfirm(false);
+  };
+
   return (
-    <header className="flex h-10 items-center justify-between border-b border-gray-800 bg-gray-900 px-4">
+    <header className="flex h-10 items-center border-b border-subtle bg-surface px-4">
+      {/* Left: Logo + BETA badge */}
       <div className="flex items-center gap-2">
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 64 64"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+        <img src="/logo.svg" alt="" width="20" height="20" />
+        <span
+          className="text-sm text-accent"
+          style={{ fontWeight: 800, letterSpacing: '-0.5px' }}
         >
-          <rect x="8" y="16" width="48" height="36" rx="4" fill="#2563eb" />
-          <rect x="14" y="22" width="10" height="8" rx="1.5" fill="#93c5fd" />
-          <rect x="27" y="22" width="10" height="8" rx="1.5" fill="#93c5fd" />
-          <rect x="40" y="22" width="10" height="8" rx="1.5" fill="#93c5fd" />
-          <rect x="14" y="34" width="10" height="8" rx="1.5" fill="#60a5fa" />
-          <rect x="27" y="34" width="10" height="8" rx="1.5" fill="#60a5fa" />
-          <rect x="40" y="34" width="10" height="8" rx="1.5" fill="#60a5fa" />
-        </svg>
-        <span className="text-sm font-semibold text-gray-200">VCompose</span>
-        <span className="text-xs text-gray-600">beta</span>
+          VCompose
+        </span>
+        <span className="rounded-full border border-accent/30 px-2 py-0.5 text-xs text-accent">
+          BETA
+        </span>
       </div>
-      <div className="flex items-center gap-3">
-        <a
-          href="https://github.com/zbrave/vcompose"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-1.5 rounded-md border border-gray-700 px-2.5 py-1 text-xs text-gray-400 transition-colors hover:border-gray-500 hover:text-gray-200"
+
+      {/* Spacer */}
+      <div className="flex-1" />
+
+      {/* Center: Search trigger */}
+      <button
+        onClick={onSearchClick}
+        className="rounded-md border border-subtle bg-elevated px-3 py-1 text-sm text-text-muted hover:text-text-secondary transition-colors"
+      >
+        Search... ⌘K
+      </button>
+
+      {/* Spacer */}
+      <div className="flex-1" />
+
+      {/* Right: Undo / Redo / Clear / Settings */}
+      <div className="flex items-center gap-1">
+        <button
+          onClick={(_e) => { undo(); }}
+          disabled={!canUndo}
+          className={iconBtnCls}
+          title="Undo"
         >
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-          </svg>
-          GitHub
-        </a>
+          <Undo2 size={15} />
+        </button>
+
+        <button
+          onClick={(_e) => { redo(); }}
+          disabled={!canRedo}
+          className={iconBtnCls}
+          title="Redo"
+        >
+          <Redo2 size={15} />
+        </button>
+
+        {/* Clear All with confirmation popover */}
+        <div className="relative">
+          <button
+            onClick={() => setShowClearConfirm((v) => !v)}
+            disabled={!hasContent}
+            className={iconBtnCls}
+            title="Clear All"
+          >
+            <Trash2 size={15} />
+          </button>
+
+          {showClearConfirm && (
+            <div className="absolute right-0 top-full z-50 mt-1 rounded-lg border border-subtle bg-elevated p-3 shadow-xl">
+              <p className="mb-2 text-xs text-text-secondary">Clear all services?</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setShowClearConfirm(false)}
+                  className="rounded border border-subtle bg-elevated px-2 py-1 text-xs text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleClearAll}
+                  className="rounded bg-[var(--error)] px-2 py-1 text-xs text-white hover:opacity-90 transition-opacity"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <button
+          disabled
+          className={iconBtnCls}
+          title="Settings (coming soon)"
+        >
+          <Settings size={15} />
+        </button>
       </div>
     </header>
   );

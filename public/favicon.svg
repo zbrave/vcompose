@@ -1,19 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <!-- Container shape -->
-  <rect x="8" y="16" width="48" height="36" rx="4" fill="#2563eb" />
-  <!-- Docker-like whale body simplified as stacked blocks -->
-  <rect x="14" y="22" width="10" height="8" rx="1.5" fill="#93c5fd" />
-  <rect x="27" y="22" width="10" height="8" rx="1.5" fill="#93c5fd" />
-  <rect x="40" y="22" width="10" height="8" rx="1.5" fill="#93c5fd" />
-  <rect x="14" y="34" width="10" height="8" rx="1.5" fill="#60a5fa" />
-  <rect x="27" y="34" width="10" height="8" rx="1.5" fill="#60a5fa" />
-  <rect x="40" y="34" width="10" height="8" rx="1.5" fill="#60a5fa" />
-  <!-- Connection lines -->
-  <line x1="24" y1="26" x2="27" y2="26" stroke="#dbeafe" stroke-width="1.5" />
-  <line x1="37" y1="26" x2="40" y2="26" stroke="#dbeafe" stroke-width="1.5" />
-  <line x1="24" y1="38" x2="27" y2="38" stroke="#dbeafe" stroke-width="1.5" />
-  <line x1="37" y1="38" x2="40" y2="38" stroke="#dbeafe" stroke-width="1.5" />
-  <line x1="19" y1="30" x2="19" y2="34" stroke="#dbeafe" stroke-width="1.5" />
-  <line x1="32" y1="30" x2="32" y2="34" stroke="#dbeafe" stroke-width="1.5" />
-  <line x1="45" y1="30" x2="45" y2="34" stroke="#dbeafe" stroke-width="1.5" />
+<svg width="32" height="32" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simplified for small sizes — thicker strokes, larger fills -->
+  <rect x="10" y="14" width="16" height="16" rx="3" stroke="#d4a843" stroke-width="3" fill="rgba(212,168,67,0.15)"/>
+  <circle cx="18" cy="22" r="3.5" fill="#d4a843"/>
+  <rect x="54" y="14" width="16" height="16" rx="3" stroke="#d4a843" stroke-width="3" fill="rgba(212,168,67,0.15)"/>
+  <circle cx="62" cy="22" r="3.5" fill="#d4a843"/>
+  <rect x="28" y="48" width="24" height="20" rx="4" stroke="#d4a843" stroke-width="3" fill="rgba(212,168,67,0.2)"/>
+  <circle cx="40" cy="58" r="5" fill="#d4a843"/>
+  <path d="M22 30 L36 50" stroke="#d4a843" stroke-width="3" stroke-linecap="round"/>
+  <path d="M58 30 L44 50" stroke="#d4a843" stroke-width="3" stroke-linecap="round"/>
 </svg>

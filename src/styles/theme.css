@@ -1,0 +1,23 @@
+/* src/styles/theme.css */
+:root {
+  --bg-base:       #141210;
+  --bg-surface:    #1e1b18;
+  --bg-elevated:   #262220;
+  --bg-glass:      rgba(38, 34, 32, 0.7);
+
+  --border:        #3d3530;
+  --border-subtle: #2d2a25;
+  --border-glow:   rgba(212, 168, 67, 0.15);
+
+  --accent:        #d4a843;
+  --accent-dim:    #a88a35;
+  --accent-glow:   rgba(212, 168, 67, 0.15);
+
+  --text-primary:   #e8dcc8;
+  --text-secondary: #a89880;
+  --text-muted:     #6b6055;
+
+  --success: #4ade80;
+  --warning: #f59e0b;
+  --error:   #ef4444;
+}

@@ -1,4 +1,5 @@
 // src/components/sidebar/StackCard.tsx
+import { motion } from 'framer-motion';
 import type { StackDefinition } from '../../data/types';
 
 interface StackCardProps {
@@ -9,25 +10,27 @@ interface StackCardProps {
 
 export function StackCard({ stack, onAdd, onDragStart }: StackCardProps) {
   return (
-    <div
+    <motion.div
       draggable
-      onDragStart={onDragStart}
-      className="p-3 bg-gray-800 border border-gray-700 rounded-lg hover:border-purple-500 cursor-grab transition-colors"
+      onDragStartCapture={onDragStart}
+      whileHover={{ y: -2 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      className="p-3 bg-elevated/50 border border-subtle rounded-lg hover:border-accent/30 cursor-grab transition-colors"
     >
       <div className="flex items-center gap-2 mb-1">
         <span className="text-lg">{stack.icon}</span>
-        <span className="font-medium text-sm text-gray-200 flex-1">{stack.name}</span>
-        <span className="text-[10px] bg-purple-900 text-purple-300 px-1.5 py-0.5 rounded">
+        <span className="font-medium text-sm text-text-primary flex-1">{stack.name}</span>
+        <span className="text-[10px] bg-accent/10 text-accent px-1.5 py-0.5 rounded">
           {stack.services.length} services
         </span>
       </div>
-      <p className="text-xs text-gray-500 mb-2">{stack.description}</p>
+      <p className="text-xs text-text-secondary mb-2">{stack.description}</p>
       <button
         onClick={(e) => { e.stopPropagation(); onAdd(); }}
-        className="w-full text-xs bg-purple-600 hover:bg-purple-500 text-white py-1.5 rounded"
+        className="w-full text-xs bg-accent/10 text-accent hover:bg-accent/20 py-1.5 rounded transition-colors"
       >
         + Add Stack
       </button>
-    </div>
+    </motion.div>
   );
 }

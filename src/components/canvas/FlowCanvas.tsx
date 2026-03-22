@@ -10,20 +10,16 @@ import {
   type Node,
   type Edge,
   type NodeTypes,
-  type DefaultEdgeOptions,
+  type EdgeTypes,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { generateId } from '../../lib/generate-id';
 import { useStore } from '../../store';
-import { ServiceNodeComponent } from './ServiceNodeComponent';
-import { UndoRedoToolbar } from './UndoRedoToolbar';
+import { GlassServiceNode } from './GlassServiceNode';
+import { NeonWireEdge } from './NeonWireEdge';
+
 import { EmptyCanvasOverlay } from './EmptyCanvasOverlay';
 import type { PresetImageKey } from '../../store/types';
-
-const defaultEdgeOptions: DefaultEdgeOptions = {
-  animated: true,
-  style: { stroke: '#6366f1', strokeDasharray: '5 5' },
-};
 
 export function FlowCanvas() {
   const nodes = useStore((s) => s.nodes);
@@ -47,7 +43,12 @@ export function FlowCanvas() {
   const rfEdges = edges as unknown as Edge[];
 
   const nodeTypes: NodeTypes = useMemo(
-    () => ({ serviceNode: ServiceNodeComponent as unknown as NodeTypes['serviceNode'] }),
+    () => ({ serviceNode: GlassServiceNode as unknown as NodeTypes['serviceNode'] }),
+    [],
+  );
+
+  const edgeTypes: EdgeTypes = useMemo(
+    () => ({ dependencyEdge: NeonWireEdge as unknown as EdgeTypes['dependencyEdge'] }),
     [],
   );
 
@@ -181,26 +182,25 @@ export function FlowCanvas() {
   return (
     <div className="relative h-full w-full">
     {nodes.length === 0 && <EmptyCanvasOverlay />}
-    <UndoRedoToolbar />
     <ReactFlow
       nodes={rfNodes}
       edges={rfEdges}
       nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
       onPaneClick={onPaneClick}
       onDrop={onDrop}
       onDragOver={onDragOver}
-      defaultEdgeOptions={defaultEdgeOptions}
       snapToGrid
       snapGrid={[16, 16]}
       fitView
       deleteKeyCode={['Backspace', 'Delete']}
-      className="bg-gray-950"
+      className="!bg-base"
     >
-      <Background color="#374151" gap={16} />
-      <Controls className="!bg-gray-800 !border-gray-700 [&>button]:!bg-gray-800 [&>button]:!border-gray-700 [&>button]:!text-gray-300" />
+      <Background color="#3d3530" gap={16} />
+      <Controls className="!bg-elevated !border-subtle [&>button]:!bg-elevated [&>button]:!border-subtle [&>button]:!text-text-secondary" />
     </ReactFlow>
     </div>
   );

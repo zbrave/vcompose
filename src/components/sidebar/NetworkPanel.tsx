@@ -22,34 +22,29 @@ export function NetworkPanel() {
     setNewDriver('bridge');
   };
 
-  const inputCls =
-    'w-full rounded border border-gray-600 bg-gray-800 px-2 py-1.5 text-sm text-gray-100 focus:border-blue-500 focus:outline-none';
-  const btnCls =
-    'rounded bg-gray-700 px-2 py-1 text-xs text-gray-300 hover:bg-gray-600 transition-colors';
-
   return (
-    <div>
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-400">
+    <div className="p-3">
+      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-secondary">
         Networks
       </h2>
 
       {networks.length === 0 && (
-        <p className="mb-2 text-xs text-gray-600">No networks yet</p>
+        <p className="mb-2 text-xs text-text-muted">No networks yet</p>
       )}
 
       <div className="mb-3 space-y-2">
         {networks.map((net) => (
           <div
             key={net.name}
-            className="flex items-center gap-1 rounded border border-gray-700 bg-gray-800/50 px-2 py-1.5"
+            className="flex items-center gap-1 rounded border border-subtle bg-elevated/50 px-2 py-1.5"
           >
             <input
-              className="min-w-0 flex-1 border-none bg-transparent text-sm text-gray-200 focus:outline-none"
+              className="min-w-0 flex-1 border-none bg-transparent text-sm text-text-primary focus:outline-none"
               value={net.name}
               onChange={(e) => updateNetwork(net.name, { ...net, name: e.target.value })}
             />
             <select
-              className="rounded border border-gray-600 bg-gray-800 px-1 py-0.5 text-xs text-gray-300"
+              className="rounded border border-subtle bg-elevated px-1 py-0.5 text-xs text-text-secondary"
               value={net.driver}
               onChange={(e) =>
                 updateNetwork(net.name, {
@@ -66,7 +61,7 @@ export function NetworkPanel() {
             </select>
             <button
               onClick={() => removeNetwork(net.name)}
-              className="text-xs text-red-400 hover:text-red-300"
+              className="text-xs text-text-muted hover:text-[var(--error)]"
             >
               ✕
             </button>
@@ -76,14 +71,14 @@ export function NetworkPanel() {
 
       <div className="flex items-center gap-1">
         <input
-          className={`${inputCls} flex-1`}
+          className="flex-1 w-full rounded border border-subtle bg-elevated px-2 py-1.5 text-sm text-text-primary placeholder-text-muted focus:border-accent focus:outline-none"
           placeholder="network name"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
         />
         <select
-          className="rounded border border-gray-600 bg-gray-800 px-1 py-1.5 text-xs text-gray-300"
+          className="rounded border border-subtle bg-elevated px-1 py-1.5 text-xs text-text-secondary"
           value={newDriver}
           onChange={(e) => setNewDriver(e.target.value as NetworkConfig['driver'])}
         >
@@ -93,7 +88,11 @@ export function NetworkPanel() {
             </option>
           ))}
         </select>
-        <button onClick={handleAdd} className={btnCls} data-testid="add-network-btn">
+        <button
+          onClick={handleAdd}
+          className="rounded bg-accent/10 text-accent hover:bg-accent/20 px-2 py-1 text-xs transition-colors"
+          data-testid="add-network-btn"
+        >
           +
         </button>
       </div>

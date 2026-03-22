@@ -9,8 +9,7 @@ test.describe('Stacks Tab', () => {
     });
     await page.reload();
     await page.waitForSelector('.react-flow');
-    // Click Stacks tab
-    await page.click('button:text("Stacks")');
+    // Stacks panel is the default — no need to click rail
   });
 
   test('shows stack list', async ({ page }) => {

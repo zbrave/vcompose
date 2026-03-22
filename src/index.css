@@ -1,3 +1,5 @@
+@import './styles/theme.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,16 +9,12 @@ html {
 }
 
 body {
-  @apply bg-gray-950 text-gray-100;
-  margin: 0;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 #root {
-  @apply h-screen w-screen;
+  height: 100%;
+  width: 100%;
 }
