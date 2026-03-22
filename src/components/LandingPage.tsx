@@ -209,24 +209,36 @@ export function LandingPage({ onEnter }: LandingPageProps) {
       className="relative min-h-screen overflow-hidden"
       style={{ background: '#0a0806' }}
     >
-      {/* Static ambient background */}
+      {/* Subtle gold ambient glow */}
       <div className="pointer-events-none absolute inset-0">
+        {/* Top-center warm glow */}
         <div
-          className="absolute -top-1/4 left-1/4 h-[600px] w-[600px] rounded-full"
+          className="absolute -top-[200px] left-1/2 -translate-x-1/2 h-[800px] w-[1000px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(212,168,67,0.12) 0%, transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(212,168,67,0.08) 0%, rgba(212,168,67,0.03) 40%, transparent 70%)',
           }}
         />
+        {/* Right accent */}
         <div
-          className="absolute top-1/3 right-1/5 h-[400px] w-[400px] rounded-full"
+          className="absolute top-[40%] -right-[100px] h-[600px] w-[600px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(168,120,40,0.08) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(168,120,40,0.06) 0%, transparent 60%)',
           }}
         />
+        {/* Bottom-left accent */}
         <div
-          className="absolute bottom-1/4 left-1/2 h-[500px] w-[500px] rounded-full"
+          className="absolute bottom-[10%] -left-[100px] h-[500px] w-[500px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(212,168,67,0.06) 0%, transparent 60%)',
+            background: 'radial-gradient(circle, rgba(212,168,67,0.05) 0%, transparent 60%)',
+          }}
+        />
+        {/* Subtle grid overlay */}
+        <div
+          className="absolute inset-0 opacity-40"
+          style={{
+            backgroundImage:
+              'linear-gradient(rgba(212,168,67,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(212,168,67,0.02) 1px, transparent 1px)',
+            backgroundSize: '64px 64px',
           }}
         />
       </div>
