@@ -11,7 +11,6 @@ import {
   Cpu,
   Zap,
 } from 'lucide-react';
-import { CosmicAurora } from './landing/CosmicAurora';
 import { GlassFeatureCard } from './landing/GlassFeatureCard';
 
 // --- Typing YAML demo ---
@@ -210,8 +209,27 @@ export function LandingPage({ onEnter }: LandingPageProps) {
       className="relative min-h-screen overflow-hidden"
       style={{ background: '#0a0806' }}
     >
-      {/* Cosmic Aurora particle background */}
-      <CosmicAurora particleCount={800} />
+      {/* Static ambient background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div
+          className="absolute -top-1/4 left-1/4 h-[600px] w-[600px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(212,168,67,0.12) 0%, transparent 70%)',
+          }}
+        />
+        <div
+          className="absolute top-1/3 right-1/5 h-[400px] w-[400px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(168,120,40,0.08) 0%, transparent 70%)',
+          }}
+        />
+        <div
+          className="absolute bottom-1/4 left-1/2 h-[500px] w-[500px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(212,168,67,0.06) 0%, transparent 60%)',
+          }}
+        />
+      </div>
 
       {/* Nav */}
       <nav
