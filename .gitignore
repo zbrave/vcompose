@@ -6,3 +6,12 @@ test-results/
 playwright-report/
 *.log
 .superpowers/
+
+# Vibe coding / AI development artifacts (local only)
+docs/
+CLAUDE.md
+PROJECT_SPEC.md
+REVIEW.md
+.claude/
+e2e/
+.playwright-mcp/
