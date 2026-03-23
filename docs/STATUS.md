@@ -3,7 +3,7 @@
 > Her Claude Code oturumunun sonunda güncelle.
 > Status: `⬜ Todo` · `🔄 In Progress` · `✅ Done` · `🚫 Blocked`
 
-Last updated: 2026-03-19
+Last updated: 2026-03-23
 
 ---
 
@@ -40,6 +40,7 @@ Last updated: 2026-03-19
 | AI-Powered Generation (Phase 8) | ✅ Done | Vercel AI SDK, 4 providers (Anthropic/OpenAI/Gemini/GLM), sidebar AI tab, MCP ai-generate-compose tool |
 | Enhanced Sidebar (Phase 9) | ✅ Done | 111 services, 16 stacks, 15 categories, Marketplace + Stacks tabs, Cloudflare Worker proxy |
 | UI Redesign (Phase 10) | ✅ Done | Anthracite/gold theme, glassmorphism nodes, neon edges, icon rail, floating config, command palette |
+| MCP Docs & Routing (Phase 11) | ✅ Done | React Router (/, /app, /mcp), MCP documentation page, NavDropdown, command palette navigation |
 
 ---
 
@@ -69,9 +70,23 @@ Last updated: 2026-03-19
 
 ---
 
+## Phase 11: MCP Docs & Routing
+
+- [x] React Router v6 entegrasyonu: `BrowserRouter`, `/`, `/app`, `/mcp` rotaları
+- [x] `LandingRedirect` component: `sessionStorage` `vdc-entered` flag, route-level redirect logic
+- [x] `/mcp` rotası: MCP documentation page (tools, usage, install instructions)
+- [x] `NavDropdown`: HeaderBar logo'ya tıklanınca açılan dropdown (Home, MCP Docs, separator)
+- [x] CommandSearch'e navigation actions eklendi: "Go to Home", "Go to MCP Docs"
+- [x] `sessionStorage.removeItem('vdc-entered')` Home'a navigasyonda temizlenir (NavDropdown + CommandSearch)
+- [x] `replace: true` tüm / → /app yönlendirmelerinde back-button loop engeli
+- [x] 7 yeni E2E routing testi (routing.spec.ts)
+- [x] **99 unit + 14 MCP unit + 30 E2E test (23 existing + 7 new routing)**
+
+---
+
 ## Mevcut Oturum Odagi
 
-Phase 10 (UI Redesign) tamamlandi. 99 unit + 14 MCP unit + 23 E2E test geciyor.
+Phase 11 (MCP Docs & Routing) tamamlandi. 99 unit + 14 MCP unit + 30 E2E test geciyor.
 
 ---
 
