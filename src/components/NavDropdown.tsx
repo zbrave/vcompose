@@ -31,7 +31,7 @@ export function NavDropdown() {
 
   const handleHome = () => {
     sessionStorage.removeItem('vdc-entered');
-    navigate('/');
+    navigate('/', { state: { showLanding: true } });
     setOpen(false);
   };
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { ReactFlowProvider } from '@xyflow/react';
 import { useStore } from './store';
 import { validate } from './lib/validator';
@@ -19,19 +19,25 @@ import { LandingPage } from './components/LandingPage';
 import { McpDocsPage } from './components/McpDocsPage';
 
 function LandingRedirect() {
-  const stored = localStorage.getItem('vdc-store');
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored);
-      if (parsed?.state?.nodes?.length > 0) {
-        return <Navigate to="/app" replace />;
+  const location = useLocation();
+  const forceLanding = (location.state as { showLanding?: boolean })?.showLanding;
+
+  // If user intentionally navigated Home, skip all redirects
+  if (!forceLanding) {
+    const stored = localStorage.getItem('vdc-store');
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed?.state?.nodes?.length > 0) {
+          return <Navigate to="/app" replace />;
+        }
+      } catch {
+        // ignore
       }
-    } catch {
-      // ignore
     }
-  }
-  if (sessionStorage.getItem('vdc-entered')) {
-    return <Navigate to="/app" replace />;
+    if (sessionStorage.getItem('vdc-entered')) {
+      return <Navigate to="/app" replace />;
+    }
   }
   return <LandingPage />;
 }
@@ -94,7 +100,7 @@ function CanvasLayout() {
         onClose={() => setShowSearch(false)}
         onImportClick={() => { setShowSearch(false); setShowImport(true); }}
         onToggleAI={() => { setShowSearch(false); setActivePanel('ai'); }}
-        onNavigate={(path) => { setShowSearch(false); navigate(path); }}
+        onNavigate={(path) => { setShowSearch(false); navigate(path, path === '/' ? { state: { showLanding: true } } : undefined); }}
       />
     </ReactFlowProvider>
   );
