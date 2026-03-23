@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Command } from 'cmdk';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, FileInput, Trash2, Download, Bot } from 'lucide-react';
+import { Search, FileInput, Trash2, Download, Bot, Home, BookOpen } from 'lucide-react';
 import { SERVICE_REGISTRY } from '../data/service-registry';
 import { STACK_CATALOG } from '../data/stack-catalog';
 import { useStore } from '../store';
@@ -13,9 +13,10 @@ interface CommandSearchProps {
   onClose: () => void;
   onImportClick: () => void;
   onToggleAI: () => void;
+  onNavigate: (path: string) => void;
 }
 
-export function CommandSearch({ open, onClose, onImportClick, onToggleAI }: CommandSearchProps) {
+export function CommandSearch({ open, onClose, onImportClick, onToggleAI, onNavigate }: CommandSearchProps) {
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   // Reset confirm state when dialog closes
@@ -68,6 +69,15 @@ export function CommandSearch({ open, onClose, onImportClick, onToggleAI }: Comm
   const handleToggleAI = () => {
     onClose();
     onToggleAI();
+  };
+
+  const handleGoHome = () => {
+    sessionStorage.removeItem('vdc-entered');
+    onNavigate('/');
+  };
+
+  const handleGoMcpDocs = () => {
+    onNavigate('/mcp');
   };
 
   const limitedServices = SERVICE_REGISTRY.slice(0, 20);
@@ -201,6 +211,30 @@ export function CommandSearch({ open, onClose, onImportClick, onToggleAI }: Comm
                         <div className="flex flex-col">
                           <span>Toggle AI</span>
                           <span className="text-xs text-text-muted">Open AI generation panel</span>
+                        </div>
+                      </Command.Item>
+
+                      <Command.Item
+                        value="go home landing page"
+                        onSelect={handleGoHome}
+                        className="flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-text-primary data-[selected=true]:bg-[var(--accent)]/10 data-[selected=true]:text-accent outline-none"
+                      >
+                        <Home size={15} className="text-text-muted flex-shrink-0" />
+                        <div className="flex flex-col">
+                          <span>Go to Home</span>
+                          <span className="text-xs text-text-muted">Return to landing page</span>
+                        </div>
+                      </Command.Item>
+
+                      <Command.Item
+                        value="go mcp docs documentation"
+                        onSelect={handleGoMcpDocs}
+                        className="flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-text-primary data-[selected=true]:bg-[var(--accent)]/10 data-[selected=true]:text-accent outline-none"
+                      >
+                        <BookOpen size={15} className="text-text-muted flex-shrink-0" />
+                        <div className="flex flex-col">
+                          <span>MCP Docs</span>
+                          <span className="text-xs text-text-muted">View MCP integration guide</span>
                         </div>
                       </Command.Item>
                     </Command.Group>

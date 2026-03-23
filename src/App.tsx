@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { ReactFlowProvider } from '@xyflow/react';
 import { useStore } from './store';
 import { validate } from './lib/validator';
@@ -40,6 +40,7 @@ function CanvasLayout() {
   const nodes = useStore((s) => s.nodes);
   const edges = useStore((s) => s.edges);
   const setValidationIssues = useStore((s) => s.setValidationIssues);
+  const navigate = useNavigate();
 
   const [activePanel, setActivePanel] = useState<string | null>('stacks');
   const [showImport, setShowImport] = useState(false);
@@ -93,6 +94,7 @@ function CanvasLayout() {
         onClose={() => setShowSearch(false)}
         onImportClick={() => { setShowSearch(false); setShowImport(true); }}
         onToggleAI={() => { setShowSearch(false); setActivePanel('ai'); }}
+        onNavigate={(path) => { setShowSearch(false); navigate(path); }}
       />
     </ReactFlowProvider>
   );
