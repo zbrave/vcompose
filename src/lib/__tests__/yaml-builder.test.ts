@@ -25,9 +25,9 @@ function makeNode(overrides: { id?: string; data: Partial<ServiceNode['data']> &
 const empty = { nodes: [] as ServiceNode[], edges: [] as DependencyEdge[], networks: [] as NetworkConfig[], namedVolumes: [] as NamedVolume[] };
 
 describe('buildYaml', () => {
-  it('returns version and empty services when no nodes', () => {
+  it('returns empty services when no nodes', () => {
     const yaml = buildYaml(empty);
-    expect(yaml).toContain('version: "3.8"');
+    expect(yaml).not.toContain('version');
     expect(yaml).toContain('services:');
   });
 

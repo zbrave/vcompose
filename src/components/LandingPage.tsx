@@ -18,7 +18,6 @@ import { GlassFeatureCard } from './landing/GlassFeatureCard';
 // --- Typing YAML demo ---
 
 const YAML_LINES = [
-  'version: "3.8"',
   'services:',
   '  nginx:',
   '    image: nginx:alpine',

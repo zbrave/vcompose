@@ -20,8 +20,6 @@ export function buildYaml(store: Pick<AppStore, 'nodes' | 'edges' | 'networks' |
 ## Çıktı Formatı
 
 ```yaml
-version: '3.8'
-
 services:
   <serviceName>:
     image: <image>
@@ -55,7 +53,7 @@ volumes:
 ## Kurallar
 
 ### Zorunlu
-- `version: '3.8'` her zaman ilk satır.
+- Top-level `version` alanı eklenmez — Compose Specification'da artık gerekli değil.
 - `services:` bloğu her zaman var — boş olsa bile.
 - `serviceName` YAML key olarak kullanılır (node id değil).
 

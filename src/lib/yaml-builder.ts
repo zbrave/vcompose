@@ -66,7 +66,6 @@ export function buildYaml(store: BuildYamlInput): string {
 
   // Build document
   const doc: Record<string, unknown> = {
-    version: '3.8',
     services,
   };
 

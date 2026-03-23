@@ -195,7 +195,6 @@ const TOOLS = [
       'Generate a docker-compose.yml from a list of service names. Automatically configures images, ports, environment variables, dependencies, and networks.',
     inputs: [
       { name: 'services', type: 'string[]', required: true },
-      { name: 'version', type: 'string', required: false },
     ],
   },
   {
@@ -250,8 +249,7 @@ const EXAMPLES = [
     title: 'Create a MERN stack',
     prompt: 'Create a docker-compose with MongoDB, Express, React, and Node',
     tool: 'generate-compose',
-    output: `version: "3.8"
-services:
+    output: `services:
   mongodb:
     image: mongo:7
     ports:

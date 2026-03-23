@@ -9,9 +9,9 @@ test.beforeEach(async ({ page }) => {
   await page.waitForSelector('.react-flow');
 });
 
-test('shows empty YAML with version and services when no nodes', async ({ page }) => {
+test('shows empty YAML with services when no nodes', async ({ page }) => {
   const yaml = page.locator('pre');
-  await expect(yaml).toContainText('version: "3.8"');
+  await expect(yaml).not.toContainText('version');
   await expect(yaml).toContainText('services:');
 });
 
