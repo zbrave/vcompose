@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Undo2, Redo2, Trash2, Settings } from 'lucide-react';
+import { NavDropdown } from './NavDropdown';
 import { useStore } from '../store';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 import type { TemporalState } from 'zundo';
@@ -40,19 +41,8 @@ export function HeaderBar({ onSearchClick }: HeaderBarProps) {
 
   return (
     <header className="flex h-10 items-center border-b border-subtle bg-surface px-4">
-      {/* Left: Logo + BETA badge */}
-      <div className="flex items-center gap-2">
-        <img src="/logo.svg" alt="" width="20" height="20" />
-        <span
-          className="text-sm text-accent"
-          style={{ fontWeight: 800, letterSpacing: '-0.5px' }}
-        >
-          VCompose
-        </span>
-        <span className="rounded-full border border-accent/30 px-2 py-0.5 text-xs text-accent">
-          BETA
-        </span>
-      </div>
+      {/* Left: Logo + Nav Dropdown */}
+      <NavDropdown />
 
       {/* Spacer */}
       <div className="flex-1" />
