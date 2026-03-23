@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate, Link } from 'react-router-dom';
+import type { LucideIcon } from 'lucide-react';
 import {
   Container,
   GitBranch,
   Download,
   Eye,
   Network,
-  Shield,
+  Plug,
   Layers,
   Cpu,
   Zap,
@@ -121,7 +123,7 @@ function TypingYaml() {
 
 // --- Feature data ---
 
-const features = [
+const features: Array<{ icon: LucideIcon; title: string; desc: string; link?: string }> = [
   {
     icon: Container,
     title: 'Drag & Drop',
@@ -148,9 +150,10 @@ const features = [
     desc: 'Automatic network creation and management',
   },
   {
-    icon: Shield,
-    title: 'Validation',
-    desc: 'Built-in validation catches errors before deployment',
+    icon: Plug,
+    title: 'MCP Integration',
+    desc: 'Connect your IDE to VCompose via Model Context Protocol',
+    link: '/mcp',
   },
   {
     icon: Layers,
@@ -199,11 +202,14 @@ const scaleIn = {
 
 // --- Landing Page ---
 
-interface LandingPageProps {
-  onEnter?: () => void;
-}
+export function LandingPage() {
+  const navigate = useNavigate();
 
-export function LandingPage({ onEnter }: LandingPageProps) {
+  const handleEnter = () => {
+    sessionStorage.setItem('vdc-entered', '1');
+    navigate('/app', { replace: true });
+  };
+
   return (
     <div
       className="relative min-h-screen overflow-hidden"
@@ -266,38 +272,62 @@ export function LandingPage({ onEnter }: LandingPageProps) {
             VCompose
           </span>
         </div>
-        <a
-          href="https://github.com/zbrave/vcompose"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition-all duration-200"
-          style={{
-            border: '1px solid rgba(212, 168, 67, 0.15)',
-            background: 'rgba(26, 23, 20, 0.6)',
-            backdropFilter: 'blur(8px)',
-            color: '#a89880',
-          }}
-          onMouseEnter={(e) => {
-            const el = e.currentTarget;
-            el.style.borderColor = 'rgba(212,168,67,0.4)';
-            el.style.color = '#e8dcc8';
-          }}
-          onMouseLeave={(e) => {
-            const el = e.currentTarget;
-            el.style.borderColor = 'rgba(212,168,67,0.15)';
-            el.style.color = '#a89880';
-          }}
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="currentColor"
+        <div className="flex items-center gap-3">
+          <Link
+            to="/mcp"
+            className="rounded-lg px-4 py-2 text-sm transition-all duration-200"
+            style={{
+              border: '1px solid rgba(212, 168, 67, 0.15)',
+              background: 'rgba(26, 23, 20, 0.6)',
+              backdropFilter: 'blur(8px)',
+              color: '#a89880',
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget;
+              el.style.borderColor = 'rgba(212,168,67,0.4)';
+              el.style.color = '#e8dcc8';
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget;
+              el.style.borderColor = 'rgba(212,168,67,0.15)';
+              el.style.color = '#a89880';
+            }}
           >
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
-          </svg>
-          Star on GitHub
-        </a>
+            MCP Docs
+          </Link>
+          <a
+            href="https://github.com/zbrave/vcompose"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition-all duration-200"
+            style={{
+              border: '1px solid rgba(212, 168, 67, 0.15)',
+              background: 'rgba(26, 23, 20, 0.6)',
+              backdropFilter: 'blur(8px)',
+              color: '#a89880',
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget;
+              el.style.borderColor = 'rgba(212,168,67,0.4)';
+              el.style.color = '#e8dcc8';
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget;
+              el.style.borderColor = 'rgba(212,168,67,0.15)';
+              el.style.color = '#a89880';
+            }}
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+            >
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+            </svg>
+            Star on GitHub
+          </a>
+        </div>
       </nav>
 
       {/* Hero Section — stagger animation */}
@@ -363,7 +393,7 @@ export function LandingPage({ onEnter }: LandingPageProps) {
             className="mt-10 flex items-center gap-4"
           >
             <button
-              onClick={onEnter}
+              onClick={handleEnter}
               className="rounded-lg px-6 py-3 text-base font-semibold transition-all duration-200"
               style={{
                 background:
@@ -480,6 +510,8 @@ export function LandingPage({ onEnter }: LandingPageProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.07, duration: 0.4 }}
+              onClick={'link' in f ? () => navigate(f.link!) : undefined}
+              style={'link' in f ? { cursor: 'pointer' } : undefined}
             >
               <GlassFeatureCard
                 icon={f.icon}
@@ -528,7 +560,7 @@ export function LandingPage({ onEnter }: LandingPageProps) {
             No signup. No install. Just click and compose.
           </p>
           <button
-            onClick={onEnter}
+            onClick={handleEnter}
             className="relative mt-8 rounded-lg px-10 py-4 text-lg font-semibold transition-all duration-200"
             style={{
               background:
