@@ -1,10 +1,9 @@
 import { test, expect } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app');
   await page.evaluate(() => {
     localStorage.clear();
-    sessionStorage.setItem('vdc-entered', '1');
   });
   await page.reload();
   await page.waitForSelector('.react-flow');
