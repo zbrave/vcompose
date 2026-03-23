@@ -200,7 +200,7 @@ const scaleIn = {
 // --- Landing Page ---
 
 interface LandingPageProps {
-  onEnter: () => void;
+  onEnter?: () => void;
 }
 
 export function LandingPage({ onEnter }: LandingPageProps) {
