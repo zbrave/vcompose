@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { ReactFlowProvider } from '@xyflow/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useStore } from './store';
 import { validate } from './lib/validator';
 import { HeaderBar } from './components/HeaderBar';
@@ -48,9 +49,12 @@ function CanvasLayout() {
   const setValidationIssues = useStore((s) => s.setValidationIssues);
   const navigate = useNavigate();
 
-  const [activePanel, setActivePanel] = useState<string | null>('stacks');
+  const [activePanel, setActivePanel] = useState<string | null>(
+    window.innerWidth >= 768 ? 'stacks' : null,
+  );
   const [showImport, setShowImport] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [showYaml, setShowYaml] = useState(false);
 
   useEffect(() => {
     const issues = validate({ nodes, edges });
@@ -71,7 +75,11 @@ function CanvasLayout() {
   return (
     <ReactFlowProvider>
       <div className="flex h-screen flex-col bg-base text-text-primary">
-        <HeaderBar onSearchClick={() => setShowSearch(true)} />
+        <HeaderBar
+          onSearchClick={() => setShowSearch(true)}
+          onYamlToggle={() => setShowYaml((v) => !v)}
+          showYaml={showYaml}
+        />
         <div className="flex flex-1 overflow-hidden">
           <IconRail
             activePanel={activePanel}
@@ -91,7 +99,33 @@ function CanvasLayout() {
             <FlowCanvas />
             <FloatingConfigPanel />
           </div>
-          <YamlOutput />
+          {/* Desktop YAML sidebar */}
+          <div className="hidden md:flex">
+            <YamlOutput />
+          </div>
+
+          {/* Mobile YAML overlay */}
+          <AnimatePresence>
+            {showYaml && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex justify-end md:hidden"
+              >
+                <div className="absolute inset-0 bg-black/50" onClick={() => setShowYaml(false)} />
+                <motion.div
+                  initial={{ x: '100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: '100%' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  className="relative h-full w-[280px]"
+                >
+                  <YamlOutput onClose={() => setShowYaml(false)} />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
       {showImport && <ImportModal onClose={() => setShowImport(false)} />}

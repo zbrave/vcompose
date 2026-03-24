@@ -89,25 +89,31 @@ export function FloatingConfigPanel() {
 
   const panel = (
     <AnimatePresence>
+      {/* Mobile backdrop */}
+      <motion.div
+        key="config-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-40 bg-black/30 md:hidden"
+        onClick={() => selectNode(null)}
+      />
       <motion.div
         key="floating-config"
         initial={{ opacity: 0, x: 40, scale: 0.95 }}
         animate={{ opacity: 1, x: 0, scale: 1 }}
         exit={{ opacity: 0, x: 40, scale: 0.95 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-        drag
+        drag={window.innerWidth >= 768}
         dragMomentum={false}
         style={{
           position: 'fixed',
-          right: '20px',
-          top: '50%',
-          transform: 'translateY(-50%)',
           zIndex: 50,
-          backgroundColor: 'rgba(38, 34, 32, 0.85)',
+          backgroundColor: 'rgba(38, 34, 32, 0.95)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
         }}
-        className="w-80 max-h-[70vh] overflow-y-auto border border-glow rounded-xl shadow-2xl"
+        className="max-h-[70vh] overflow-y-auto border border-glow rounded-xl shadow-2xl right-2 left-2 bottom-2 top-auto w-auto md:right-5 md:left-auto md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:w-80 max-md:max-h-[50vh] max-md:rounded-t-2xl"
       >
         {/* Header */}
         <div

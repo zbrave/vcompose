@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Undo2, Redo2, Trash2, Settings } from 'lucide-react';
+import { Undo2, Redo2, Trash2, Settings, Code } from 'lucide-react';
 import { NavDropdown } from './NavDropdown';
 import { useStore } from '../store';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
@@ -14,12 +14,14 @@ function useTemporalStore<T>(selector: (state: TemporalState<TemporalAppStore>) 
 
 interface HeaderBarProps {
   onSearchClick?: () => void;
+  onYamlToggle?: () => void;
+  showYaml?: boolean;
 }
 
 const iconBtnCls =
   'rounded-md p-1.5 text-text-muted hover:text-text-primary hover:bg-elevated transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-text-muted';
 
-export function HeaderBar({ onSearchClick }: HeaderBarProps) {
+export function HeaderBar({ onSearchClick, onYamlToggle, showYaml }: HeaderBarProps) {
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
   const { undo, redo } = useStore.temporal.getState();
@@ -60,6 +62,14 @@ export function HeaderBar({ onSearchClick }: HeaderBarProps) {
 
       {/* Right: Undo / Redo / Clear / Settings */}
       <div className="flex items-center gap-1">
+        {/* Mobile YAML toggle */}
+        <button
+          onClick={onYamlToggle}
+          className={`md:hidden ${iconBtnCls} ${showYaml ? '!text-accent' : ''}`}
+          title="Toggle YAML"
+        >
+          <Code size={15} />
+        </button>
         <button
           onClick={(_e) => { undo(); }}
           disabled={!canUndo}
