@@ -3,6 +3,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+ARG VITE_POSTHOG_KEY
+ARG VITE_POSTHOG_HOST
 RUN npm run build
 
 FROM nginx:alpine
