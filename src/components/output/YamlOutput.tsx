@@ -5,6 +5,7 @@ import { Copy, Download } from 'lucide-react';
 import { useStore } from '../../store';
 import { buildYaml } from '../../lib/yaml-builder';
 import { downloadYaml, copyYaml } from '../../lib/yaml-download';
+import { trackEvent, EVENTS } from '../../lib/analytics/events';
 
 const customStyle: Record<string, React.CSSProperties> = {
   ...(atomDark as Record<string, React.CSSProperties>),
@@ -51,14 +52,20 @@ export function YamlOutput() {
         </div>
         <div className="flex gap-1">
           <button
-            onClick={() => void copyYaml(yaml)}
+            onClick={() => {
+              void copyYaml(yaml);
+              trackEvent(EVENTS.YAML_COPIED, { serviceCount: nodes.length });
+            }}
             className="rounded p-1 text-text-muted hover:text-accent transition-colors"
             title="Copy"
           >
             <Copy size={14} />
           </button>
           <button
-            onClick={() => downloadYaml(yaml)}
+            onClick={() => {
+              downloadYaml(yaml);
+              trackEvent(EVENTS.YAML_DOWNLOADED, { serviceCount: nodes.length });
+            }}
             className="rounded p-1 text-text-muted hover:text-accent transition-colors"
             title="Download"
           >

@@ -6,6 +6,7 @@ import { parseYaml } from '../../lib/yaml-parser';
 import { buildYaml } from '../../lib/yaml-builder';
 import type { AIProviderKey } from '../../lib/ai/ai-types';
 import { PROVIDER_MODELS } from '../../lib/ai/ai-types';
+import { trackEvent, EVENTS } from '../../lib/analytics/events';
 
 const PROVIDERS: { key: AIProviderKey; label: string }[] = [
   { key: 'openai', label: 'OpenAI' },
@@ -45,6 +46,7 @@ export function AISidebar() {
     }
 
     setLoading(false);
+    trackEvent(EVENTS.AI_GENERATE, { provider: config.provider, success: result.success });
   }, [prompt, config, setLoading, setError, importCompose]);
 
   async function handleGenerate() {

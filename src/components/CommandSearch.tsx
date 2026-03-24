@@ -7,6 +7,7 @@ import { STACK_CATALOG } from '../data/stack-catalog';
 import { useStore } from '../store';
 import { downloadYaml } from '../lib/yaml-download';
 import { buildYaml } from '../lib/yaml-builder';
+import { trackEvent, EVENTS } from '../lib/analytics/events';
 
 interface CommandSearchProps {
   open: boolean;
@@ -33,15 +34,18 @@ export function CommandSearch({ open, onClose, onImportClick, onToggleAI, onNavi
 
   const handleServiceSelect = (key: string) => {
     useStore.getState().addServiceFromRegistry(key, getCenter());
+    trackEvent(EVENTS.COMMAND_PALETTE_USED, { action: 'add_service', serviceKey: key });
     onClose();
   };
 
   const handleStackSelect = (key: string) => {
     useStore.getState().addStack(key, getCenter());
+    trackEvent(EVENTS.COMMAND_PALETTE_USED, { action: 'add_stack', stackKey: key });
     onClose();
   };
 
   const handleImport = () => {
+    trackEvent(EVENTS.COMMAND_PALETTE_USED, { action: 'import' });
     onClose();
     onImportClick();
   };
@@ -63,10 +67,12 @@ export function CommandSearch({ open, onClose, onImportClick, onToggleAI, onNavi
 
   const handleExport = () => {
     downloadYaml(buildYaml(useStore.getState()));
+    trackEvent(EVENTS.COMMAND_PALETTE_USED, { action: 'export' });
     onClose();
   };
 
   const handleToggleAI = () => {
+    trackEvent(EVENTS.COMMAND_PALETTE_USED, { action: 'toggle_ai' });
     onClose();
     onToggleAI();
   };
