@@ -20,6 +20,7 @@ import { STACK_CATALOG } from '../data/stack-catalog';
 import { calculateStackLayout } from '../lib/stack-layout';
 import type { DockerHubSearchResult, ServiceDefinition } from '../data/types';
 import { MAX_CANVAS_SERVICES } from './types';
+import { trackEvent, EVENTS } from '../lib/analytics/events';
 
 function buildServiceNode(
   serviceDef: ServiceDefinition,
@@ -74,6 +75,7 @@ export const useStore = create<AppStore>()(
           } satisfies ServiceNodeData,
         };
         set((state) => ({ nodes: [...state.nodes, node] }));
+        trackEvent(EVENTS.SERVICE_ADDED, { preset, source: 'palette' });
       },
 
       updateNode: (id: string, data: Partial<ServiceNodeData>) => {
@@ -117,6 +119,7 @@ export const useStore = create<AppStore>()(
 
           return { edges: newEdges, networks: newNetworks, nodes: newNodes };
         });
+        trackEvent(EVENTS.EDGE_CREATED, { sourceId: edge.source, targetId: edge.target });
       },
 
       removeEdge: (id: string) => {
@@ -231,6 +234,7 @@ export const useStore = create<AppStore>()(
             networks: newNetworks,
           };
         });
+        trackEvent(EVENTS.SERVICE_ADDED, { preset: key, source: 'recommendation' });
       },
 
       // Import
@@ -243,6 +247,7 @@ export const useStore = create<AppStore>()(
           selectedNodeId: null,
           validationIssues: [],
         });
+        trackEvent(EVENTS.YAML_IMPORTED, { success: true, serviceCount: result.nodes.length });
       },
 
       // Stack & Marketplace actions
@@ -252,6 +257,7 @@ export const useStore = create<AppStore>()(
         if (!serviceDef) return;
         const node = buildServiceNode(serviceDef, position);
         set((state) => ({ nodes: [...state.nodes, node] }));
+        trackEvent(EVENTS.SERVICE_ADDED, { preset: serviceDef.preset, source: 'registry' });
       },
 
       addServiceFromHub: (hubResult: DockerHubSearchResult, position: { x: number; y: number }) => {
@@ -259,6 +265,7 @@ export const useStore = create<AppStore>()(
         if (hubResult.registryMatch) {
           const node = buildServiceNode(hubResult.registryMatch, position);
           set((state) => ({ nodes: [...state.nodes, node] }));
+          trackEvent(EVENTS.SERVICE_ADDED, { preset: 'custom', source: 'dockerhub' });
         } else {
           // Create minimal custom node from Docker Hub result
           const id = generateId();
@@ -277,6 +284,7 @@ export const useStore = create<AppStore>()(
             } satisfies ServiceNodeData,
           };
           set((state) => ({ nodes: [...state.nodes, node] }));
+          trackEvent(EVENTS.SERVICE_ADDED, { preset: 'custom', source: 'dockerhub' });
         }
       },
 
@@ -368,6 +376,7 @@ export const useStore = create<AppStore>()(
             networks: newNetworks,
           };
         });
+        trackEvent(EVENTS.STACK_ADDED, { stackKey, serviceCount: stack.services.length });
       },
     }),
     {
