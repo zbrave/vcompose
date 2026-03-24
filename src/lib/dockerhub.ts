@@ -1,7 +1,7 @@
 import type { ServiceDefinition, DockerHubSearchResult } from '../data/types';
 import { SERVICE_REGISTRY } from '../data/service-registry';
 
-const PROXY_URL = import.meta.env.VITE_DOCKERHUB_PROXY_URL || 'https://dockerhub-proxy.your-worker.workers.dev';
+const PROXY_URL = import.meta.env.VITE_DOCKERHUB_PROXY_URL || '';
 
 /**
  * Filter local service registry by query string (case-insensitive).
@@ -41,6 +41,8 @@ export async function searchDockerHub(
   query: string,
   signal?: AbortSignal,
 ): Promise<DockerHubSearchResult[]> {
+  if (!PROXY_URL) return [];
+
   try {
     const url = `${PROXY_URL}/search?q=${encodeURIComponent(query)}&page_size=10`;
     const timeoutSignal = AbortSignal.timeout(5000);
