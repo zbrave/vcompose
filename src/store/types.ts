@@ -1,6 +1,9 @@
 // Canonical type definitions — kept in sync with docs/TYPES.md
 import type { DockerHubSearchResult } from '../data/types';
 
+export const MAX_CANVAS_SERVICES = 50;
+export const CANVAS_WARN_THRESHOLD = 40;
+
 export interface PortMapping {
   host: string;
   container: string;

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { validate } from '../validator';
 import type { ServiceNode, DependencyEdge } from '../../store/types';
+import { MAX_CANVAS_SERVICES, CANVAS_WARN_THRESHOLD } from '../../store/types';
 
 const makeNode = (id: string, serviceName: string, overrides?: Partial<ServiceNode['data']>): ServiceNode => ({
   id,
@@ -104,5 +105,37 @@ describe('validate', () => {
     const issues = validate({ nodes, edges: [] });
     const imgIssues = issues.filter((i) => i.field === 'image');
     expect(imgIssues).toHaveLength(0);
+  });
+
+  // Rule 6: Canvas service limit
+  it('shows error when canvas reaches max service limit', () => {
+    const nodes = Array.from({ length: MAX_CANVAS_SERVICES }, (_, i) =>
+      makeNode(`n${i}`, `svc-${i}`),
+    );
+    const issues = validate({ nodes, edges: [] });
+    const limitIssues = issues.filter((i) => i.message.includes('Canvas limit'));
+    expect(limitIssues).toHaveLength(1);
+    expect(limitIssues[0].severity).toBe('error');
+  });
+
+  it('shows warning when approaching canvas limit', () => {
+    const nodes = Array.from({ length: CANVAS_WARN_THRESHOLD }, (_, i) =>
+      makeNode(`n${i}`, `svc-${i}`),
+    );
+    const issues = validate({ nodes, edges: [] });
+    const warnIssues = issues.filter((i) => i.message.includes('Performance'));
+    expect(warnIssues).toHaveLength(1);
+    expect(warnIssues[0].severity).toBe('warning');
+  });
+
+  it('no limit warning when under threshold', () => {
+    const nodes = Array.from({ length: CANVAS_WARN_THRESHOLD - 1 }, (_, i) =>
+      makeNode(`n${i}`, `svc-${i}`),
+    );
+    const issues = validate({ nodes, edges: [] });
+    const limitIssues = issues.filter((i) =>
+      i.message.includes('Canvas limit') || i.message.includes('Performance'),
+    );
+    expect(limitIssues).toHaveLength(0);
   });
 });

@@ -19,6 +19,7 @@ import { SERVICE_REGISTRY } from '../data/service-registry';
 import { STACK_CATALOG } from '../data/stack-catalog';
 import { calculateStackLayout } from '../lib/stack-layout';
 import type { DockerHubSearchResult, ServiceDefinition } from '../data/types';
+import { MAX_CANVAS_SERVICES } from './types';
 
 function buildServiceNode(
   serviceDef: ServiceDefinition,
@@ -55,6 +56,7 @@ export const useStore = create<AppStore>()(
 
       // Node actions
       addNode: (preset: PresetImageKey, position: { x: number; y: number }) => {
+        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) return;
         const defaults = PRESET_DEFAULTS[preset];
         const id = generateId();
         const node = {
@@ -171,6 +173,7 @@ export const useStore = create<AppStore>()(
 
       // Recommendations
       addRecommendedNode: (key: string, sourceNodeId: string, position: { x: number; y: number }) => {
+        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) return;
         const presetKeys = ['nginx', 'postgres', 'redis', 'node', 'custom'] as const;
         const isPreset = (presetKeys as readonly string[]).includes(key);
         const registryDef = !isPreset ? SERVICE_REGISTRY.find((s) => s.key === key) : undefined;
@@ -244,6 +247,7 @@ export const useStore = create<AppStore>()(
 
       // Stack & Marketplace actions
       addServiceFromRegistry: (serviceKey: string, position: { x: number; y: number }) => {
+        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) return;
         const serviceDef = SERVICE_REGISTRY.find((s) => s.key === serviceKey);
         if (!serviceDef) return;
         const node = buildServiceNode(serviceDef, position);
@@ -251,6 +255,7 @@ export const useStore = create<AppStore>()(
       },
 
       addServiceFromHub: (hubResult: DockerHubSearchResult, position: { x: number; y: number }) => {
+        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) return;
         if (hubResult.registryMatch) {
           const node = buildServiceNode(hubResult.registryMatch, position);
           set((state) => ({ nodes: [...state.nodes, node] }));
@@ -278,13 +283,22 @@ export const useStore = create<AppStore>()(
       addStack: (stackKey: string, dropPosition: { x: number; y: number }) => {
         const stack = STACK_CATALOG.find((s) => s.key === stackKey);
         if (!stack) return;
+        const currentCount = useStore.getState().nodes.length;
+        if (currentCount + stack.services.length > MAX_CANVAS_SERVICES) return;
 
+        const currentNodes = useStore.getState().nodes;
+        const existingNodes = currentNodes.map((n) => ({
+          x: n.position.x,
+          y: n.position.y,
+          width: 180,
+          height: 80,
+        }));
         const layout = calculateStackLayout(stack, {
           startX: dropPosition.x,
           startY: dropPosition.y,
           gapX: 220,
           gapY: 150,
-        });
+        }, existingNodes);
 
         // Build service key → node id map and node list
         const keyToIdMap: Record<string, string> = {};

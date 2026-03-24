@@ -1,4 +1,5 @@
 import type { AppStore, ValidationIssue } from '../store/types';
+import { MAX_CANVAS_SERVICES, CANVAS_WARN_THRESHOLD } from '../store/types';
 
 type ValidateInput = Pick<AppStore, 'nodes' | 'edges'>;
 
@@ -13,6 +14,19 @@ export function validate(store: ValidateInput): ValidationIssue[] {
       message: 'No services defined yet.',
     });
     return issues;
+  }
+
+  // Rule 6: Canvas service limit
+  if (nodes.length >= MAX_CANVAS_SERVICES) {
+    issues.push({
+      severity: 'error',
+      message: `Canvas limit reached (${MAX_CANVAS_SERVICES} services). Remove services before adding new ones.`,
+    });
+  } else if (nodes.length >= CANVAS_WARN_THRESHOLD) {
+    issues.push({
+      severity: 'warning',
+      message: `${nodes.length}/${MAX_CANVAS_SERVICES} services on canvas. Performance may degrade.`,
+    });
   }
 
   // Rule 1: service_name uniqueness
