@@ -50,6 +50,40 @@ function stackOverlapsExisting(
   return false;
 }
 
+/**
+ * Find a non-overlapping position for a single node.
+ * Shifts right, then wraps down — same strategy as stack layout.
+ */
+export function findNonOverlappingPosition(
+  candidate: { x: number; y: number },
+  existingNodes: ExistingNode[],
+): { x: number; y: number } {
+  if (existingNodes.length === 0) return candidate;
+
+  let { x, y } = candidate;
+  const startX = x;
+  const shiftX = NODE_WIDTH + PADDING * 2;
+  const shiftY = NODE_HEIGHT + PADDING * 2;
+  const maxAttempts = 20;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const overlaps = existingNodes.some((en) =>
+      rectsOverlap(
+        x - PADDING, y - PADDING, NODE_WIDTH + PADDING * 2, NODE_HEIGHT + PADDING * 2,
+        en.x, en.y, en.width, en.height,
+      ),
+    );
+    if (!overlaps) return { x, y };
+    x += shiftX;
+    if (attempt > 0 && attempt % 4 === 0) {
+      x = startX;
+      y += shiftY;
+    }
+  }
+
+  return { x, y };
+}
+
 export function calculateStackLayout(
   stack: StackDefinition,
   config: LayoutConfig,

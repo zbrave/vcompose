@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { calculateStackLayout } from '../stack-layout';
+import { calculateStackLayout, findNonOverlappingPosition } from '../stack-layout';
 import type { StackDefinition } from '../../data/types';
 import type { ExistingNode } from '../stack-layout';
 
@@ -88,5 +88,34 @@ describe('calculateStackLayout', () => {
     const result = calculateStackLayout(mockStack, defaultConfig, []);
     const nodeA = result.nodes.find(n => n.serviceKey === 'a')!;
     expect(nodeA.position).toEqual({ x: 100, y: 100 });
+  });
+});
+
+describe('findNonOverlappingPosition', () => {
+  it('returns candidate when no existing nodes', () => {
+    const pos = findNonOverlappingPosition({ x: 100, y: 100 }, []);
+    expect(pos).toEqual({ x: 100, y: 100 });
+  });
+
+  it('returns candidate when no overlap', () => {
+    const existing: ExistingNode[] = [{ x: 800, y: 800, width: 180, height: 80 }];
+    const pos = findNonOverlappingPosition({ x: 100, y: 100 }, existing);
+    expect(pos).toEqual({ x: 100, y: 100 });
+  });
+
+  it('shifts position when overlapping an existing node', () => {
+    const existing: ExistingNode[] = [{ x: 100, y: 100, width: 180, height: 80 }];
+    const pos = findNonOverlappingPosition({ x: 100, y: 100 }, existing);
+    expect(pos.x !== 100 || pos.y !== 100).toBe(true);
+  });
+
+  it('shifts past multiple overlapping nodes', () => {
+    const existing: ExistingNode[] = [
+      { x: 100, y: 100, width: 180, height: 80 },
+      { x: 360, y: 100, width: 180, height: 80 },
+    ];
+    const pos = findNonOverlappingPosition({ x: 100, y: 100 }, existing);
+    // Should not overlap either node
+    expect(pos.x).toBeGreaterThan(360 + 180 - 1);
   });
 });

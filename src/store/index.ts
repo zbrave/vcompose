@@ -17,7 +17,7 @@ import type {
 import { PRESET_DEFAULTS } from './types';
 import { SERVICE_REGISTRY } from '../data/service-registry';
 import { STACK_CATALOG } from '../data/stack-catalog';
-import { calculateStackLayout } from '../lib/stack-layout';
+import { calculateStackLayout, findNonOverlappingPosition } from '../lib/stack-layout';
 import type { DockerHubSearchResult, ServiceDefinition } from '../data/types';
 import { MAX_CANVAS_SERVICES } from './types';
 import { trackEvent, EVENTS } from '../lib/analytics/events';
@@ -255,15 +255,23 @@ export const useStore = create<AppStore>()(
         if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) return;
         const serviceDef = SERVICE_REGISTRY.find((s) => s.key === serviceKey);
         if (!serviceDef) return;
-        const node = buildServiceNode(serviceDef, position);
+        const existingNodes = useStore.getState().nodes.map((n) => ({
+          x: n.position.x, y: n.position.y, width: 180, height: 80,
+        }));
+        const safePosition = findNonOverlappingPosition(position, existingNodes);
+        const node = buildServiceNode(serviceDef, safePosition);
         set((state) => ({ nodes: [...state.nodes, node] }));
         trackEvent(EVENTS.SERVICE_ADDED, { preset: serviceDef.preset, source: 'registry' });
       },
 
       addServiceFromHub: (hubResult: DockerHubSearchResult, position: { x: number; y: number }) => {
         if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) return;
+        const existingNodes = useStore.getState().nodes.map((n) => ({
+          x: n.position.x, y: n.position.y, width: 180, height: 80,
+        }));
+        const safePosition = findNonOverlappingPosition(position, existingNodes);
         if (hubResult.registryMatch) {
-          const node = buildServiceNode(hubResult.registryMatch, position);
+          const node = buildServiceNode(hubResult.registryMatch, safePosition);
           set((state) => ({ nodes: [...state.nodes, node] }));
           trackEvent(EVENTS.SERVICE_ADDED, { preset: 'custom', source: 'dockerhub' });
         } else {
@@ -272,7 +280,7 @@ export const useStore = create<AppStore>()(
           const node = {
             id,
             type: 'serviceNode' as const,
-            position,
+            position: safePosition,
             data: {
               serviceName: `${hubResult.slug.replace(/\//g, '-')}-${id.slice(0, 4)}`,
               image: hubResult.name,
