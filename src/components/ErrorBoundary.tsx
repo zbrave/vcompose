@@ -29,14 +29,17 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return this.props.fallback ?? (
-        <div className="flex h-screen items-center justify-center bg-[var(--bg-primary)] text-[var(--text-secondary)]">
+        <div
+          className="flex h-screen items-center justify-center bg-[var(--bg-primary)] text-[var(--text-secondary)]"
+          role="alert"
+        >
           <div className="text-center">
-            <h2 className="text-lg font-semibold mb-2">Bir hata oluştu</h2>
+            <h2 className="text-lg font-semibold mb-2">Something went wrong</h2>
             <button
               onClick={() => window.location.reload()}
               className="px-4 py-2 rounded bg-[var(--accent-primary)] text-[var(--bg-primary)]"
             >
-              Sayfayı Yenile
+              Reload Page
             </button>
           </div>
         </div>
