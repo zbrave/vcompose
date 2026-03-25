@@ -7,7 +7,10 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   useEffect(() => {
-    initPostHog();
+    const cb = () => initPostHog();
+    'requestIdleCallback' in window
+      ? requestIdleCallback(cb)
+      : setTimeout(cb, 1);
   }, []);
 
   useEffect(() => {
