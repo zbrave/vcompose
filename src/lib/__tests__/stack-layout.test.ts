@@ -118,4 +118,33 @@ describe('findNonOverlappingPosition', () => {
     // Should not overlap either node
     expect(pos.x).toBeGreaterThan(360 + 180 - 1);
   });
+
+  it('finds non-overlapping position even with 30+ existing nodes', () => {
+    // Simulate the user scenario: 6 stack nodes + 24 individual nodes = 30 total
+    const existing: ExistingNode[] = [];
+    const shiftX = 180 + 40 * 2; // NODE_WIDTH + PADDING * 2 = 260
+    const shiftY = 80 + 40 * 2;  // NODE_HEIGHT + PADDING * 2 = 160
+    // Fill a 5-column grid with 30 nodes starting at (300, 300)
+    for (let i = 0; i < 30; i++) {
+      const col = i % 5;
+      const row = Math.floor(i / 5);
+      existing.push({
+        x: 300 + col * shiftX,
+        y: 300 + row * shiftY,
+        width: 180,
+        height: 80,
+      });
+    }
+
+    const pos = findNonOverlappingPosition({ x: 300, y: 300 }, existing);
+
+    // Verify the returned position does NOT overlap any existing node
+    const PADDING = 40;
+    const overlaps = existing.some((en) => {
+      const ax = pos.x - PADDING, ay = pos.y - PADDING;
+      const aw = 180 + PADDING * 2, ah = 80 + PADDING * 2;
+      return ax < en.x + en.width && ax + aw > en.x && ay < en.y + en.height && ay + ah > en.y;
+    });
+    expect(overlaps).toBe(false);
+  });
 });

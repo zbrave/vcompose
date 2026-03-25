@@ -64,7 +64,7 @@ export function findNonOverlappingPosition(
   const startX = x;
   const shiftX = NODE_WIDTH + PADDING * 2;
   const shiftY = NODE_HEIGHT + PADDING * 2;
-  const maxAttempts = 20;
+  const maxAttempts = 100;
 
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     const overlaps = existingNodes.some((en) =>
@@ -100,7 +100,7 @@ export function calculateStackLayout(
 
   // If existing nodes provided, shift stack to avoid overlap
   if (existingNodes && existingNodes.length > 0) {
-    const maxAttempts = 20;
+    const maxAttempts = 100;
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       const positions = basePositions.map(bp => ({
         x: startX + bp.offsetX,
