@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   ReactFlow,
   Background,
@@ -33,7 +33,7 @@ export function FlowCanvas() {
   const addStack = useStore((s) => s.addStack);
   const addServiceFromRegistry = useStore((s) => s.addServiceFromRegistry);
   const addServiceFromHub = useStore((s) => s.addServiceFromHub);
-  const { screenToFlowPosition } = useReactFlow();
+  const { screenToFlowPosition, fitView } = useReactFlow();
 
   // Cast to React Flow types, inject selected state
   const rfNodes = useMemo(
@@ -160,6 +160,19 @@ export function FlowCanvas() {
     },
     [addNode, addStack, addServiceFromRegistry, addServiceFromHub, screenToFlowPosition],
   );
+
+  // Animated fitView when nodes are added
+  const prevNodeCountRef = useRef(nodes.length);
+  useEffect(() => {
+    const prev = prevNodeCountRef.current;
+    prevNodeCountRef.current = nodes.length;
+    if (nodes.length > prev) {
+      const timer = setTimeout(() => {
+        fitView({ duration: 500, padding: 0.15 });
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [nodes.length, fitView]);
 
   // Keyboard shortcuts for undo/redo
   useEffect(() => {
