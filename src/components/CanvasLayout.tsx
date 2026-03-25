@@ -16,6 +16,7 @@ import { FloatingConfigPanel } from './panel/FloatingConfigPanel';
 import { YamlOutput } from './output/YamlOutput';
 import { ImportModal } from './output/ImportModal';
 import { CommandSearch } from './CommandSearch';
+import ToastContainer from './ToastContainer';
 
 export default function CanvasLayout() {
   const nodes = useStore((s) => s.nodes);
@@ -110,6 +111,7 @@ export default function CanvasLayout() {
         onToggleAI={() => { setShowSearch(false); setActivePanel('ai'); }}
         onNavigate={(path) => { setShowSearch(false); navigate(path, path === '/' ? { state: { showLanding: true } } : undefined); }}
       />
+      <ToastContainer />
     </ReactFlowProvider>
   );
 }

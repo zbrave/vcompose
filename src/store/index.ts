@@ -19,8 +19,18 @@ import { SERVICE_REGISTRY } from '../data/service-registry';
 import { STACK_CATALOG } from '../data/stack-catalog';
 import { calculateStackLayout, findNonOverlappingPosition } from '../lib/stack-layout';
 import type { DockerHubSearchResult, ServiceDefinition } from '../data/types';
-import { MAX_CANVAS_SERVICES } from './types';
+import { MAX_CANVAS_SERVICES, CANVAS_WARN_THRESHOLD } from './types';
 import { trackEvent, EVENTS } from '../lib/analytics/events';
+import { useToastStore } from './toast-store';
+
+function notifyCanvasLimit(nodeCount: number) {
+  const { addToast } = useToastStore.getState();
+  if (nodeCount >= MAX_CANVAS_SERVICES) {
+    addToast(`Canvas limit reached (${MAX_CANVAS_SERVICES}). Remove services to add more.`, 'error');
+  } else if (nodeCount >= CANVAS_WARN_THRESHOLD) {
+    addToast(`${nodeCount}/${MAX_CANVAS_SERVICES} services — performance may degrade.`, 'warning');
+  }
+}
 
 function buildServiceNode(
   serviceDef: ServiceDefinition,
@@ -57,7 +67,10 @@ export const useStore = create<AppStore>()(
 
       // Node actions
       addNode: (preset: PresetImageKey, position: { x: number; y: number }) => {
-        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) return;
+        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) {
+          notifyCanvasLimit(useStore.getState().nodes.length);
+          return;
+        }
         const defaults = PRESET_DEFAULTS[preset];
         const id = generateId();
         const node = {
@@ -75,6 +88,7 @@ export const useStore = create<AppStore>()(
           } satisfies ServiceNodeData,
         };
         set((state) => ({ nodes: [...state.nodes, node] }));
+        notifyCanvasLimit(useStore.getState().nodes.length);
         trackEvent(EVENTS.SERVICE_ADDED, { preset, source: 'palette' });
       },
 
@@ -176,7 +190,10 @@ export const useStore = create<AppStore>()(
 
       // Recommendations
       addRecommendedNode: (key: string, sourceNodeId: string, position: { x: number; y: number }) => {
-        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) return;
+        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) {
+          notifyCanvasLimit(useStore.getState().nodes.length);
+          return;
+        }
         const presetKeys = ['nginx', 'postgres', 'redis', 'node', 'custom'] as const;
         const isPreset = (presetKeys as readonly string[]).includes(key);
         const registryDef = !isPreset ? SERVICE_REGISTRY.find((s) => s.key === key) : undefined;
@@ -234,6 +251,7 @@ export const useStore = create<AppStore>()(
             networks: newNetworks,
           };
         });
+        notifyCanvasLimit(useStore.getState().nodes.length);
         trackEvent(EVENTS.SERVICE_ADDED, { preset: key, source: 'recommendation' });
       },
 
@@ -252,7 +270,10 @@ export const useStore = create<AppStore>()(
 
       // Stack & Marketplace actions
       addServiceFromRegistry: (serviceKey: string, position: { x: number; y: number }) => {
-        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) return;
+        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) {
+          notifyCanvasLimit(useStore.getState().nodes.length);
+          return;
+        }
         const serviceDef = SERVICE_REGISTRY.find((s) => s.key === serviceKey);
         if (!serviceDef) return;
         const existingNodes = useStore.getState().nodes.map((n) => ({
@@ -261,11 +282,15 @@ export const useStore = create<AppStore>()(
         const safePosition = findNonOverlappingPosition(position, existingNodes);
         const node = buildServiceNode(serviceDef, safePosition);
         set((state) => ({ nodes: [...state.nodes, node] }));
+        notifyCanvasLimit(useStore.getState().nodes.length);
         trackEvent(EVENTS.SERVICE_ADDED, { preset: serviceDef.preset, source: 'registry' });
       },
 
       addServiceFromHub: (hubResult: DockerHubSearchResult, position: { x: number; y: number }) => {
-        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) return;
+        if (useStore.getState().nodes.length >= MAX_CANVAS_SERVICES) {
+          notifyCanvasLimit(useStore.getState().nodes.length);
+          return;
+        }
         const existingNodes = useStore.getState().nodes.map((n) => ({
           x: n.position.x, y: n.position.y, width: 180, height: 80,
         }));
@@ -294,13 +319,17 @@ export const useStore = create<AppStore>()(
           set((state) => ({ nodes: [...state.nodes, node] }));
           trackEvent(EVENTS.SERVICE_ADDED, { preset: 'custom', source: 'dockerhub' });
         }
+        notifyCanvasLimit(useStore.getState().nodes.length);
       },
 
       addStack: (stackKey: string, dropPosition: { x: number; y: number }) => {
         const stack = STACK_CATALOG.find((s) => s.key === stackKey);
         if (!stack) return;
         const currentCount = useStore.getState().nodes.length;
-        if (currentCount + stack.services.length > MAX_CANVAS_SERVICES) return;
+        if (currentCount + stack.services.length > MAX_CANVAS_SERVICES) {
+          notifyCanvasLimit(MAX_CANVAS_SERVICES);
+          return;
+        }
 
         const currentNodes = useStore.getState().nodes;
         const existingNodes = currentNodes.map((n) => ({
@@ -384,6 +413,7 @@ export const useStore = create<AppStore>()(
             networks: newNetworks,
           };
         });
+        notifyCanvasLimit(useStore.getState().nodes.length);
         trackEvent(EVENTS.STACK_ADDED, { stackKey, serviceCount: stack.services.length });
       },
     }),
