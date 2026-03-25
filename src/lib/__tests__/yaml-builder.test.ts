@@ -25,6 +25,12 @@ function makeNode(overrides: { id?: string; data: Partial<ServiceNode['data']> &
 const empty = { nodes: [] as ServiceNode[], edges: [] as DependencyEdge[], networks: [] as NetworkConfig[], namedVolumes: [] as NamedVolume[] };
 
 describe('buildYaml', () => {
+  it('includes vcompose.cc branding comment', () => {
+    const yaml = buildYaml(empty);
+    expect(yaml).toMatch(/^# Generated with VCompose/);
+    expect(yaml).toContain('https://vcompose.cc');
+  });
+
   it('returns empty services when no nodes', () => {
     const yaml = buildYaml(empty);
     expect(yaml).not.toContain('version');

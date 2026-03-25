@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Copy, Download, X } from 'lucide-react';
+import { Copy, Download, Share2, X } from 'lucide-react';
 import { useStore } from '../../store';
 import { buildYaml } from '../../lib/yaml-builder';
-import { downloadYaml, copyYaml } from '../../lib/yaml-download';
+import { downloadYaml, copyYaml, shareOnTwitter } from '../../lib/yaml-download';
 import { trackEvent, EVENTS } from '../../lib/analytics/events';
 
 const customStyle: Record<string, React.CSSProperties> = {
@@ -84,6 +84,15 @@ export function YamlOutput({ onClose }: YamlOutputProps = {}) {
           >
             <Download size={14} />
           </button>
+          {nodes.length > 0 && (
+            <button
+              onClick={() => shareOnTwitter(nodes.length)}
+              className="rounded p-1 text-text-muted hover:text-accent transition-colors"
+              title="Share on X"
+            >
+              <Share2 size={14} />
+            </button>
+          )}
         </div>
       </div>
       <div className="flex-1 overflow-auto">

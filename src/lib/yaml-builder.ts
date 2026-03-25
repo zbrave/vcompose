@@ -104,5 +104,6 @@ export function buildYaml(store: BuildYamlInput): string {
     doc.volumes = vols;
   }
 
-  return stringify(doc, { lineWidth: 0 });
+  const yaml = stringify(doc, { lineWidth: 0 });
+  return `# Generated with VCompose — https://vcompose.cc\n${yaml}`;
 }
