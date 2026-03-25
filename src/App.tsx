@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { ReactFlowProvider } from '@xyflow/react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -16,8 +16,27 @@ import { FloatingConfigPanel } from './components/panel/FloatingConfigPanel';
 import { YamlOutput } from './components/output/YamlOutput';
 import { ImportModal } from './components/output/ImportModal';
 import { CommandSearch } from './components/CommandSearch';
-import { LandingPage } from './components/LandingPage';
-import { McpDocsPage } from './components/McpDocsPage';
+
+const LandingPage = lazy(() =>
+  import('./components/LandingPage').then((m) => ({ default: m.LandingPage }))
+);
+const McpDocsPage = lazy(() =>
+  import('./components/McpDocsPage').then((m) => ({ default: m.McpDocsPage }))
+);
+const NotFoundPage = lazy(() =>
+  import('./components/NotFoundPage').then((m) => ({ default: m.NotFoundPage }))
+);
+
+function LoadingFallback() {
+  return (
+    <div className="flex h-screen items-center justify-center bg-base">
+      <div
+        className="h-8 w-8 animate-spin rounded-full border-2 border-transparent"
+        style={{ borderTopColor: 'var(--accent)' }}
+      />
+    </div>
+  );
+}
 
 function LandingRedirect() {
   const location = useLocation();
@@ -40,7 +59,11 @@ function LandingRedirect() {
       return <Navigate to="/app" replace />;
     }
   }
-  return <LandingPage />;
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <LandingPage />
+    </Suspense>
+  );
 }
 
 function CanvasLayout() {
@@ -145,7 +168,22 @@ function App() {
     <Routes>
       <Route path="/" element={<LandingRedirect />} />
       <Route path="/app" element={<CanvasLayout />} />
-      <Route path="/mcp" element={<McpDocsPage />} />
+      <Route
+        path="/mcp"
+        element={
+          <Suspense fallback={<LoadingFallback />}>
+            <McpDocsPage />
+          </Suspense>
+        }
+      />
+      <Route
+        path="*"
+        element={
+          <Suspense fallback={<LoadingFallback />}>
+            <NotFoundPage />
+          </Suspense>
+        }
+      />
     </Routes>
   );
 }
