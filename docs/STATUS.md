@@ -3,7 +3,7 @@
 > Her Claude Code oturumunun sonunda güncelle.
 > Status: `⬜ Todo` · `🔄 In Progress` · `✅ Done` · `🚫 Blocked`
 
-Last updated: 2026-03-23
+Last updated: 2026-03-25
 
 ---
 
@@ -42,6 +42,7 @@ Last updated: 2026-03-23
 | UI Redesign (Phase 10) | ✅ Done | Anthracite/gold theme, glassmorphism nodes, neon edges, icon rail, floating config, command palette |
 | MCP Docs & Routing (Phase 11) | ✅ Done | React Router (/, /app, /mcp), MCP documentation page, NavDropdown, command palette navigation |
 | PostHog Analytics (Phase 12) | ✅ Done | posthog-js, PostHogProvider, ErrorBoundary, trackEvent, 9 custom events, guard test |
+| Production Readiness (Phase 13) | ✅ Done | Code splitting, gzip, security headers, 404 page, PWA manifest, ErrorBoundary i18n |
 
 ---
 
@@ -87,7 +88,23 @@ Last updated: 2026-03-23
 
 ## Mevcut Oturum Odagi
 
-Phase 12: PostHog Analytics Integration
+Phase 13: Production Readiness
+- [x] Implementation plan (`docs/superpowers/plans/2026-03-25-production-readiness.md`)
+- [x] Vite manual chunks: react-vendor, flow-vendor, ui-vendor, yaml-vendor, ai-vendor, analytics
+- [x] Route-based code splitting: React.lazy + Suspense (LandingPage, McpDocsPage, NotFoundPage)
+- [x] 404 catch-all route with NotFoundPage component + 2 E2E tests
+- [x] Nginx gzip compression (level 6, all text/js/json/svg types)
+- [x] Nginx security headers (X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy)
+- [x] Security headers repeated in location blocks (nginx add_header inheritance fix)
+- [x] PWA manifest icons (192x192, 512x512 PNG from favicon.svg)
+- [x] ErrorBoundary: Turkish → English text + role="alert"
+- **Bundle: 2MB single chunk → 10 chunks, largest app chunk 310KB (91KB gzip)**
+- **110 unit + 14 MCP unit + 32 E2E test (31 passing, 1 pre-existing clipboard fail)**
+
+---
+
+## Phase 12: PostHog Analytics Integration
+
 - [x] Design spec (`docs/superpowers/specs/2026-03-24-posthog-analytics-design.md`)
 - [x] Implementation plan (`docs/superpowers/plans/2026-03-24-posthog-analytics.md`)
 - [x] `posthog-js` dependency eklendi
@@ -247,3 +264,14 @@ Phase 12: PostHog Analytics Integration
 - E2E tests migrated: 9 files updated for new selectors and layout structure
 - 3 yeni unit test (yaml-download)
 - **Toplam: 99 unit + 14 MCP unit + 23 E2E test, tumü geçiyor**
+
+### Oturum 13 (2026-03-25)
+- Phase 13: Production Readiness
+- Vite manual chunks: 6 vendor chunk (react, flow, ui, yaml, ai, analytics)
+- Route-based code splitting: React.lazy + Suspense (LandingPage, McpDocsPage, NotFoundPage)
+- Bundle: 2MB tek chunk → 10 chunk, en buyuk app chunk 310KB (91KB gzip)
+- 404 NotFoundPage + catch-all route + 2 E2E test
+- Nginx gzip (level 6) + security headers (nginx add_header inheritance fix dahil)
+- PWA manifest: 192x192 + 512x512 PNG icon generation
+- ErrorBoundary: Turkce → Ingilizce + role="alert"
+- **Toplam: 110 unit + 14 MCP unit + 32 E2E test**
