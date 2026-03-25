@@ -209,7 +209,7 @@ export function AISidebar() {
           disabled={isLoading}
           className="flex-1 rounded bg-accent px-3 py-2 text-sm font-medium text-base transition-colors hover:bg-accent-dim disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isLoading ? 'Generating...' : 'Generate'}
+          {isLoading ? 'Generating...' : canOptimize ? '✨ Generate New' : '✨ Generate'}
         </button>
         {canOptimize && (
         <button
@@ -217,7 +217,7 @@ export function AISidebar() {
           disabled={isLoading}
           className="flex-1 rounded bg-elevated px-3 py-2 text-sm font-medium text-text-secondary border border-subtle transition-colors hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isLoading ? 'Optimizing...' : 'Optimize'}
+          {isLoading ? 'Optimizing...' : '⚡ Optimize Current'}
         </button>
         )}
       </div>

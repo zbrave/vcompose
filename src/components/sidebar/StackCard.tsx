@@ -1,5 +1,6 @@
 // src/components/sidebar/StackCard.tsx
 import { motion } from 'framer-motion';
+import { Plus } from 'lucide-react';
 import type { StackDefinition } from '../../data/types';
 
 interface StackCardProps {
@@ -27,9 +28,10 @@ export function StackCard({ stack, onAdd, onDragStart }: StackCardProps) {
       <p className="text-xs text-text-secondary mb-2">{stack.description}</p>
       <button
         onClick={(e) => { e.stopPropagation(); onAdd(); }}
-        className="w-full text-xs bg-accent/10 text-accent hover:bg-accent/20 py-1.5 rounded transition-colors"
+        className="w-full text-xs bg-accent text-base hover:bg-accent-dim py-1.5 rounded-md font-semibold inline-flex items-center justify-center gap-1 transition-colors"
       >
-        + Add Stack
+        <Plus size={14} strokeWidth={2.5} />
+        Add Stack
       </button>
     </motion.div>
   );

@@ -1,4 +1,5 @@
 // src/components/sidebar/ServiceCard.tsx
+import { Plus } from 'lucide-react';
 import type { DockerHubSearchResult } from '../../data/types';
 
 interface ServiceCardProps {
@@ -28,9 +29,10 @@ export function ServiceCard({ result, onAdd, onDragStart }: ServiceCardProps) {
       </div>
       <button
         onClick={(e) => { e.stopPropagation(); onAdd(); }}
-        className="text-xs bg-accent/10 text-accent hover:bg-accent/20 px-2 py-1 rounded shrink-0 transition-colors"
+        className="text-xs bg-accent text-base hover:bg-accent-dim px-3 py-1.5 rounded-md font-semibold shrink-0 inline-flex items-center gap-1 transition-colors"
       >
-        + Add
+        <Plus size={14} strokeWidth={2.5} />
+        Add
       </button>
     </div>
   );
