@@ -71,6 +71,12 @@ Open [localhost:5173](http://localhost:5173).
 ### Self-host with Docker
 
 ```bash
+docker run -p 80:80 ghcr.io/zbrave/vcompose:latest
+```
+
+Or build from source:
+
+```bash
 docker build -t vcompose .
 docker run -p 80:80 vcompose
 ```
