@@ -15,3 +15,7 @@ REVIEW.md
 .claude/
 e2e/
 .playwright-mcp/
+
+# Screenshots / design artifacts
+*.png
+!public/*.png
