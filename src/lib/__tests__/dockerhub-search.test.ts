@@ -88,10 +88,12 @@ describe('searchDockerHub', () => {
 
   beforeEach(() => {
     globalThis.fetch = vi.fn();
+    vi.stubEnv('VITE_DOCKERHUB_PROXY_URL', 'https://test-proxy.example.com');
   });
 
   afterEach(() => {
     globalThis.fetch = originalFetch;
+    vi.unstubAllEnvs();
   });
 
   it('returns mapped results on success', async () => {

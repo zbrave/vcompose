@@ -1,8 +1,6 @@
 import type { ServiceDefinition, DockerHubSearchResult } from '../data/types';
 import { SERVICE_REGISTRY } from '../data/service-registry';
 
-const PROXY_URL = import.meta.env.VITE_DOCKERHUB_PROXY_URL || '';
-
 /**
  * Filter local service registry by query string (case-insensitive).
  * Matches on key, name, or description.
@@ -41,10 +39,11 @@ export async function searchDockerHub(
   query: string,
   signal?: AbortSignal,
 ): Promise<DockerHubSearchResult[]> {
-  if (!PROXY_URL) return [];
+  const proxyUrl = import.meta.env.VITE_DOCKERHUB_PROXY_URL || '';
+  if (!proxyUrl) return [];
 
   try {
-    const url = `${PROXY_URL}/search?q=${encodeURIComponent(query)}&page_size=10`;
+    const url = `${proxyUrl}/search?q=${encodeURIComponent(query)}&page_size=10`;
     const timeoutSignal = AbortSignal.timeout(5000);
     const combinedSignal = signal
       ? AbortSignal.any([signal, timeoutSignal])
