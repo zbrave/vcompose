@@ -21,3 +21,12 @@
   --warning: #f59e0b;
   --error:   #ef4444;
 }
+
+@keyframes yaml-tab-glow {
+  0%, 100% {
+    box-shadow: 0 0 4px rgba(212, 168, 67, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(212, 168, 67, 0.4);
+  }
+}

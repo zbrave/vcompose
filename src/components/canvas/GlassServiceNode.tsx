@@ -58,6 +58,7 @@ export function GlassServiceNode({ id, data, selected }: ServiceNodeProps) {
         borderColor,
         boxShadow,
         minWidth: '160px',
+        maxWidth: '280px',
         borderRadius: '10px',
         padding: '12px 14px',
         position: 'relative',

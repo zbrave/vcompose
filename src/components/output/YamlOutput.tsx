@@ -13,12 +13,16 @@ const customStyle: Record<string, React.CSSProperties> = {
     ...((atomDark as Record<string, React.CSSProperties>)['code[class*="language-"]']),
     background: 'transparent',
     fontSize: '12px',
+    whiteSpace: 'pre-wrap',
+    wordBreak: 'break-all',
   },
   'pre[class*="language-"]': {
     ...((atomDark as Record<string, React.CSSProperties>)['pre[class*="language-"]']),
     background: 'transparent',
     margin: 0,
     padding: '8px 16px',
+    whiteSpace: 'pre-wrap',
+    wordBreak: 'break-all',
   },
 };
 
@@ -99,6 +103,7 @@ export function YamlOutput({ onClose }: YamlOutputProps = {}) {
         <SyntaxHighlighter
           language="yaml"
           style={customStyle}
+          wrapLongLines={true}
           customStyle={{ background: 'transparent', minHeight: '100%' }}
         >
           {yaml}

@@ -21,6 +21,7 @@ import ToastContainer from './ToastContainer';
 export default function CanvasLayout() {
   const nodes = useStore((s) => s.nodes);
   const edges = useStore((s) => s.edges);
+  const validationIssues = useStore((s) => s.validationIssues);
   const setValidationIssues = useStore((s) => s.setValidationIssues);
   const navigate = useNavigate();
 
@@ -30,6 +31,9 @@ export default function CanvasLayout() {
   const [showImport, setShowImport] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showYaml, setShowYaml] = useState(false);
+
+  const hasErrors = validationIssues.some((i) => i.severity === 'error');
+  const hasWarnings = validationIssues.some((i) => i.severity === 'warning');
 
   useEffect(() => {
     const issues = validate({ nodes, edges });
@@ -52,8 +56,6 @@ export default function CanvasLayout() {
       <div className="flex h-screen flex-col bg-base text-text-primary">
         <HeaderBar
           onSearchClick={() => setShowSearch(true)}
-          onYamlToggle={() => setShowYaml((v) => !v)}
-          showYaml={showYaml}
         />
         <div className="flex flex-1 overflow-hidden">
           <IconRail
@@ -78,6 +80,31 @@ export default function CanvasLayout() {
           <div className="hidden md:flex">
             <YamlOutput />
           </div>
+
+          {/* Mobile: collapsible YAML tab on right edge */}
+          {!showYaml && (
+            <button
+              onClick={() => setShowYaml(true)}
+              className="fixed right-0 top-1/2 z-40 -translate-y-1/2 md:hidden"
+              title="Open YAML panel"
+              style={{
+                writingMode: 'vertical-rl',
+                background: 'var(--bg-surface)',
+                border: '1px solid rgba(212,168,67,0.3)',
+                borderRight: 'none',
+                borderRadius: '6px 0 0 6px',
+                padding: '14px 7px',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: 'var(--accent)',
+                letterSpacing: '1px',
+                cursor: 'pointer',
+                animation: 'yaml-tab-glow 2s ease-in-out infinite',
+              }}
+            >
+              YAML {hasErrors ? '✗' : hasWarnings ? '⚠' : '✓'}
+            </button>
+          )}
 
           {/* Mobile YAML overlay */}
           <AnimatePresence>
