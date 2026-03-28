@@ -18,3 +18,8 @@ body {
   height: 100%;
   width: 100%;
 }
+
+/* Allow d3-zoom to handle touch gestures (pinch-to-zoom) instead of browser */
+.react-flow {
+  touch-action: none;
+}
