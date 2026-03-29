@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ReactFlowProvider } from '@xyflow/react';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -31,6 +31,35 @@ export default function CanvasLayout() {
   const [showImport, setShowImport] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [showYaml, setShowYaml] = useState(false);
+  const [yamlWidth, setYamlWidth] = useState(260);
+  const isResizing = useRef(false);
+
+  const startResize = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    isResizing.current = true;
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  }, []);
+
+  useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isResizing.current) return;
+      const newWidth = window.innerWidth - e.clientX;
+      setYamlWidth(Math.max(200, Math.min(600, newWidth)));
+    };
+    const onMouseUp = () => {
+      if (!isResizing.current) return;
+      isResizing.current = false;
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+  }, []);
 
   const hasErrors = validationIssues.some((i) => i.severity === 'error');
   const hasWarnings = validationIssues.some((i) => i.severity === 'warning');
@@ -76,8 +105,15 @@ export default function CanvasLayout() {
             <FlowCanvas />
             <FloatingConfigPanel />
           </div>
-          {/* Desktop YAML sidebar */}
-          <div className="hidden md:flex">
+          {/* Desktop YAML sidebar — resizable */}
+          <div
+            className="hidden md:flex relative"
+            style={{ width: yamlWidth, flexShrink: 0 }}
+          >
+            <div
+              className="absolute left-0 top-0 bottom-0 z-10 w-1 cursor-col-resize hover:bg-accent/40 active:bg-accent/60 transition-colors"
+              onMouseDown={startResize}
+            />
             <YamlOutput />
           </div>
 

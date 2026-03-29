@@ -46,7 +46,7 @@ export function YamlOutput({ onClose }: YamlOutputProps = {}) {
   const hasWarnings = validationIssues.some((i) => i.severity === 'warning');
 
   return (
-    <aside className="flex h-full w-full flex-col border-l border-subtle bg-surface md:w-[260px] md:h-auto">
+    <aside className="flex h-full w-full flex-col border-l border-subtle bg-surface md:h-auto">
       <div className="flex items-center justify-between px-3 py-2">
         <div className="flex items-center gap-2">
           {onClose && (
