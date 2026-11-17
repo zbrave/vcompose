@@ -105,5 +105,5 @@ export function buildYaml(store: BuildYamlInput): string {
   }
 
   const yaml = stringify(doc, { lineWidth: 0 });
-  return `# Generated with VCompose — https://vcompose.cc\n${yaml}`;
+  return `# Generated with VCompose — https://vcompose.aydar.tr\n${yaml}`;
 }

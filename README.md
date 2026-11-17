@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://vcompose.cc"><img src="https://img.shields.io/badge/Try_it-vcompose.cc-d4a843?style=for-the-badge" alt="Try it" /></a>
+  <a href="https://vcompose.aydar.tr"><img src="https://img.shields.io/badge/Try_it-vcompose.aydar.tr-d4a843?style=for-the-badge" alt="Try it" /></a>
 </p>
 
 <p align="center">
@@ -55,7 +55,7 @@ No signup. No backend. No data leaves your browser.
 
 ### Use online (recommended)
 
-**[vcompose.cc](https://vcompose.cc)** — zero install, works immediately.
+**[vcompose.aydar.tr](https://vcompose.aydar.tr)** — zero install, works immediately.
 
 ### Run locally
 
@@ -122,7 +122,7 @@ VCompose includes an MCP server for IDE integration. Use it with Claude, Cursor,
 - `parse-compose` — Parse to visual format
 - `get-recommendations` — Get companion services
 
-[Read MCP docs →](https://vcompose.cc/mcp)
+[Read MCP docs →](https://vcompose.aydar.tr/mcp)
 
 ---
 
